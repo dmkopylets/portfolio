@@ -14,7 +14,7 @@ examples of my code
 _what is here:_
 
     1. a console program that can be used for service tasks such as data import
-    2. a a simple application using Laravel and AdminLTE, without using databases, 
+    2. a simple application using Laravel and AdminLTE, without using databases, 
     which demonstrates manipulation of array-like data, but actually uses SplObjectStorage
     3. a program using Laravel and Liveware that makes it possible to enter certain 
     reference data and create a journal of typical outfits for performing some work 
