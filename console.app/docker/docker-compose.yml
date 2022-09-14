@@ -1,0 +1,23 @@
+version: "3.8"
+
+  php-fpm:
+    container_name: foxminded_php-fpm
+    working_dir: /home/usr1/www/demoApp
+    build:
+      context: ./php-fpm
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+    networks:
+      - internal
+      - external
+    volumes:
+      - ./../:/var/www
+    ports:
+      - "3000:3000"
+networks:
+  external:
+    driver: bridge
+  internal:
+    driver: bridge
+

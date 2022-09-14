@@ -1,0 +1,15 @@
+/vendor/
+/.idea/
+/tmp/
+/logs/
+/db/
+/lsp/
+.editorconfig
+.php-cs-fixer.cache
+.phpunit.result.cache
+.htaccess
+/phpunit.xml
+/favicon.ico
+/run_psalm
+/psalm.xml
+/docker/.env
