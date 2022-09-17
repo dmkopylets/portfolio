@@ -11,11 +11,6 @@ class DriverStorage
 {
     protected SplObjectStorage $drivers;
 
-    public function getList(): SplObjectStorage
-    {
-        return $this->drivers;
-    }
-
     public function addDriver(Driver $driver): void
     {
         $this->drivers->attach($driver);
@@ -26,7 +21,7 @@ class DriverStorage
         $this->drivers->rewind();
         while ($this->drivers->valid()) {
             $driver = $this->drivers->current();
-            if (($driver->getIndex()) == $abbreviation) {
+            if (($driver->getIndex()) === $abbreviation) {
                 return $driver;
             }
             $this->drivers->next();

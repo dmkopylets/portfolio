@@ -20,7 +20,7 @@ class ScoreSorter
                 'place' => $key + 1,
                 'driver' => $flight->getDriverName(),
                 'team' => $flight->getTeam(),
-                'duration' => $flight->getDuration($flight->getStart(), $flight->getFinish()),
+                'duration' => $flight->setDuration($flight->getStart(), $flight->getFinish()),
                 'lined' => $racingData['lined']
             );
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Racing;
 
 use App\Http\Controllers\Controller;
@@ -9,8 +11,8 @@ class FlightsRenderController extends Controller
 {
     public function index()
     {
-        $reportData = new BuildDataReport();
-        $orderedArray = $reportData->initData();
+        $report = new BuildDataReport();
+        $orderedArray = $report->getOrderedArray();
             return view('racingReport.flights.index', ['flights'=>$orderedArray]);
     }
 }

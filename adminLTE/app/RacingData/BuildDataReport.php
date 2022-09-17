@@ -4,28 +4,40 @@ declare(strict_types=1);
 
 namespace App\RacingData;
 
+use DateTimeImmutable;
+
 class BuildDataReport
 {
     protected DriverStorage $drivers;
     protected FlightStorage $flights;
-    protected bool $descending;
-    protected bool $driverListFull;
-    protected string $driverId;
+    protected string $logsLocation;
+    protected array $orderedArray;
+    protected ?string $driverId;
+    protected string $reportDriversName;
+    protected array $reportDriversData;
 
-    public function initData(): array|bool
+    public function __construct()
     {
-        $logsLocation = __DIR__.'/../../Report of Monaco 2018 Racing';
-        if ($this->filesExist($logsLocation)) {
+        $this->logsLocation = __DIR__ . '/../../' . env('RACING_DATAFILES_LOCATION');
+        if ($this->filesExist($this->logsLocation)) {
+            $this->orderedArray = $this->initData();
             $this->readParameters();
-            $this->flights = new FlightStorage();
-            $this->readDrivers($logsLocation . '/abbreviations.txt');
-            $this->flights->setDrivers($this->drivers);
-            $this->readLog('start', $logsLocation . '/start.log');
-            $this->readLog('end', $logsLocation . '/end.log');
-            $orderedFlights = new ScoreSorter($this->flights, $this->descending);
-            return $orderedFlights->getResult();
         }
-        return false;
+    }
+
+    public function initData(): array
+    {
+        $this->flights = new FlightStorage();
+        $this->readDrivers($this->logsLocation . '/' . env('ABBREVIATION'));
+        $this->flights->setDrivers($this->drivers);
+        $this->readLog('start', $this->logsLocation . '/' . env('START_LOG'));
+        $this->readLog('end', $this->logsLocation . '/' . env('FINISH_LOG'));
+        $descending = false;
+        if (request()->query('order')==='desc') {
+            $descending = true;
+        }
+        $orderedFlights = new ScoreSorter($this->flights, $descending);
+        return $orderedFlights->getResult();
     }
 
     public function getFlights(): FlightStorage
@@ -33,28 +45,55 @@ class BuildDataReport
         return $this->flights;
     }
 
-    public function isDriverListFull(): bool
+    public function getOrderedArray(): array
     {
-        return $this->driverListFull;
+        return $this->orderedArray;
     }
 
-    public function getDriverId(): string
+    public function setReportDriversName(string $nameView): void
     {
-        return $this->driverId;
+        $this->reportDriversName = $nameView;
     }
 
-    public function readParameters()
+    public function getReportDriversName(): string
     {
-        $this->descending = false;
-        if (request()->query('order')=='desc'){
-            $this->descending = true;
+        return $this->reportDriversName;
+    }
+
+    public function setReportDriversData(array $dataView): void
+    {
+        $this->reportDriversData = $dataView;
+    }
+
+    public function getReportDriversData(): array
+    {
+        return $this->reportDriversData;
+    }
+
+    public function readParameters():void
+    {
+        $this->driverId = request()->query('driver_id');
+        $this->setReportDriversName('racingReport.drivers.index');
+        $this->setReportDriversData(['flights'=>$this->orderedArray]);
+
+        if ($this->driverId !== null){
+            $this->setReportDriversName('racingReport.drivers.showOne');
+            $flightArray = $this->renderOneDriver($this->driverId);
+            $this->setReportDriversData($flightArray);
         }
-        $driverId = request()->query('driver_id');
-        $this->driverListFull = true;
-        if ($driverId !== null){
-            $this->driverListFull = false;
-            $this->driverId = $driverId;
-        }
+    }
+
+    private function renderOneDriver(string $driverId): array
+    {
+        $driverInfo = $this->getFlights()->find($driverId);
+        return [
+            'position'=> $driverInfo->getPossition(),
+            'name'=> $driverInfo->getDriverName(),
+            'team'=> $driverInfo->getTeam(),
+            'start'=> (string) $driverInfo->getStart()->format('i:s.v'),
+            'finish'=> (string) $driverInfo->getFinish()->format('i:s.v'),
+            'result' => $driverInfo->setDuration($driverInfo->getStart(), $driverInfo->getFinish()),
+        ];
     }
 
     public function readDrivers(string $dataFile): void
@@ -78,15 +117,15 @@ class BuildDataReport
         foreach ($rows as $data) {
             $index = substr($data, 0, 3);
             $timeString = substr($data, 3, 10) . ' ' . substr($data, 14, 12);
-            if ($typeLog == 'start') {
-                $start = new \DateTimeImmutable($timeString);
+            if ($typeLog === 'start') {
+                $start = new DateTimeImmutable($timeString);
                 $this->flights->addFlightStart($index, $start);
             }
-            if ($typeLog == 'end') {
-                if (trim($timeString) == '') {
+            if ($typeLog === 'end') {
+                if (trim($timeString) === '') {
                     $this->flights->dropFlight($index);
                 } else {
-                    $finish = new \DateTimeImmutable($timeString);
+                    $finish = new DateTimeImmutable($timeString);
                     $this->flights->addFlightFinish($index, $finish);
                 }
             }
@@ -97,16 +136,16 @@ class BuildDataReport
     {
         $fileName = '';
         $result = true;
-        if (!file_exists($logsLocation . '/start.log')) {
-            $fileName = 'start.log';
+        if (!file_exists($logsLocation . '/' . env('START_LOG'))) {
+            $fileName = env('START_LOG');
             $result = false;
         }
-        if (!file_exists($logsLocation . '/end.log')) {
-            $fileName = 'end.log';
+        if (!file_exists($logsLocation . '/' . env('FINISH_LOG'))) {
+            $fileName = env('FINISH_LOG');
             $result = false;
         }
-        if (!file_exists($logsLocation . '/abbreviations.txt')) {
-            $fileName = 'abbreviations.txt';
+        if (!file_exists($logsLocation . '/' . env('ABBREVIATION'))) {
+            $fileName = env('ABBREVIATION');
             $result = false;
         }
         if (!$result) {

@@ -50,11 +50,7 @@ class Flight
     {
         return $this->start;
     }
-    public function setStart(\DateTimeImmutable $start): Flight
-    {
-        $this->start = $start;
-        return $this;
-    }
+
     public function getFinish(): \DateTimeImmutable
     {
         return $this->finish;
@@ -66,7 +62,7 @@ class Flight
         return $this;
     }
 
-    public function getDuration(\DateTimeImmutable $start, \DateTimeImmutable $finish): string
+    public function setDuration(\DateTimeImmutable $start, \DateTimeImmutable $finish): string
     {
         $diff1 = $start->diff($finish)->format('%I:%S');
         $diff2 = str_pad(strval(intval($start->diff($finish)->format('%f')) / 1000), 3, '0', STR_PAD_LEFT);
