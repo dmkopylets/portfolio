@@ -16,7 +16,7 @@
                     <p style="font-size: 10pt; margin-bottom: 0;">Підприємство</p>
                 </td>
                 <td width="15.5cm" style="border-bottom: 0.5px solid #000;">
-                    <p style="font-size: 10pt; text-align: left; margin-bottom:0; padding:2px"><i>АТ &quot;ПОЛТАВАОБЛЕНЕРГО&quot;</i></p>
+                    <p style="font-size: 10pt; text-align: left; margin-bottom:0; padding:2px"><i>АТ &quot;ANYОБЛЕНЕРГО&quot;</i></p>
                 </td>
             </tr>
             <tr>

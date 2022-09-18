@@ -10,7 +10,7 @@
 
         @include('naryads.edit.f1HidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
               <div class="text-lg-left"  >
-                   <div class="row"><div class="col-md-3"><p class="lead" style="font-size: 12pt;">підприємство</p></div><div class="col-md-6"><h3 style="font-size: 14pt;">АТ "ПОЛТАВАОБЛЕНЕРГО" {{'mode='.$mode}}</h3></div></div>
+                   <div class="row"><div class="col-md-3"><p class="lead" style="font-size: 12pt;">підприємство</p></div><div class="col-md-6"><h3 style="font-size: 14pt;">АТ "ANYОБЛЕНЕРГО" {{'mode='.$mode}}</h3></div></div>
                    <div class="row"><div class="col-md-3"><p class="lead" style="font-size: 12pt;">підрозділ</p>   </div><div class="col-md-6">
                             <div class="input-group flex-nowrap">
                                 <div class="input-group-prepend">

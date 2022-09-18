@@ -1,4 +1,4 @@
-FROM webdevops/php-apache-dev:8.0-alpine AS e-journal-php74ApacheAlpine
+FROM webdevops/php-apache-dev:8.0-alpine AS e-journal-php8_apache-Alpine
 
 # Необов'язкова рядок із зазначенням автора образу
 MAINTAINER uncle.dimaz <uncle.dima.k@gmail.com>
