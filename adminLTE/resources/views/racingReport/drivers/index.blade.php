@@ -19,13 +19,13 @@
             <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
                 <table id="report">
                     <tbody>
-                    @foreach ($flights as $key => $flight)
+                    @foreach ($reportDriversData as $key => $driver)
                         <tr>
-                            <td>{{ $flight['place']}}</td>
-                            <td>{{$flight['driver']}}</td>
-                            <td><a href = "{{asset('report/drivers')}}/?driver_id={{$flight['key']}}" class="nav-link">{{$flight['key']}}</a></td>
+                            <td>{{ $driver['place']}}</td>
+                            <td>{{$driver['driver']}}</td>
+                            <td><a href = "{{asset('report/drivers')}}/?driver_id={{$driver['key']}}" class="nav-link">{{$driver['key']}}</a></td>
                         </tr>
-                        @if ($flight['lined'])
+                        @if ($driver['lined'])
                             <tr>
                                 <td>--</td><td>-----------------------------</td><td>---</td>
                             </tr>

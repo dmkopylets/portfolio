@@ -6,12 +6,19 @@ namespace App\Http\Controllers\Racing;
 
 use App\Http\Controllers\Controller;
 use App\RacingData\BuildDataReport;
+use App\RacingData\DriverReportOptionReader;
+use App\Services\OrderingDescReader;
+use App\Services\SourceInitService;
 
 class DriversRenderController extends Controller
 {
-    public function index()
+    public function index(SourceInitService $initedSources)
     {
-        $report = new BuildDataReport();
-        return view($report->getReportDriversName(), $report->getReportDriversData());
+        $orderingDesc = new OrderingDescReader();
+        $report = new BuildDataReport($initedSources->getDriversList(), $initedSources->getFlightsList(), $orderingDesc->getIsDesc());
+        $orderedFlightsArray = $report->getOrderedArray();
+        $driversReport = new DriverReportOptionReader($orderedFlightsArray);
+        $reportDriversData = $driversReport->getData();
+        return view($reportDriversData['reportName'], ['reportDriversData'=>$reportDriversData['reportData']]);
     }
 }

@@ -11,6 +11,11 @@ class DriverStorage
 {
     protected SplObjectStorage $drivers;
 
+    public function __construct()
+    {
+        $this->drivers = new SplObjectStorage();
+    }
+
     public function addDriver(Driver $driver): void
     {
         $this->drivers->attach($driver);
@@ -27,10 +32,5 @@ class DriverStorage
             $this->drivers->next();
         }
         throw new DriverNotFoundException(sprintf('Driver with abbreviation %d not found.', $abbreviation));
-    }
-
-    public function __construct()
-    {
-        $this->drivers = new SplObjectStorage();
     }
 }

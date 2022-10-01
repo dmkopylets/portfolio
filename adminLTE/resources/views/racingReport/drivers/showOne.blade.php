@@ -17,13 +17,12 @@
     <section class="content">
         <div class="container-fluid">
             <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-                <!--<p>position: </p> -->
-                <p>position: {{$position}}</p>
-                <p>name: {{$name}}</p>
-                <p>team: {{$team}}</p>
-                <p>start: {{$start}}</p>
-                <p>finish: {{$finish}}</p>
-                <p>result: {{$result}}</p>
+                <p>position: {{$reportDriversData['place']}}</p>
+                <p>name: {{$reportDriversData['driver']}}</p>
+                <p>team: {{$reportDriversData['team']}}</p>
+                <p>start: {{$reportDriversData['start']}}</p>
+                <p>finish: {{$reportDriversData['finish']}}</p>
+                <p>result: {{$reportDriversData['duration']}}</p>
             </div>
         </div><!-- /.container-fluid -->
     </section>

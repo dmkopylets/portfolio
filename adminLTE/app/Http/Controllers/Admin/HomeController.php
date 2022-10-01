@@ -3,12 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Services\SourceInitService;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(SourceInitService $sources)
     {
-        return view('admin.home.index');
+        if (!$this ->sourceFilesExist($sources)) {
+            return view('racingReport.errorSourceFiles', ['files'=>$this->absentsFilesList($sources)]);
+        } else {
+            return view('admin.home.index');
+        }
+    }
+
+    private function sourceFilesExist(SourceInitService $sources): bool
+    {
+        return $sources->isExist();
+    }
+
+    private function absentsFilesList(SourceInitService $sources): array
+    {
+        return $sources->getAbsentsList();
     }
 }

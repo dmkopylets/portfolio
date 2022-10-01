@@ -4,13 +4,13 @@ namespace App\Http\Controllers\eNaryad;
 
 use App\Models\eNaryad\Dicts\Adjuster;
 use Illuminate\Http\Request;
-//use App\Http\Controllers\eNaryad\BaseController;
+//use App\Http\Controllers\Ejournal\BaseController;
 use Session;
-use Redirect; 
+use Redirect;
 
 class DictAdjustersController extends BaseController
 {
-    /** 
+    /**
      * Display a listing of the resource.
      *     !!! INDEX
      * @return \Illuminate\Http\Response
@@ -26,7 +26,7 @@ class DictAdjustersController extends BaseController
             where('group','like',$searchMygroup)->
             where('body','like',$searchMybody)->
             orderBy('body')->get();
-        return view('dicts.index', 
+        return view('dicts.index',
              ['branch_name'=>$branch->body,
               'records'=>$records,
               'zagolovok'=>'допускачів',
@@ -38,7 +38,7 @@ class DictAdjustersController extends BaseController
     }
 
 
-    /** 
+    /**
      * Show the form for creating a new resource.
      *   !!! CREATE
      * @return \Illuminate\Http\Response
@@ -64,10 +64,10 @@ class DictAdjustersController extends BaseController
         $record->save();
         // redirect
         Session::flash('message', 'Запис успішно додано допускача '.$record->body);
-        return Redirect::to('dicts/Adjusters');  
+        return Redirect::to('dicts/Adjusters');
     }
 
-    
+
     /**
      * Show the form for editing the specified resource.
      * !! EDIT
@@ -76,7 +76,7 @@ class DictAdjustersController extends BaseController
      */
     public function edit($id)
     {
-        $record = Adjuster::find($id);    
+        $record = Adjuster::find($id);
         return view('dicts.edit', ['record'=>$record,'zagolovok'=>'допускачів','dictName'=>'Adjusters','modelName'=>'App\Models\eNaryad\Dicts\Adjuster','add_th'=>array('допускач','група'),'add_td'=>array('body','group')]);
     }
 
@@ -100,9 +100,9 @@ class DictAdjustersController extends BaseController
     return Redirect::to('dicts/Adjusters');
     }
 
-   
 
-    
+
+
 
     /**
      * !!! Remove the specified resource from storage.

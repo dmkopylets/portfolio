@@ -4,9 +4,9 @@ namespace App\Http\Controllers\eNaryad;
 
 use App\Models\eNaryad\Dicts\Warden;
 use Illuminate\Http\Request;
-//use App\Http\Controllers\eNaryad\BaseController;
+//use App\Http\Controllers\Ejournal\BaseController;
 use Session;
-use Redirect; 
+use Redirect;
 
 class DictWardensController extends BaseController
 {
@@ -63,15 +63,15 @@ class DictWardensController extends BaseController
     {
         $record = new Warden;
         $record->branch_id = \App\Models\eNaryad\Dicts\Branch::dataFromLoginPrefix()->id;
-        
+
         //$record->id = Warden::find($id)->increment('read_count');
         $record->id = Warden::max('id')+1;
-        $record->body = $request->input('body'); 
+        $record->body = $request->input('body');
         $record->group = $request->input('group');
         $record->save();
         // redirect
         Session::flash('message', 'Запис успішно додано керівника : <i>'.$record->body.'</i>');
-        return Redirect::to('dicts/Wardens');  
+        return Redirect::to('dicts/Wardens');
     }
 
      /**
@@ -82,7 +82,7 @@ class DictWardensController extends BaseController
      */
     public function edit($id)
     {
-        $record = Warden::find($id);    
+        $record = Warden::find($id);
         return view('dicts.edit', ['record'=>$record,'zagolovok'=>'керівників','dictName'=>'Wardens','modelName'=>'App\Models\eNaryad\Dicts\Warden','add_th'=>array('П.І.Б.','група'),'add_td'=>array('body','group')]);
     }
 

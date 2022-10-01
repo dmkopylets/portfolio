@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\RacingData;
 
-use App\Exceptions\DriverNotFoundException;
 use App\Exceptions\FlightNotFoundException;
 use SplObjectStorage;
-
-use function PHPUnit\Framework\isNan;
 
 class FlightStorage
 {
@@ -55,24 +52,13 @@ class FlightStorage
         $this->flights->rewind();
         while ($this->flights->valid()) {
             $flight = $this->flights->current();
-            if ($flight->getDriverId() === $abbreviation) {
-                return $flight;
+            if (trim($abbreviation) !== '') {
+                if ($flight->getDriverId() === $abbreviation) {
+                    return $flight;
+                }
             }
             $this->flights->next();
         }
-        throw new FlightNotFoundException(sprintf('Flight with driver abbreviation %d not found.', $abbreviation));
-    }
-
-    public function findByName(string $name): Flight
-    {
-        $this->flights->rewind();
-        while ($this->flights->valid()) {
-            $flight = $this->flights->current();
-            if ($flight->getDriverName() == $name) {
-                return $flight;
-            }
-            $this->flights->next();
-        }
-        throw new DriverNotFoundException(sprintf('Flight with driver name %d not found.', $name));
+        throw new FlightNotFoundException(sprintf('Flight with driver abbreviation "'.$abbreviation.'" not found.', $abbreviation));
     }
 }
