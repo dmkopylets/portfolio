@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Ejournal;
 
-use App\Models\Ejournal\Dicts\Branch;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Ejournal\BaseController;
 use Session;

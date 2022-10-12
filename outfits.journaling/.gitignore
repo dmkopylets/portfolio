@@ -1,0 +1,15 @@
+/node_modules
+/storage/*.key
+/storage/logs/laravel.log
+/storage/debugbar/*
+/vendor
+/logs/access.log
+/logs/error.log
+.env
+.env.backup
+.phpunit.result.cache
+.php-cs-fixer.cache
+auth.json
+npm-debug.log
+yarn-error.log
+/.idea
