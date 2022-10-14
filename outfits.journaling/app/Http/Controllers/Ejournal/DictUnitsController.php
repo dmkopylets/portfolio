@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
-use App\Models\eNaryad\Dicts\Unit;
+use App\Models\Ejournal\Dicts\Unit;
 use Illuminate\Http\Request;
-use App\Http\Controllers\eNaryad\BaseController;
+use App\Http\Controllers\Ejournal\BaseController;
 use Session;
 use Redirect;
 
@@ -30,7 +30,7 @@ class DictUnitsController extends BaseController
             ['branch_name'=>$this->getBranch()->body,
              'records'=>$records,
              'zagolovok'=>'дільниць філії',
-             'modelName'=>'App\Models\eNaryad\Dicts\Unit',
+             'modelName'=>'App\Models\Ejournal\Dicts\Unit',
              'dictName'=>'Units',
              'add_th'=>array('дільниця'),          // 'add_th'=>array('філія','дільниця'),      // для адмін режиму (всі філії)
              'add_td'=>array('body'),              // 'add_td'=>array('branch_name','body')]);

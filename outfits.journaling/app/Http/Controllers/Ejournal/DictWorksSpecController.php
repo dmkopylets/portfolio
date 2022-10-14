@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
-use App\Models\eNaryad\Dicts\Works_Spec;
+use App\Models\Ejournal\Dicts\Works_Spec;
 use Illuminate\Http\Request;
 
 class DictWorksSpecController extends BaseController
@@ -41,7 +41,7 @@ class DictWorksSpecController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\eNaryad\Dicts\Works_Spec  $works_spec
+     * @param  \App\Models\Ejournal\Dicts\Works_Spec  $works_spec
      * @return \Illuminate\Http\Response
      */
     public function show(Works_spec $works_spec)
@@ -52,7 +52,7 @@ class DictWorksSpecController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\eNaryad\Dicts\Works_Spec  $works_spec
+     * @param  \App\Models\Ejournal\Dicts\Works_Spec  $works_spec
      * @return \Illuminate\Http\Response
      */
     public function edit(Works_spec $works_spec)
@@ -64,7 +64,7 @@ class DictWorksSpecController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\eNaryad\Dicts\Works_Spec  $works_spec
+     * @param  \App\Models\Ejournal\Dicts\Works_Spec  $works_spec
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Works_spec $works_spec)
@@ -75,7 +75,7 @@ class DictWorksSpecController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\eNaryad\Dicts\Works_Spec  $works_spec
+     * @param  \App\Models\Ejournal\Dicts\Works_Spec  $works_spec
      * @return \Illuminate\Http\Response
      */
     public function destroy(Works_spec $works_spec)

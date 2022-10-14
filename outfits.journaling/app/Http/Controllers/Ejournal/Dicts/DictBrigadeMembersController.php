@@ -1,35 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Models\eNaryad\Dicts\Brigade_Member;
+use App\Http\Controllers\Ejournal\Dicts\BaseDictController;
+use App\Models\Ejournal\Dicts\BrigadeMember;
 use Illuminate\Http\Request;
-use App\Http\Controllers\eNaryad\BaseController;
-use Session;
-use Redirect; 
 
-class DictBrigadeMembersController extends BaseController
+use Session;
+use Redirect;
+
+class DictBrigadeMembersController extends BaseDictController
 {
     /**
      * Display a listing of the resource.
-     * !!! INDEX
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $branch_id = $this->getBranch()->id;
+        $branch_id =  $this->getBranch()->id;
         $searchMybody  =  '%'.$request->input('searchMybody').'%';
         $searchMygroup =  '%'.$request->input('searchMygroup').'%';
-        $records = Brigade_Member::
+        $records = BrigadeMember::
             where('branch_id',$branch_id)->
             where('body','like',$searchMybody)->
             where('group','like',$searchMygroup)->
             orderBy('body')->get();
-        return view('dicts.index', 
-           ['branch_name'=>$this->getBranchName(),
+
+
+        return view('dicts.index',
+           ['branch_name'=>$this->getBranch()->name,
             'records'=>$records,
             'zagolovok'=>'бригада',
-            'modelName'=>'App\Models\eNaryad\Dicts\Brigade_Member',
+            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeMember',
             'dictName'=>'BrigadeMembers',
             'add_th'=>array('П.І.Б.','група'),
             'add_td'=>array('body','group'),
@@ -43,9 +45,9 @@ class DictBrigadeMembersController extends BaseController
      */
     public function create()
     {
-        return view('dicts.create', 
+        return view('dicts.create',
            ['zagolovok'=>'члені бригади',
-            'modelName'=>'App\Models\eNaryad\Dicts\Brigade_Member',
+            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeMember',
             'dictName'=>'BrigadeMembers',
             'add_th'=>array('П.І.Б.','група'),
             'add_td'=>array('body','group')]);
@@ -59,31 +61,31 @@ class DictBrigadeMembersController extends BaseController
      */
     public function store(Request $request)
     {
-        $record = new Brigade_Member;
+        $record = new BrigadeMember;
         $record->branch_id = $this->getBranchId();
-        $record->id = Brigade_Member::max('id')+1;
+        $record->id = BrigadeMember::max('id')+1;
         $record->body = $request->input('body');
         $record->group = $request->input('group');
         $record->save();
         // redirect
         Session::flash('message', 'Запис успішно додано у список можливих членів бригади '.$record->body);
-        return Redirect::to('dicts/BrigadeMembers');  
+        return Redirect::to('dicts/BrigadeMembers');
     }
 
      /**
      * Show the form for editing the specified resource.
-     * 
-     * @param  \App\Models\Brigade_Member  $brigade_member
+     *
+     * @param  \App\Models\BrigadeMember  $BrigadeMember
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $record = Brigade_Member::find($id);    
-        return view('dicts.edit', 
+        $record = BrigadeMember::find($id);
+        return view('dicts.edit',
            ['record'=>$record,
             'zagolovok'=>'машиністів-стропальщиків',
             'dictName'=>'BrigadeMembers',
-            'modelName'=>'App\Models\eNaryad\Dicts\Brigade_Member',
+            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeMember',
             'add_th'=>array('П.І.Б.','група'),
             'add_td'=>array('body','group')]);
     }
@@ -92,12 +94,12 @@ class DictBrigadeMembersController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Brigade_Member  $brigade_member
+     * @param  \App\Models\BrigadeMember  $BrigadeMember
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $record_id)
     {
-    $record = Brigade_Member::find($record_id);
+    $record = BrigadeMember::find($record_id);
     $record->body           = $request->input('body');
     $record->group          = $request->input('group');
     $record->save();
@@ -110,12 +112,12 @@ class DictBrigadeMembersController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Brigade_Member  $brigade_member
+     * @param  \App\Models\BrigadeMember  $BrigadeMember
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $record = Brigade_Member::find($id);
+        $record = BrigadeMember::find($id);
         $msgtxt = $record->body;
         $record->delete();
 

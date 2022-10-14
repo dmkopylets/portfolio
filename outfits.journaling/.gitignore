@@ -1,5 +1,6 @@
 /node_modules
 /storage/*.key
+/storage/logs/*
 /storage/logs/laravel.log
 /storage/debugbar/*
 /vendor
@@ -13,3 +14,7 @@ auth.json
 npm-debug.log
 yarn-error.log
 /.idea
+/logs
+/run_psalm
+/psalm.xml
+/phpstan.neon.dist

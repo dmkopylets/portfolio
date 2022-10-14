@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
-use App\Models\eNaryad\Dicts\Warden;
+use App\Models\Ejournal\Dicts\Warden;
 use Illuminate\Http\Request;
 //use App\Http\Controllers\Ejournal\BaseController;
 use Session;
@@ -31,7 +31,7 @@ class DictWardensController extends BaseController
             'records'=>$records,
             'zagolovok'=>'керівників',
             'dictName'=>'Wardens',
-            'modelName'=>'App\Models\eNaryad\Dicts\Warden',
+            'modelName'=>'App\Models\Ejournal\Dicts\Warden',
             'add_th'=>array('керівник','група'),
             'add_td'=>array('body','group'),
             'th_width'=>array(305,70)
@@ -47,7 +47,7 @@ class DictWardensController extends BaseController
     {
         return view('dicts.create', [
             'zagolovok'=>'керівників',
-            'modelName'=>'App\Models\eNaryad\Dicts\Warden',
+            'modelName'=>'App\Models\Ejournal\Dicts\Warden',
             'dictName'=>'Wardens',
             'add_th'=>array('П.І.Б.','група'),
             'add_td'=>array('body','group')]);
@@ -62,7 +62,7 @@ class DictWardensController extends BaseController
     public function store(Request $request)
     {
         $record = new Warden;
-        $record->branch_id = \App\Models\eNaryad\Dicts\Branch::dataFromLoginPrefix()->id;
+        $record->branch_id = \App\Models\Ejournal\Dicts\Branch::dataFromLoginPrefix()->id;
 
         //$record->id = Warden::find($id)->increment('read_count');
         $record->id = Warden::max('id')+1;
@@ -77,20 +77,20 @@ class DictWardensController extends BaseController
      /**
      * Show the form for editing the specified resource.
      * !! EDIT
-     * @param  \App\Models\eNaryad\Dicts\Warden $warden
+     * @param  \App\Models\Ejournal\Dicts\Warden $warden
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $record = Warden::find($id);
-        return view('dicts.edit', ['record'=>$record,'zagolovok'=>'керівників','dictName'=>'Wardens','modelName'=>'App\Models\eNaryad\Dicts\Warden','add_th'=>array('П.І.Б.','група'),'add_td'=>array('body','group')]);
+        return view('dicts.edit', ['record'=>$record,'zagolovok'=>'керівників','dictName'=>'Wardens','modelName'=>'App\Models\Ejournal\Dicts\Warden','add_th'=>array('П.І.Б.','група'),'add_td'=>array('body','group')]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\eNaryad\Dicts\Warden  $warden
+     * @param  \App\Models\Ejournal\Dicts\Warden  $warden
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $record_id)
@@ -108,7 +108,7 @@ class DictWardensController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\eNaryad\Dicts\Warden  $warden
+     * @param  \App\Models\Ejournal\Dicts\Warden  $warden
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

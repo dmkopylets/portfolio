@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
-use App\Models\eNaryad\Dicts\TypicalTask;
-use App\Models\eNaryad\Dicts\Works_Spec;
+use App\Models\Ejournal\Dicts\TypicalTask;
+use App\Models\Ejournal\Dicts\Works_Spec;
 use Illuminate\Http\Request;
 use Session;
 use Redirect; 
@@ -76,7 +76,7 @@ class DictTypicalTasksController extends BaseController
      /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\eNaryad\Dicts\TypicalTask  $typicaltask
+     * @param  \App\Models\Ejournal\Dicts\TypicalTask  $typicaltask
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -99,7 +99,7 @@ class DictTypicalTasksController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\eNaryad\Dicts\TypicalTask  $typicaltask
+     * @param  \App\Models\Ejournal\Dicts\TypicalTask  $typicaltask
      * @return \Illuminate\Http\Response
      */
     public function update($record_id, Request $request)
@@ -117,7 +117,7 @@ class DictTypicalTasksController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\eNaryad\Dicts\TypicalTask  $typicaltask
+     * @param  \App\Models\Ejournal\Dicts\TypicalTask  $typicaltask
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

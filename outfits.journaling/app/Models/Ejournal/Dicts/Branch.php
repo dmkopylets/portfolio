@@ -29,17 +29,11 @@ class Branch extends Model
 //      $companyName = $user->ldap->getFirstAttribute('company');
 
 //      $userlogin   = $user->name;
-        $userlogin = 'kl_dit01';
+        $userlogin = '10_DemoUser';
 
-// !!!!!
         $companyName = 'АТ ANYОБЛЕНЕРГО';
         if ($companyName == 'АТ ANYОБЛЕНЕРГО') {
             $branch = Branch::whereId(0)->get()->first();
-            /*  элегантный способ превратить это:
-                $users = User::where('approved', 1)->get();
-                В это:
-                $users = User::whereApproved(1)->get();
-            */
         } else {
             $branch = Branch::where('prefix', 'like', '%' . substr($userlogin, 0, 3) . '%')->get()->first();
         }

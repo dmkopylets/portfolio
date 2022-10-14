@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
-use App\Models\eNaryad\Dicts\Branch;
-use App\Models\eNaryad\Dicts\Substation;
+use App\Models\Ejournal\Dicts\Branch;
+use App\Models\Ejournal\Dicts\Substation;
 use Illuminate\Http\Request;
-use App\Http\Controllers\eNaryad\BaseController;
+use App\Http\Controllers\Ejournal\BaseController;
 use Session;
 use Redirect; 
 
@@ -97,7 +97,7 @@ class DictSubstationsController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\eNaryad\Dicts\Substantion  $substation
+     * @param  \App\Models\Ejournal\Dicts\Substantion  $substation
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $record_id)
@@ -121,7 +121,7 @@ class DictSubstationsController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\eNaryad\Dicts\Substantion  $substation
+     * @param  \App\Models\Ejournal\Dicts\Substantion  $substation
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

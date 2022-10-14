@@ -1,43 +1,59 @@
 <?php
 
 namespace App\Http\Controllers\Ejournal;
-//use Illuminate\Support\Facades\Auth; //  !!!!!! used on full version
 use App\Http\Controllers\Controller;
-use Exception;
+use App\Models\Ejournal\Dicts\Branch;
+use App\Models\Ejournal\Dicts\Substation;
+
 
 abstract class BaseController extends Controller
 {
     private string $displayName;
-    private string  $userlogin;
+    private string  $userLogin;
     public $branch, $mode;
     public $preparations_rs = array();
     public $measures_rs = array();
     public $naryadRecord = array();
 
-    public function getUserLogin()
+    /**
+     * @return string
+     *    on full version
+     *    $this->userLogin   = Auth::user()->name;
+     */
+    public function getUserLogin(): string
     {
-//  !!!!!! used on full version
-//    $this->userlogin   = Auth::user()->name;    //  -логін
-        $this->userlogin = 'kl_demoUser';
-        return $this->userlogin;
+        $this->userLogin = '10_demoUser';
+        return $this->userLogin;
     }
 
-    public function getDisplayName()  // ПІБ зареєстрованого юзера
+    /**
+     * @return string
+     * ПІБ зареєстрованого юзера
+     * on full version
+     * $this->displayName = Auth::user()->ldap->getFirstAttribute('displayName');
+     */
+    public function getDisplayName(): string
     {
-// !!!!!!!  used on full version
-//    $this->displayName = Auth::user()->ldap->getFirstAttribute('displayName');
         $this->displayName = 'DemoUser';
         return $this->displayName;
     }
 
-    public function getBranch()
+    /**
+     * @return mixed
+     */
+    protected function getBranch()
     {
-        return \App\Models\Ejournal\Dicts\Branch::dataFromLoginPrefix();
+        return Branch::dataFromLoginPrefix();
     }
 
+    /**
+     * @param $branch_id
+     * @param $substation_type_id
+     * @return mixed
+     */
     public function getSubstationsList($branch_id, $substation_type_id)
     {
-        return \App\Models\Ejournal\Dicts\Substation::
+        return Substation::
         select('id', 'body')
             ->where('branch_id', $branch_id)
             ->where('type_id', $substation_type_id)

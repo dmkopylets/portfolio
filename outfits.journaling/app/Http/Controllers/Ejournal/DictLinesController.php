@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
-use App\Models\eNaryad\Dicts\Line;
-use App\Http\Controllers\eNaryad\BaseController;
-use App\Models\eNaryad\Dicts\Substation;
+use App\Models\Ejournal\Dicts\Line;
+use App\Http\Controllers\Ejournal\BaseController;
+use App\Models\Ejournal\Dicts\Substation;
 use Illuminate\Http\Request;
 
 class DictLinesController extends BaseController
@@ -96,7 +96,7 @@ class DictLinesController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\eNaryad\Dicts\Line $line
+     * @param  \App\Models\Ejournal\Dicts\Line $line
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -114,7 +114,7 @@ class DictLinesController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\eNaryad\Dicts\Line  $line
+     * @param  \App\Models\Ejournal\Dicts\Line  $line
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $record_id)
@@ -140,7 +140,7 @@ class DictLinesController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\eNaryad\Dicts\Line  $line
+     * @param  \App\Models\Ejournal\Dicts\Line  $line
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

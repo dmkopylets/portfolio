@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Livewire;
 use Livewire\Component;
-use App\Models\eNaryad\Dicts\TypicalTask;
-use App\Models\eNaryad\Dicts\Substation;
-use App\Models\eNaryad\Dicts\Line;
+use App\Models\Ejournal\Dicts\TypicalTask;
+use App\Models\Ejournal\Dicts\Substation;
+use App\Models\Ejournal\Dicts\Line;
 
 class DirectionTask extends Component
 {

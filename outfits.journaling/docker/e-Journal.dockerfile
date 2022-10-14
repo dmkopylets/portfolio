@@ -1,18 +1,10 @@
 FROM webdevops/php-apache-dev:8.0-alpine AS e-journal-php8_apache-Alpine
 
-# Необов'язкова рядок із зазначенням автора образу
-MAINTAINER uncle.dimaz <uncle.dima.k@gmail.com>
-LABEL mainterner="uncle.dimaz <uncle.dima.k@gmail.com>"
-LABEL description="Alpine based image with apache2 and php7.4"
-
 # PHP_INI_DIR to be symmetrical with official php docker image
 ENV PHP_INI_DIR /usr/local/etc/php
 ENV TZ "Europe/Kiev"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ENV APACHE_LOG_DIR /var/www/logs
-#ENV APACHE_LOCK_DIR /var/lock/apache2
-#ENV APACHE_PID_FILE /var/run/apache2.pid
-
 ENV APPLICATION_USER=application APPLICATION_GROUP=application APPLICATION_PATH=/public
 ENV APACHE_RUN_USER=application APACHE_RUN_GROUP=application
 

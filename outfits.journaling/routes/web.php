@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Artisan;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-$branchname='';
-$displayName='';
 //*************************************************************************************************************
 // це буде потрібно для auth-ентифікації через AD
 // Route::get('/', [App\Http\Controllers\Ejournal\EjournalController::class,'welcome'])->middleware(['auth']);
@@ -45,7 +42,7 @@ Route::resource('dicts/Branches', App\Http\Controllers\Ejournal\DictBranchesCont
 Route::resource('dicts/Units', App\Http\Controllers\Ejournal\DictUnitsController::class)->only(['index','edit','create','store','update']);
 Route::resource('dicts/Wardens', App\Http\Controllers\Ejournal\DictWardensController::class)->only(['index','edit','create','store','update']);
 Route::resource('dicts/Adjusters', App\Http\Controllers\Ejournal\DictAdjustersController::class)->only(['index','edit','create','store','update']);
-Route::resource('dicts/BrigadeMembers', App\Http\Controllers\Ejournal\DictBrigadeMembersController::class)->only(['index','edit','create','store','update']);
+Route::resource('dicts/BrigadeMembers', App\Http\Controllers\Ejournal\Dicts\DictBrigadeMembersController::class)->only(['index','edit','create','store','update']);
 Route::resource('dicts/BrigadeEngineers', App\Http\Controllers\Ejournal\DictBrigadeEngineersController::class)->only(['index','edit','create','store','update']);
 Route::resource('dicts/Substations', App\Http\Controllers\Ejournal\DictSubstationsController::class)->only(['index','edit','create','store','update',]);
 Route::resource('dicts/Lines', App\Http\Controllers\Ejournal\DictLinesController::class)->only(['index','edit','create','store','update']);

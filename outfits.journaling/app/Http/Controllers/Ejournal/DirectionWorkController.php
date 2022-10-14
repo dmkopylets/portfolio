@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
 use Livewire\Component;
-use App\Models\eNaryad\Naryad;
-use App\Models\eNaryad\Dicts\Direction;
-use App\Models\eNaryad\Dicts\Substation;
+use App\Models\Ejournal\Naryad;
+use App\Models\Ejournal\Dicts\Direction;
+use App\Models\Ejournal\Dicts\Substation;
 
 class DirectionWorkController extends Component
 {

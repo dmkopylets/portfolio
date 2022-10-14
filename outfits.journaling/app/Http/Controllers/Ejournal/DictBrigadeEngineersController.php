@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
-use App\Models\eNaryad\Dicts\Brigade_Engineer;
+use App\Models\Ejournal\Dicts\BrigadeEngineer;
 use Illuminate\Http\Request;
-use App\Http\Controllers\eNaryad\BaseController;
+use App\Http\Controllers\Ejournal\BaseController;
 use Session;
 use Redirect; 
 
@@ -22,7 +22,7 @@ class DictBrigadeEngineersController extends BaseController
         $searchMygroup =  '%'.$request->input('searchMygroup').'%';
         $searchMyspecialization =  '%'.$request->input('searchMyspecialization').'%';
 
-        $records = Brigade_Engineer::
+        $records = BrigadeEngineer::
            where('branch_id',$branch_id)->
            where('body','like',$searchMybody)->
            where('group','like',$searchMygroup)->
@@ -32,7 +32,7 @@ class DictBrigadeEngineersController extends BaseController
            ['branch_name'=>$this->getBranchName(),
             'records'=>$records,
             'zagolovok'=>'механіки-стропальщики',
-            'modelName'=>'App\Models\eNaryad\Dicts\Brigade_Engineer',
+            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeEngineer',
             'dictName'=>'BrigadeEngineers',
             'add_th'=>array('спеціалізація','П.І.Б.','група'),
             'add_td'=>array('specialization','body','group'),
@@ -49,7 +49,7 @@ class DictBrigadeEngineersController extends BaseController
     {
         return view('dicts.create', 
            ['zagolovok'=>'машиністів-стропальщиків',
-            'modelName'=>'App\Models\eNaryad\Dicts\Brigade_Engineer',
+            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeEngineer',
             'dictName'=>'BrigadeEngineers',
             'add_th'=>array('спеціалізація','П.І.Б.','група'),
             'add_td'=>array('specialization','body','group')]);
@@ -63,9 +63,9 @@ class DictBrigadeEngineersController extends BaseController
      */
     public function store(Request $request)
     {
-        $record = new Brigade_Engineer;
+        $record = new BrigadeEngineer;
         $record->branch_id = $this->getBranchId();
-        $record->id = Brigade_Engineer::max('id')+1;
+        $record->id = BrigadeEngineer::max('id')+1;
         $record->specialization = $request->input('specialization');
         $record->body = $request->input('body');
         $record->group = $request->input('group');
@@ -80,17 +80,17 @@ class DictBrigadeEngineersController extends BaseController
     /**
      * Show the form for editing the specified resource.
      * !! EDIT
-     * @param  \App\Models\eNaryad\Dicts\Brigade_Engineer  $brigade_engineer
+     * @param  \App\Models\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $record = Brigade_Engineer::find($id);    
+        $record = BrigadeEngineer::find($id);    
         return view('dicts.edit', 
            ['record'=>$record,
             'zagolovok'=>'машиністів-стропальщиків',
             'dictName'=>'BrigadeEngineers',
-            'modelName'=>'App\Models\eNaryad\Dicts\Brigade_Engineer',
+            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeEngineer',
             'add_th'=>array('спеціалізація','П.І.Б.','група'),
             'add_td'=>array('specialization','body','group')]);
     }
@@ -99,13 +99,13 @@ class DictBrigadeEngineersController extends BaseController
      * !! Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\eNaryad\Dicts\Brigade_Engineer  $brigade_engineer
+     * @param  \App\Models\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
      * @return \Illuminate\Http\Response
-     * originalstring -  public function update(Request $request, Brigade_Engineer $brigade_engineer)
+     * originalstring -  public function update(Request $request, BrigadeEngineer $BrigadeEngineer)
      */
     public function update(Request $request, $record_id)
     {
-    $record = Brigade_Engineer::find($record_id);
+    $record = BrigadeEngineer::find($record_id);
     $record->specialization = $request->input('specialization');
     $record->body           = $request->input('body');
     $record->group          = $request->input('group');
@@ -119,12 +119,12 @@ class DictBrigadeEngineersController extends BaseController
     /**
      * !! Remove the specified resource from storage.
      *
-     * @param  \App\Models\eNaryad\Dicts\Brigade_Engineer  $brigade_engineer
+     * @param  \App\Models\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Brigade_Engineer $brigade_engineer)
+    public function destroy(BrigadeEngineer $BrigadeEngineer)
     {
-        $record = Brigade_Engineer::find($id);
+        $record = BrigadeEngineer::find($id);
         $msgtxt = $record->body;
         $record->delete();
 

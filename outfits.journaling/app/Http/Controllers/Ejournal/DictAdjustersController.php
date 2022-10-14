@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
-use App\Models\eNaryad\Dicts\Adjuster;
+use App\Models\Ejournal\Dicts\Adjuster;
 use Illuminate\Http\Request;
 //use App\Http\Controllers\Ejournal\BaseController;
 use Session;
@@ -31,7 +31,7 @@ class DictAdjustersController extends BaseController
               'records'=>$records,
               'zagolovok'=>'допускачів',
               'dictName'=>'Adjusters',
-              'modelName'=>'App\Models\eNaryad\Dicts\Adjuster',
+              'modelName'=>'App\Models\Ejournal\Dicts\Adjuster',
               'add_th'=>array('допускач','група'),
               'add_td'=>array('body','group'),
               'th_width'=>array(305,70)]);
@@ -45,7 +45,7 @@ class DictAdjustersController extends BaseController
      */
     public function create()
     {
-        return view('dicts.create', ['zagolovok'=>'допускачів','modelName'=>'App\Models\eNaryad\Dicts\Adjuster','dictName'=>'Adjusters','add_th'=>array('допускач','група'),'add_td'=>array('body','group')]);
+        return view('dicts.create', ['zagolovok'=>'допускачів','modelName'=>'App\Models\Ejournal\Dicts\Adjuster','dictName'=>'Adjusters','add_th'=>array('допускач','група'),'add_td'=>array('body','group')]);
     }
 
     /**
@@ -57,7 +57,7 @@ class DictAdjustersController extends BaseController
     public function store(Request $request)
     {
         $record = new Adjuster;
-        $record->branch_id = \App\Models\eNaryad\Dicts\Branch::dataFromLoginPrefix()->id;
+        $record->branch_id = \App\Models\Ejournal\Dicts\Branch::dataFromLoginPrefix()->id;
         $record->id = Adjuster::max('id')+1;
         $record->body = $request->input('body');
         $record->group = $request->input('group');
@@ -77,7 +77,7 @@ class DictAdjustersController extends BaseController
     public function edit($id)
     {
         $record = Adjuster::find($id);
-        return view('dicts.edit', ['record'=>$record,'zagolovok'=>'допускачів','dictName'=>'Adjusters','modelName'=>'App\Models\eNaryad\Dicts\Adjuster','add_th'=>array('допускач','група'),'add_td'=>array('body','group')]);
+        return view('dicts.edit', ['record'=>$record,'zagolovok'=>'допускачів','dictName'=>'Adjusters','modelName'=>'App\Models\Ejournal\Dicts\Adjuster','add_th'=>array('допускач','група'),'add_td'=>array('body','group')]);
     }
 
     /**
