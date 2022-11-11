@@ -6,23 +6,20 @@ namespace App\RacingData;
 
 class DriverReportOptionReader
 {
-    private array $orderedDriversArray;
+    private DriversReport $driversReport;
 
-    public function __construct(array $orderedDriversArray)
+    public function __construct(array $orderedFlightsArray, ?string $driverId)
     {
-        $this->orderedDriversArray = $orderedDriversArray;
-    }
-    public function getData(): array
-    {
-        $driverId = request()->query('driver_id');
-        if ( $driverId !== null ) {
-            $oneDriverInfo = new SelectOneDriver($driverId, $this->orderedDriversArray);
-            $reportName = 'racingReport.drivers.showOne';
-            $reportData = $oneDriverInfo->getDriverFightInfo();
+        if ($driverId !== null) {
+            $oneDriverInfo = new SelectOneDriver($driverId, $orderedFlightsArray);
+            $this->driversReport = new DriversReport('racingReport.drivers.showOne', $oneDriverInfo->getDriverFlightInfo());
         } else {
-            $reportName = 'racingReport.drivers.index';
-            $reportData = $this->orderedDriversArray;
+            $this->driversReport = new DriversReport('racingReport.drivers.list', $orderedFlightsArray);
         }
-        return ['reportName'=>$reportName, 'reportData'=>$reportData];
+    }
+
+    public function getData(): DriversReport
+    {
+        return $this->driversReport;
     }
 }

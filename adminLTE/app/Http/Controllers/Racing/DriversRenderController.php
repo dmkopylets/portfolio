@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Racing;
 
-use App\Http\Controllers\Controller;
-use App\RacingData\BuildDataReport;
 use App\RacingData\DriverReportOptionReader;
-use App\Services\OrderingDescReader;
 use App\Services\SourceInitService;
 
-class DriversRenderController extends Controller
+class DriversRenderController extends ReportController
 {
     public function index(SourceInitService $initedSources)
     {
-        $orderingDesc = new OrderingDescReader();
-        $report = new BuildDataReport($initedSources->getDriversList(), $initedSources->getFlightsList(), $orderingDesc->getIsDesc());
-        $orderedFlightsArray = $report->getOrderedArray();
-        $driversReport = new DriverReportOptionReader($orderedFlightsArray);
-        $reportDriversData = $driversReport->getData();
-        return view($reportDriversData['reportName'], ['reportDriversData'=>$reportDriversData['reportData']]);
+        $driverId = $this->getDriverId();
+        $orderedFlightsArray = $this->getData($initedSources)->getOrderedArray();
+        $renderedReport = new DriverReportOptionReader($orderedFlightsArray, $driverId);
+        return view($renderedReport->getData()->getReportName(), ['reportDriversData' => $renderedReport->getData()->getReportData()]);
     }
 }

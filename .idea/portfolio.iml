@@ -2,12 +2,18 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/adminLTE/app" isTestSource="false" packagePrefix="App\" />
+      <sourceFolder url="file://$MODULE_DIR$/adminLTE/app" isTestSource="false" packagePrefix="App" />
       <sourceFolder url="file://$MODULE_DIR$/adminLTE/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/adminLTE/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/adminLTE/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/outfits.journaling/app" isTestSource="false" packagePrefix="App" />
+      <sourceFolder url="file://$MODULE_DIR$/outfits.journaling/tests" isTestSource="true" packagePrefix="Tests" />
+      <excludeFolder url="file://$MODULE_DIR$/outfits.journaling/bootstrap/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/outfits.journaling/storage" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/storage" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/bootstrap/cache" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

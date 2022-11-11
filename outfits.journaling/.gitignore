@@ -4,8 +4,6 @@
 /storage/logs/laravel.log
 /storage/debugbar/*
 /vendor
-/logs/access.log
-/logs/error.log
 .env
 .env.backup
 .phpunit.result.cache
@@ -14,7 +12,9 @@ auth.json
 npm-debug.log
 yarn-error.log
 /.idea
-/logs
+/docker/logs
+/docker/logs/access.log
+/docker/logs/error.log
 /run_psalm
 /psalm.xml
 /phpstan.neon.dist

@@ -7,15 +7,13 @@ namespace App\Http\Controllers\Racing;
 use App\Http\Controllers\Controller;
 use App\RacingData\BuildDataReport;
 use App\Services\SourceInitService;
-use App\Services\OrderingDescReader;
 
-class FlightsRenderController extends Controller
+class FlightsRenderController extends ReportController
 {
     public function index(SourceInitService $initedSources)
     {
-        $orderingDesc = new OrderingDescReader();
-        $report = new BuildDataReport($initedSources->getDriversList(), $initedSources->getFlightsList(), $orderingDesc->getIsDesc());
+        $report = new BuildDataReport($initedSources->getDriversList(), $initedSources->getFlightsList(), $this::orderingIsDesc());
         $orderedArray = $report->getOrderedArray();
-        return view('racingReport.flights.index', ['flights'=>$orderedArray]);
+        return view('racingReport.flights.index', ['flights' => $orderedArray]);
     }
 }

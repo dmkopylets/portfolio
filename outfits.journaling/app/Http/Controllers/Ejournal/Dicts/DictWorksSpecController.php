@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Ejournal;
+namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Models\Ejournal\Dicts\Works_Spec;
+use App\Http\Controllers\Ejournal\Dicts\BaseDictController;
+use App\Models\Ejournal\Dicts\WorksSpec;
 use Illuminate\Http\Request;
 
-class DictWorksSpecController extends BaseController
+class DictWorksSpecController extends BaseDictController
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class DictWorksSpecController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Ejournal\Dicts\Works_Spec  $works_spec
+     * @param  \App\Models\Ejournal\Dicts\WorksSpec  $WorksSpec
      * @return \Illuminate\Http\Response
      */
-    public function show(Works_spec $works_spec)
+    public function show(WorksSpec $WorksSpec)
     {
         //
     }
@@ -52,10 +53,10 @@ class DictWorksSpecController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Ejournal\Dicts\Works_Spec  $works_spec
+     * @param  \App\Models\Ejournal\Dicts\WorksSpec  $WorksSpec
      * @return \Illuminate\Http\Response
      */
-    public function edit(Works_spec $works_spec)
+    public function edit(WorksSpec $WorksSpec)
     {
         //
     }
@@ -64,10 +65,10 @@ class DictWorksSpecController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ejournal\Dicts\Works_Spec  $works_spec
+     * @param  \App\Models\Ejournal\Dicts\WorksSpec  $WorksSpec
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Works_spec $works_spec)
+    public function update(Request $request, WorksSpec $WorksSpec)
     {
         //
     }
@@ -75,14 +76,13 @@ class DictWorksSpecController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Ejournal\Dicts\Works_Spec  $works_spec
+     * @param  \App\Models\Ejournal\Dicts\WorksSpec  $WorksSpec
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Works_spec $works_spec)
+    public function destroy(WorksSpec $WorksSpec)
     {
         //
     }
 
 
-    workspecs_id
 }

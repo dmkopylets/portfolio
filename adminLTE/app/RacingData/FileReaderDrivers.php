@@ -6,16 +6,16 @@ namespace App\RacingData;
 
 class FileReaderDrivers
 {
-    private array $sources;
+    private FilesSourcesPropertiesDto $sources;
 
-    public function __construct(array $sources)
+    public function __construct(FilesSourcesPropertiesDto $sources)
     {
         $this->sources = $sources;
     }
 
     public function get(): DriverStorage
     {
-        $txtFile = file_get_contents(__DIR__ . '/../../' .  $this->sources['folderName'] . '/' . $this->sources['abbreviation']);
+        $txtFile = file_get_contents(base_path() . '/' . $this->sources->getFolderName() . '/' . $this->sources->getAbbreviation());
         $rows = explode("\n", $txtFile);
         $driversData = new DriverStorage();
         foreach ($rows as $data) {

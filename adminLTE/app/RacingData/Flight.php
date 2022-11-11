@@ -22,11 +22,6 @@ class Flight
         $this->start = $start;
     }
 
-    public function getPossition(): int
-    {
-        return $this->possition;
-    }
-
     public function setPossition(int $possition): void
     {
         $this->possition = $possition;

@@ -8,7 +8,7 @@ ENV APACHE_LOG_DIR /var/www/logs
 ENV APPLICATION_USER=application APPLICATION_GROUP=application APPLICATION_PATH=/public
 ENV APACHE_RUN_USER=application APACHE_RUN_GROUP=application
 
-COPY ./docker/conf/ /opt/docker/
+COPY ./conf/ /opt/docker/
 
 # When using Composer, disable the warning about running commands as root/super user
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -27,12 +27,6 @@ ARG DEPS="\
         libpng-dev \
         postgresql-client \
         libzip-dev"
-#        \
-#   zlib1g-dev \
-#   openssh-client \
-#   libonig-dev \
-#   libpq-dev "
- 
 
 RUN set -x \
     && apk add --update --no-cache $DEPS 
@@ -42,7 +36,7 @@ RUN curl -sS https://getcomposer.org/installer -o composer-setup.php \
 
 
 ## монтуєм файл конфигурації php в контейнер
-ADD ./docker/php.ini /usr/local/etc/php/
+ADD ./php.ini /usr/local/etc/php/
 
 # очищуємо папку логів Apache2 в контейнері (насправді у прокинутій із-зовні папки)
 RUN rm -rf /var/www/logs \

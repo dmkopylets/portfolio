@@ -6,11 +6,11 @@ services:
       - "80:80"
     build:
       context: .
-      dockerfile: ./docker/e-Journal.dockerfile
+#      dockerfile: ./docker/e-Journal.dockerfile
     depends_on:
       - db
     volumes:
-      - .:/var/www/localhost/htdocs/
+      - ./../:/var/www/localhost/htdocs/
       - ./logs:/var/www/logs/
     environment:
       #PHP_EXTENSION_XDEBUG: 1
@@ -27,4 +27,4 @@ services:
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_DATABASE
     volumes:
-      - ./docker/db/data:/var/lib/postgresql/data:rw
+      - ./db/data:/var/lib/postgresql/data:rw

@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Http\Controllers\Ejournal\Dicts\BaseDictController;
+use App\Http\Controllers\Ejournal\BaseDictController;
 use App\Models\Ejournal\Dicts\BrigadeMember;
 use Illuminate\Http\Request;
 
 use Session;
 use Redirect;
 
-class DictBrigadeMembersController extends BaseDictController
+class DictBrigadeMembersController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $branch_id =  $this->getBranch()->id;
         $searchMybody  =  '%'.$request->input('searchMybody').'%';

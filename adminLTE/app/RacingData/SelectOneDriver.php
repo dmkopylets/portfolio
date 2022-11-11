@@ -6,11 +6,11 @@ namespace App\RacingData;
 
 class SelectOneDriver
 {
-    private array $driverFightInfo;
+    private array $driverFlightInfo;
 
     public function __construct(string $driverId, array $orderedDriversArray)
     {
-        $this->driverFightInfo = $this->renderOneDriver($driverId,  $orderedDriversArray);
+        $this->driverFlightInfo = $this->renderOneDriver($driverId,  $orderedDriversArray);
     }
 
     private function renderOneDriver(string $driverId, array $orderedDriversArray): array
@@ -18,8 +18,8 @@ class SelectOneDriver
         return $orderedDriversArray[$driverId];
     }
 
-    public function getDriverFightInfo(): array
+    public function getDriverFlightInfo(): array
     {
-        return $this->driverFightInfo;
+        return $this->driverFlightInfo;
     }
 }

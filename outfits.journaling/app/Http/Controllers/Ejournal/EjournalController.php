@@ -260,7 +260,7 @@ class EjournalController extends BaseController
         $sNaryadRecord = session('naryadRecord'); // !! спочатку з session('naryadRecord') витягуємо всі попередньо відомі дані по конкретному наряду,
         $branch_id = $sNaryadRecord['branch_id'];
         $brig_m_arr = BrigadeMember::where('branch_id', $branch_id)->orderBy('id')->get();   // масив усіх можливих членів бригади
-        $brig_e_arr = Brigade_Engineer::where('branch_id', $branch_id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
+        $brig_e_arr = BrigadeEngineer::where('branch_id', $branch_id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
         $brigade_m = $request->input('write_to_db_brigade');
         $brigade_e = $request->input('write_to_db_engineers');
         $substation_id = $request->input('choose_substation');
@@ -488,7 +488,7 @@ class EjournalController extends BaseController
         $adjuster = Adjuster::find($this->naryadRecord['adjuster_id']);
 
         $brig_m_arr = BrigadeMember::where('branch_id', $branch->id)->orderBy('id')->get();   // масив усіх можливих членів бригади
-        $brig_e_arr = Brigade_Engineer::where('branch_id', $branch->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
+        $brig_e_arr = BrigadeEngineer::where('branch_id', $branch->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
         $this->substation_type_id = Substation::find($this->naryadRecord['substation_id'])->type_id;
         $brigade_txt = '';
         if (isset($this->naryadRecord['brigade_m'])) {

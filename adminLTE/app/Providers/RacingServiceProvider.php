@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
+use App\RacingData\FilesSourcesPropertiesDto;
 use App\Services\SourceInitService;
 use App\Services\OrderingDescReader;
 use Illuminate\Support\ServiceProvider;
@@ -12,19 +15,13 @@ class RacingServiceProvider extends ServiceProvider
     {
         $this->app->bind(SourceInitService::class, function ($app)
         {
-            $sources = [
-                'folderName' => env('RACING_DATAFILES_LOCATION'),
-                'startLog' => env('START_LOG'),
-                'finishLog' => env('FINISH_LOG'),
-                'abbreviation' => env('ABBREVIATION'),
-            ];
+            $sources = new FilesSourcesPropertiesDto(
+                env('RACING_DATAFILES_LOCATION'),
+                env('START_LOG'),
+                env('FINISH_LOG'),
+                env('ABBREVIATION')
+            );
             return new SourceInitService($sources);
-        });
-
-        $this->app->bind(OrderingDescReader::class, function ($app)
-        {
-            $order = new OrderingDescReader();
-            return $order->getIsDesc();
         });
     }
 

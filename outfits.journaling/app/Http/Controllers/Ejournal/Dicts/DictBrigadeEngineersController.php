@@ -1,20 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Ejournal;
+namespace App\Http\Controllers\Ejournal\Dicts;
 
+use App\Http\Controllers\Ejournal\BaseController;
 use App\Models\Ejournal\Dicts\BrigadeEngineer;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Ejournal\BaseController;
+use Redirect;
 use Session;
-use Redirect; 
 
 class DictBrigadeEngineersController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *   !!! INDEX
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $branch_id = $this->getBranch()->id;
@@ -28,8 +23,8 @@ class DictBrigadeEngineersController extends BaseController
            where('group','like',$searchMygroup)->
            where('specialization','like',$searchMyspecialization)->
            orderBy('body')->get();
-        return view('dicts.index', 
-           ['branch_name'=>$this->getBranchName(),
+        return view('dicts.index',
+           ['branch_name'=>$this->getBranch()->name,
             'records'=>$records,
             'zagolovok'=>'механіки-стропальщики',
             'modelName'=>'App\Models\Ejournal\Dicts\BrigadeEngineer',
@@ -47,7 +42,7 @@ class DictBrigadeEngineersController extends BaseController
      */
     public function create()
     {
-        return view('dicts.create', 
+        return view('dicts.create',
            ['zagolovok'=>'машиністів-стропальщиків',
             'modelName'=>'App\Models\Ejournal\Dicts\BrigadeEngineer',
             'dictName'=>'BrigadeEngineers',
@@ -72,10 +67,10 @@ class DictBrigadeEngineersController extends BaseController
         $record->save();
         // redirect
         Session::flash('message', 'Запис успішно додано машиніста-стропальщика '.$record->body);
-        return Redirect::to('dicts/BrigadeEngineers');  
+        return Redirect::to('dicts/BrigadeEngineers');
     }
 
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -85,8 +80,8 @@ class DictBrigadeEngineersController extends BaseController
      */
     public function edit($id)
     {
-        $record = BrigadeEngineer::find($id);    
-        return view('dicts.edit', 
+        $record = BrigadeEngineer::find($id);
+        return view('dicts.edit',
            ['record'=>$record,
             'zagolovok'=>'машиністів-стропальщиків',
             'dictName'=>'BrigadeEngineers',

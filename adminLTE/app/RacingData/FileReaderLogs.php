@@ -29,7 +29,7 @@ class FileReaderLogs
     private function readLog(string $logFile):void
     {
         $this->flightStorage->setDrivers($this->driversList);
-        $txtFile = file_get_contents(__DIR__ . '/../../' . $this->fileLocation . '/' .  $logFile);
+        $txtFile = file_get_contents(base_path() . '/' . $this->fileLocation . '/' .  $logFile);
         $rows = explode("\n", $txtFile);
         foreach ($rows as $data) {
             $index = substr($data, 0, 3);

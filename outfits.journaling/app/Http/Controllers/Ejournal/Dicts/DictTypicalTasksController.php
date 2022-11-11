@@ -1,33 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Ejournal;
+namespace App\Http\Controllers\Ejournal\Dicts;
 
+use App\Http\Controllers\Ejournal\Dicts\BaseDictController;
 use App\Models\Ejournal\Dicts\TypicalTask;
-use App\Models\Ejournal\Dicts\Works_Spec;
+use App\Models\Ejournal\Dicts\WorksSpec;
 use Illuminate\Http\Request;
+use Redirect;
 use Session;
-use Redirect; 
-class DictTypicalTasksController extends BaseController
+
+class DictTypicalTasksController extends BaseDictController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $searchMySpec =  '%'.$request->input('searchMySpec').'%';
-        $searchMybody =  '%'.$request->input('searchMybody').'%';
-        $works_specs_list = Works_Spec::where('body','like',$searchMySpec)->pluck('id');
+        $searchMyBody =  '%'.$request->input('searchMybody').'%';
+        $works_specs_list = WorksSpec::where('body','like',$searchMySpec)->pluck('id');
         $records = TypicalTask::
             select('dict_typicaltasks.id AS id', 'dict_typicaltasks.body AS body', 'dict_typicaltasks.works_specs_id AS works_specs_id','s.body AS works_specs')
             ->leftJoin('dict_works_specs AS s', 's.id', '=', 'dict_typicaltasks.works_specs_id')
             ->whereIn('dict_typicaltasks.works_specs_id',$works_specs_list)
-            ->where('dict_typicaltasks.body','like',$searchMybody)
+            ->where('dict_typicaltasks.body','like',$searchMyBody)
             ->orderBy('dict_typicaltasks.works_specs_id')
             ->orderBy('dict_typicaltasks.body')->get();
         return view('dicts.index', [
-            'branch_name'=>$this->getBranchName(),
+            'branch_name'=>$this->getBranch()->name,
             'records'=>$records,
             'zagolovok'=>'завдання',
             'dictName'=>'Tasks',
@@ -70,7 +67,7 @@ class DictTypicalTasksController extends BaseController
         $record->save();
         // redirect
         Session::flash('message', 'Запис успішно додано:  '.$record->body);
-        return Redirect::to('dicts/Tasks');  
+        return Redirect::to('dicts/Tasks');
     }
 
      /**
@@ -85,7 +82,7 @@ class DictTypicalTasksController extends BaseController
         select('dict_typicaltasks.id AS id', 'dict_typicaltasks.body AS body', 'dict_typicaltasks.works_specs_id AS works_specs_id','s.body AS works_specs')
         ->leftJoin('dict_works_specs AS s', 's.id', '=', 'dict_typicaltasks.works_specs_id')
         ->orderBy('dict_typicaltasks.works_specs_id')
-        ->orderBy('dict_typicaltasks.body')->find($id);    
+        ->orderBy('dict_typicaltasks.body')->find($id);
         return view('dicts.edit', [
             'record'=>$record,
             'zagolovok'=>'типових робіт',

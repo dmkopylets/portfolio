@@ -27,16 +27,9 @@ class Branch extends Model
     {
         $user = \Illuminate\Support\Facades\Auth::user();
 //      $companyName = $user->ldap->getFirstAttribute('company');
-
 //      $userlogin   = $user->name;
-        $userlogin = '10_DemoUser';
-
-        $companyName = 'АТ ANYОБЛЕНЕРГО';
-        if ($companyName == 'АТ ANYОБЛЕНЕРГО') {
-            $branch = Branch::whereId(0)->get()->first();
-        } else {
-            $branch = Branch::where('prefix', 'like', '%' . substr($userlogin, 0, 3) . '%')->get()->first();
-        }
+        $userlogin = '09_DemoUser';
+        $branch = Branch::where('prefix', 'like', '%' . substr($userlogin, 0, 3) . '%')->get()->first();
         return $branch;
     }
 

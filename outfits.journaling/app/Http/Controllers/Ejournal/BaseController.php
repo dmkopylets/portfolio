@@ -6,7 +6,7 @@ use App\Models\Ejournal\Dicts\Branch;
 use App\Models\Ejournal\Dicts\Substation;
 
 
-abstract class BaseController extends Controller
+ class BaseController extends Controller
 {
     private string $displayName;
     private string  $userLogin;
@@ -18,11 +18,11 @@ abstract class BaseController extends Controller
     /**
      * @return string
      *    on full version
-     *    $this->userLogin   = Auth::user()->name;
+     *    $this->userLogin  = Auth::user()->name;
      */
     public function getUserLogin(): string
     {
-        $this->userLogin = '10_demoUser';
+        $this->userLogin = '09_demoUser';
         return $this->userLogin;
     }
 
@@ -44,21 +44,5 @@ abstract class BaseController extends Controller
     protected function getBranch()
     {
         return Branch::dataFromLoginPrefix();
-    }
-
-    /**
-     * @param $branch_id
-     * @param $substation_type_id
-     * @return mixed
-     */
-    public function getSubstationsList($branch_id, $substation_type_id)
-    {
-        return Substation::
-        select('id', 'body')
-            ->where('branch_id', $branch_id)
-            ->where('type_id', $substation_type_id)
-            ->orderBy('type_id', 'asc')
-            ->orderBy('body', 'asc')
-            ->get();
     }
 }

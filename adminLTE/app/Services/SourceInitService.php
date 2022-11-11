@@ -7,15 +7,16 @@ namespace App\Services;
 use App\RacingData\DriverStorage;
 use App\RacingData\FileReaderDrivers;
 use App\RacingData\FileReaderLogs;
+use App\RacingData\FilesSourcesPropertiesDto;
 use App\RacingData\FlightStorage;
 use App\Services\Interfaces\SourceInitContract;
 
 class SourceInitService implements SourceInitContract
 {
-    private array $sources;
+    private FilesSourcesPropertiesDto $sources;
     protected FilesExistChecker $fileChecker;
 
-    public function __construct(array $sources)
+    public function __construct(FilesSourcesPropertiesDto $sources)
     {
         $this->sources = $sources;
         $this->fileChecker = new FilesExistChecker($sources);
@@ -34,14 +35,13 @@ class SourceInitService implements SourceInitContract
     public function getDriversList(): DriverStorage
     {
         $driversReader = new FileReaderDrivers($this->sources);
-        $driversList = $driversReader->get();
-        return  $driversList;
+        return $driversReader->get();
     }
 
     public function getFlightsList(): FlightStorage
     {
         $driversReader = new FileReaderDrivers($this->sources);
-        $logsReader = new FileReaderLogs($this->sources['folderName'], $driversReader->get());
+        $logsReader = new FileReaderLogs($this->sources->getFolderName(), $driversReader->get());
         return $logsReader->get();
     }
 }
