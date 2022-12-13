@@ -13,11 +13,13 @@ examples of my code
 
 _what is here:_
 
-    1. a console program that can be used for service tasks such as data import
-    2. a simple application using Laravel and AdminLTE, without using databases, 
-    which demonstrates manipulation of array-like data, but actually uses SplObjectStorage
-    3. a program using Laravel and Liveware that makes it possible to enter certain 
+    1. "console.app" - a console program that can be used for service tasks such as data import
+
+    2. "Racing Report" - a simple application using Laravel and AdminLTE, which demonstrates manipulation
+    of array-like data, but actually uses SplObjectStorage, CLI-command that parses and saves data from 
+    txt-files to a database.Added REST API and added Swagger. The program processes parameters (json, xml).
+    E.g. http://localhost:5000/api/v1/report/?format=xml
+
+    3. "outfits;journaling" - a program using Laravel and Liveware that makes it possible to enter certain 
     reference data and create a journal of typical outfits for performing some work 
     (for example, a team of electricians)
-
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
