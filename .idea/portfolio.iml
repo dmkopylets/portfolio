@@ -2,18 +2,30 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/adminLTE/app" isTestSource="false" packagePrefix="App" />
+      <sourceFolder url="file://$MODULE_DIR$/adminLTE/app" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/adminLTE/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/adminLTE/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/adminLTE/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/outfits.journaling/app" isTestSource="false" packagePrefix="App" />
-      <sourceFolder url="file://$MODULE_DIR$/outfits.journaling/tests" isTestSource="true" packagePrefix="Tests" />
       <excludeFolder url="file://$MODULE_DIR$/outfits.journaling/bootstrap/cache" />
       <excludeFolder url="file://$MODULE_DIR$/outfits.journaling/storage" />
       <excludeFolder url="file://$MODULE_DIR$/adminLTE/storage" />
       <excludeFolder url="file://$MODULE_DIR$/adminLTE/bootstrap/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/darkaonline/l5-swagger" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/swagger-api/swagger-ui" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/barryvdh/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/barryvdh/laravel-ide-helper" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/symfony/uid" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/symfony/yaml" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/symfony/polyfill-uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/zircote/swagger-php" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/doctrine/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/doctrine/event-manager" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/doctrine/dbal" />
+      <excludeFolder url="file://$MODULE_DIR$/adminLTE/vendor/doctrine/deprecations" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

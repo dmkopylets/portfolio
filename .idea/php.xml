@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="MessDetectorOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCSFixerOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCodeSnifferOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
   <component name="PhpCSFixer">
     <phpcsfixer_settings>
       <PhpCSFixerConfiguration tool_path="$PROJECT_DIR$/adminLTE/vendor/bin/php-cs-fixer" />
@@ -121,12 +130,32 @@
       <path value="$PROJECT_DIR$/adminLTE/vendor/nette/utils" />
       <path value="$PROJECT_DIR$/adminLTE/vendor/psy/psysh" />
       <path value="$PROJECT_DIR$/adminLTE/vendor/nette/schema" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/darkaonline/l5-swagger" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/swagger-api/swagger-ui" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/barryvdh/reflection-docblock" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/barryvdh/laravel-ide-helper" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/symfony/uid" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/symfony/polyfill-uuid" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/zircote/swagger-php" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/adminLTE/vendor/doctrine/deprecations" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
+  <component name="PhpStanOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
   <component name="PhpUnit">
     <phpunit_settings>
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/adminLTE/vendor/autoload.php" />
     </phpunit_settings>
+  </component>
+  <component name="PsalmOptionsConfiguration">
+    <option name="transferred" value="true" />
   </component>
 </project>
