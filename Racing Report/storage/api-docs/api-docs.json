@@ -1,0 +1,101 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel Swagger API documentation for task 7",
+        "contact": {
+            "name": "foxstudent102564",
+            "email": "dm.kopylets@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/report/drivers": {
+            "get": {
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "Drivers listing",
+                "operationId": "getDriversList",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "Ordering drivers",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "output fotmat: json or xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "driverId",
+                        "in": "query",
+                        "description": "DriverTxt id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 3,
+                            "minLength": 3
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Driver not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/report/": {
+            "get": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Racing statistic",
+                "operationId": "getFlightsList",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "Ordering racing",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "output fotmat: json or xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
