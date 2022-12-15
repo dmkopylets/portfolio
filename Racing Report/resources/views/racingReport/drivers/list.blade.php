@@ -22,9 +22,9 @@
                     @foreach ($reportDriversData as $key => $driver)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td>{{ $driver->name}}</td>
-                            <td>{{$driver->team}}</td>
-                            <td><a href = "{{asset('report/drivers/?driverId=')}}{{$driver->id}}" class="nav-link">{{$driver->id}}</a></td>
+                            <td>{{ $driver['name']}}</td>
+                            <td>{{$driver['team']}}</td>
+                            <td><a href = "{{asset('report/drivers/?driverId=')}}{{$driver['id']}}" class="nav-link">{{$driver['id']}}</a></td>
                         </tr>
                     @endforeach
                     </tbody>

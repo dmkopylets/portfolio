@@ -13,11 +13,13 @@ class FileReaderDrivers
         $this->driverStorage = new DriverStorage();
         $txtFile = file_get_contents($sourceSettings->basePath . $sourceSettings->folderName . '/' . $sourceSettings->abbreviation);
         $rows = explode("\n", $txtFile);
-        foreach ($rows as $data) {
+        foreach ($rows as $row) {
+            $pattern = '/^(?<driverId>[A-Z]{3}) (?<name>[a-zA-Z .]{26})(?<team>[a-zA-Z -]{25})$/';
+            preg_match($pattern, $row, $matches);
             $record = new OneDriverData;
-            $record->setDriverId(substr($data, 0, 3));
-            $record->setName(substr($data, 4, 26));
-            $record->setTeam(substr($data, 30, 25));
+            $record->setDriverId($matches["driverId"]);
+            $record->setName($matches['name']);
+            $record->setTeam($matches['team']);
             $this->driverStorage->add($record);
         }
         return $this->driverStorage;

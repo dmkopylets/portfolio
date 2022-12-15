@@ -26,10 +26,15 @@ class FileReaderLogs extends FlightsController
         $filesLocation = $this->sourceSettings->basePath . $this->sourceSettings->folderName . '/';
         $txtFile = file_get_contents($filesLocation . $logFile);
         $rows = explode("\n", $txtFile);
-        foreach ($rows as $data) {
-            $index = substr($data, 0, 3);
-            $timeString = substr($data, 3, 10) . ' ' . substr($data, 14, 12);
-            $this->putData($logFile, $index, $timeString);
+        foreach ($rows as $row) {
+            $row = str_replace('_', ' ', $row);
+            $pattern = '/^(?<driverId>^[A-Z]{3})(?<timeString>\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}.\d{3})$/';
+            preg_match($pattern, $row, $matches);
+            if (isset($matches["driverId"])) {
+                $index = $matches["driverId"];
+                $timeString = $matches["timeString"];
+                $this->putData($logFile, $index, $timeString);
+            }
         }
     }
 
@@ -40,12 +45,7 @@ class FileReaderLogs extends FlightsController
             $this->flightStorage->addFlightStart($index, $time);
         }
         if ($logFile === $this->sourceSettings->finishLog) {
-            if (trim($timeString) === '') {
-                $this->flightStorage->dropFlight($index);
-            } else {
-                $this->flightStorage->addFlightFinish($index, $time);
-            }
+            $this->flightStorage->addFlightFinish($index, $time);
         }
-
     }
 }

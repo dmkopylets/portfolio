@@ -21,9 +21,9 @@ class OneFlightData
         return $this->start;
     }
 
-    public function getFinish(): \DateTimeImmutable
+    public function getFinish(): \DateTimeImmutable | false
     {
-        return $this->finish;
+        return $this->finish ?? false;
     }
 
     public function getDuration(): string

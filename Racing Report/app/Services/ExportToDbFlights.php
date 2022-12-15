@@ -11,7 +11,7 @@ use App\RacingData\FlightStorage;
 
 class ExportToDbFlights extends FlightsController
 {
-    public function store(FlightStorage $flights):void
+    public function store(FlightStorage $flights): void
     {
         Flight::truncate();
         foreach ($flights->getList() as $flight) {
@@ -21,11 +21,13 @@ class ExportToDbFlights extends FlightsController
 
     public function storeOne(OneFlightData $flightData): void
     {
-        $record = new Flight();
-        $record->driverId = $flightData->getDriverId();
-        $record->start = $flightData->getStart()->format('Y-m-d H:i:s.v');
-        $record->finish = $flightData->getFinish()->format('Y-m-d H:i:s.v');
-        $record->duration = strval($flightData->getDuration());
-        $record->save();
+        if ($flightData->getFinish()) {
+            $record = new Flight();
+            $record->driverId = $flightData->getDriverId();
+            $record->start = $flightData->getStart()->format('Y-m-d H:i:s.v');
+            $record->finish = $flightData->getFinish()->format('Y-m-d H:i:s.v');
+            $record->duration = strval($flightData->getDuration());
+            $record->save();
+        }
     }
 }

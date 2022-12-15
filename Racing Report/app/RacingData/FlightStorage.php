@@ -10,7 +10,6 @@ use SplObjectStorage;
 class FlightStorage
 {
     protected SplObjectStorage $flights;
-    private OneFlightData $flight;
 
     public function __construct()
     {
@@ -37,12 +36,6 @@ class FlightStorage
         $flight->setDuration($flight->getStart(), $finish);
     }
 
-    public function dropFlight(string $index): void
-    {
-        $flight = $this->find($index);
-        $this->flights->detach($flight);
-    }
-
     public function find(string $abbreviation): OneFlightData
     {
         $this->flights->rewind();
@@ -55,6 +48,6 @@ class FlightStorage
             }
             $this->flights->next();
         }
-        throw new FlightNotFoundException(sprintf('Flight with driver abbreviation "'.$abbreviation.'" not found.', $abbreviation));
+        throw new FlightNotFoundException(sprintf('Flight with driver abbreviation "' . $abbreviation . '" not found.', $abbreviation));
     }
 }
