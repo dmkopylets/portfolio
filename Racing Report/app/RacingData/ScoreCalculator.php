@@ -7,7 +7,6 @@ namespace App\RacingData;
 use App\Models\RacingData\Flight;
 
 class ScoreCalculator
-
 {
     public function run()
     {
@@ -27,6 +26,7 @@ class ScoreCalculator
         foreach ($records as $record) {
             Flight::where('driverId', $record->driverId)->update(['possition' => $i++]);
         }
-        Flight::where('possition', '<', 16)->update(['top' => True]);
+        Flight::where('possition', '<', 16)->update(['top' => true]);
+        Flight::where('possition', '>', 15)->update(['top' => false]);
     }
 }

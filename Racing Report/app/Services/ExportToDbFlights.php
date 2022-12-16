@@ -21,7 +21,7 @@ class ExportToDbFlights extends FlightsController
 
     public function storeOne(OneFlightData $flightData): void
     {
-        if ($flightData->getFinish()) {
+        if ($flightData->isExistFinish()) {
             $record = new Flight();
             $record->driverId = $flightData->getDriverId();
             $record->start = $flightData->getStart()->format('Y-m-d H:i:s.v');

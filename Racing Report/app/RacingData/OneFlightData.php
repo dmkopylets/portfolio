@@ -21,9 +21,14 @@ class OneFlightData
         return $this->start;
     }
 
-    public function getFinish(): \DateTimeImmutable | false
+    public function getFinish(): \DateTimeImmutable
     {
-        return $this->finish ?? false;
+        return $this->finish;
+    }
+
+    public function isExistFinish(): bool
+    {
+        return isset($this->finish);
     }
 
     public function getDuration(): string
@@ -32,9 +37,9 @@ class OneFlightData
     }
 
     public function setDriverId(string $driverId): void
-        {
-            $this->driverId = $driverId;
-        }
+    {
+        $this->driverId = $driverId;
+    }
 
     public function setStart(\DateTimeImmutable $start): void
     {

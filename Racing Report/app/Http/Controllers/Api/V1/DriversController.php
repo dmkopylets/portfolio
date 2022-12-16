@@ -13,6 +13,8 @@ use OpenApi\Annotations as OA;
 
 class DriversController extends ApiController
 {
+    private bool $xmlResponseForOneRecord;
+
     public function __construct(Driver $model)
     {
         $this->model = $model;
@@ -72,21 +74,31 @@ class DriversController extends ApiController
         $validated = $request->validated();
         if (empty($validated)) {
             $reportData = $this->model->getAllOrdered(parent::orderingIsDesc());
-            $xmlResponse = new XmlBuilderDriversService();
+            $this->xmlResponseForOneRecord = false;
         } else {
             $reportData = $this->model->getDetails($validated['driverId']);
-            $xmlResponse = new XmlBuilderOneDriverService();
+            $this->xmlResponseForOneRecord = true;
         }
-        $result = $this->getFormatedResponse($reportData, parent::formatIsXml(), $xmlResponse);
+        $result = $this->getFormatedResponse($reportData, parent::formatIsXml());
         return $this->sendResponse($result, 'OK', 200);
     }
 
-    private function getFormatedResponse(array $reportData, bool $formatIsXml, XmlBuilderDriversService|XmlBuilderOneDriverService $xmlResponse): JsonResponse|string
+    private function getFormatedResponse(array $reportData, bool $formatIsXml): JsonResponse
     {
         if ($formatIsXml) {
-            return $xmlResponse->build($reportData);
+            return $this->xmlGenerator($reportData);
         } else {
             return response()->json($reportData, 200, [], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         }
+    }
+
+    private function xmlGenerator(array $reportData): JsonResponse
+    {
+        if ($this->xmlResponseForOneRecord) {
+            $xmlResponse = new XmlBuilderOneDriverService();
+        } else {
+            $xmlResponse = new XmlBuilderDriversService();
+        }
+        return $this->sendResponse($xmlResponse->build($reportData), 'OK', 200);
     }
 }

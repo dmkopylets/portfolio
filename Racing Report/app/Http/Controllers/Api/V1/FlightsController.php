@@ -60,13 +60,13 @@ class FlightsController extends ReportController
             'flights.top'
         )
             ->leftJoin('drivers', 'drivers.id', '=', 'flights.driverId')
-            ->orderBy('duration',$ordering)
+            ->orderBy('duration', $ordering)
             ->get()
             ->toArray();
         return $this->getFormatedResponse($records, $this->formatIsXml());
     }
 
-    private function getFormatedResponse(array $reportData, bool $formatIsXml): JsonResponse|string
+    private function getFormatedResponse(array $reportData, bool $formatIsXml): JsonResponse
     {
         if ($formatIsXml) {
             $xmlResponse = new XmlBuilderFlightsService();
