@@ -79,8 +79,7 @@ class DriversController extends ApiController
             $reportData = $this->model->getDetails($validated['driverId']);
             $this->xmlResponseForOneRecord = true;
         }
-        $result = $this->getFormatedResponse($reportData, parent::formatIsXml());
-        return $this->sendResponse($result, 'OK', 200);
+        return $this->getFormatedResponse($reportData, parent::formatIsXml());
     }
 
     private function getFormatedResponse(array $reportData, bool $formatIsXml): JsonResponse
