@@ -1,0 +1,198 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel Swagger API documentation for task 9",
+        "contact": {
+            "name": "foxstudent102564",
+            "email": "dm.kopylets@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/groups": {
+            "get": {
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Groups listing",
+                "operationId": "getGroupsList",
+                "responses": {
+                    "404": {
+                        "description": "Groups not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/students": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Students listing",
+                "operationId": "getStudentsList",
+                "parameters": [
+                    {
+                        "name": "wantedFirstName",
+                        "in": "query",
+                        "description": "part of the first name of student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "wantedLastName",
+                        "in": "query",
+                        "description": "part of the last name of student",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Students not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/students/create": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Students creating",
+                "operationId": "createStudent",
+                "parameters": [
+                    {
+                        "name": "first_name",
+                        "in": "query",
+                        "description": "student first name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "query",
+                        "description": "student last name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "student created"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    }
+                }
+            }
+        },
+        "/api/v1/students/{id}": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "View student info",
+                "operationId": "getStudentById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Students id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ }"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Delete a student",
+                "operationId": "deleteStudent",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Students id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Student not found"
+                    },
+                    "204": {
+                        "description": "Delete student"
+                    }
+                }
+            }
+        },
+        "/api/v1/students/id/edit": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "edit student info",
+                "operationId": "edit",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "firstName",
+                                    "lastName"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "ineger"
+                                    },
+                                    "firstName": {
+                                        "type": "string"
+                                    },
+                                    "lastName": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "{ }"
+                    }
+                }
+            }
+        }
+    }
+}
