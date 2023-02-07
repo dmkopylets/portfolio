@@ -14,9 +14,16 @@ Each outfit can be exported in pdf format
 for run:
 
 docker-compose build
-docker-compose up -d
-docker-compose exec web bash
-composer install
-npm install
 
+docker-compose up -d
+
+
+( may need to be performed:
+
+docker-compose exec web bash
+
+composer install  (or update)
+
+npm install
+)
 
