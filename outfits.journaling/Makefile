@@ -1,5 +1,4 @@
-DOCKER_FOLDER  = cd docker;
-DOCKER_COMPOSE = $(DOCKER_FOLDER) docker-compose
+DOCKER_COMPOSE = docker-compose
 EXEC_PHP       = $(DOCKER_COMPOSE) exec web
 DOCKER_COMPOSE_FILE = -f docker-compose.yml
 

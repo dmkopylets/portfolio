@@ -6,22 +6,12 @@ use App\Http\Controllers\Ejournal\BaseController;
 use App\Models\Ejournal\Dicts\Branch as Branches;
 use App\Models\Ejournal\Dicts\Substation;
 use App\Http\Controllers\Ejournal\Dicts\DictBranchesController;
+use App\ReadModel\SubstationFetcher;
 use Illuminate\Http\Request;
 use function Livewire\str;
 
-class BaseDictController extends BaseController
+class DictBaseController extends BaseController
 {
-    protected function getSubstationsList(int $branch_id, int $substation_type_id)
-    {
-        return Substation::
-        select('id', 'body')
-            ->where('branch_id', $branch_id)
-            ->where('type_id', $substation_type_id)
-            ->orderBy('type_id', 'asc')
-            ->orderBy('body', 'asc')
-            ->get();
-    }
-
     public function index(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $repertory = substr(\Request::getRequestUri(),7);

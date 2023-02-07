@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Http\Controllers\Ejournal\Dicts\BaseDictController;
+use App\Http\Controllers\Ejournal\Dicts\DictBaseController;
 use App\Models\Ejournal\Dicts\WorksSpec;
 use Illuminate\Http\Request;
 
-class DictWorksSpecController extends BaseDictController
+class DictWorksSpecBaseController extends DictBaseController
 {
     /**
      * Display a listing of the resource.

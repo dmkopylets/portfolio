@@ -15,6 +15,7 @@ use App\Models\Ejournal\Dicts\TypicalTask;
 use App\Models\Ejournal\Naryad;
 use App\Models\Ejournal\Preparation;
 use App\Models\Ejournal\Measure;
+use App\ReadModel\SubstationFetcher;
 use Redirect;
 
 class EjournalController extends BaseController
@@ -125,6 +126,8 @@ class EjournalController extends BaseController
         ];
         session()->forget('naryadRecord');
         session(['naryadRecord' => $this->naryadRecord]);
+
+
         return view('naryads.edit', [
             'mode' => 'create',
             'title' => 'новий',
@@ -147,7 +150,6 @@ class EjournalController extends BaseController
             'naryadRecord' => $this->naryadRecord,
         ]);
     }
-
 
     /**
      * Show the form for editing the specified resource - model "naryad".
@@ -496,7 +498,7 @@ class EjournalController extends BaseController
         }
         $engineers_txt = '';
         if (isset($this->naryadRecord['brigade_e'])) {
-            $engineers_txt = Brigade_Engineer::find(explode(",", $this->naryadRecord['brigade_e']));
+            $engineers_txt = BrigadeEngineer::find(explode(",", $this->naryadRecord['brigade_e']));
         }
         return view('naryads.edit', [
             'mode' => 'reedit',
@@ -685,5 +687,11 @@ class EjournalController extends BaseController
         //$this->assertEquals('application/pdf', $response->headers->get('Content-Type'));
         //$this->assertEquals('attachment; filename="Naryad.pdf"', $response->headers->get('Content-Disposition'));
 
+    }
+
+    private function getSubstationsList(int $branchId, int $substationTypeId)
+    {
+        $substationFitcher = new SubstationFetcher($branchId, $substationTypeId);
+        return $substationFitcher->getSubstationsList();
     }
 }

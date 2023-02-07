@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Http\Controllers\Ejournal\Dicts\BaseDictController;
+use App\Http\Controllers\Ejournal\Dicts\DictBaseController;
 use App\Models\Ejournal\Dicts\TypicalTask;
 use App\Models\Ejournal\Dicts\WorksSpec;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
 
-class DictTypicalTasksController extends BaseDictController
+class DictTypicalTasksBaseController extends DictBaseController
 {
     public function index(Request $request)
     {

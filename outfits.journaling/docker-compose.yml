@@ -5,13 +5,12 @@ services:
     ports:
       - "80:80"
     build:
-      context: .
-#      dockerfile: ./docker/e-Journal.dockerfile
+      context: ./docker
     depends_on:
       - db
     volumes:
-      - ./../:/var/www/localhost/htdocs/
-      - ./logs:/var/www/logs/
+      - ./:/var/www/localhost/htdocs/
+      - ./docker/logs:/var/www/logs/
     environment:
       #PHP_EXTENSION_XDEBUG: 1
       PHP_INI_DIR: /usr/local/etc/php
@@ -27,4 +26,4 @@ services:
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_DATABASE
     volumes:
-      - ./db/data:/var/lib/postgresql/data:rw
+      - ./docker/db/data:/var/lib/postgresql/data:rw
