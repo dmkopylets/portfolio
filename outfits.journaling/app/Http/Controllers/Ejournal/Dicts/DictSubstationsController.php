@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Ejournal;
+namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Models\Ejournal\Dicts\Branch;
-use App\Models\Ejournal\Dicts\Substation;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Ejournal\BaseController;
+use App\Model\Ejournal\Dicts\Branch;
+use App\Model\Ejournal\Dicts\Substation;
+use Illuminate\Http\Request;
+use Redirect;
 use Session;
-use Redirect; 
+use function App\Http\Controllers\Ejournal\view;
 
 class DictSubstationsController extends BaseController
 {
@@ -29,7 +30,7 @@ class DictSubstationsController extends BaseController
          ->orderBy('dict_substations.body','asc')
          ->get();
          return view('dicts.index',[
-             'branch_name'=>$branch->body,
+             'branchName'=>$branch->body,
              'records'=>$records,
              'zagolovok'=>'підстанції',
              'dictName'=>'Substations',
@@ -39,7 +40,7 @@ class DictSubstationsController extends BaseController
              ]);
     }
 
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -71,10 +72,10 @@ class DictSubstationsController extends BaseController
         $record->save();
         // redirect
         Session::flash('message', 'Запис успішно додано!');
-        return Redirect::to('dicts/Substations');     
+        return Redirect::to('dicts/Substations');
     }
 
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -84,7 +85,7 @@ class DictSubstationsController extends BaseController
      */
     public function edit($id)
     {
-        $record = Substation::find($id);    
+        $record = Substation::find($id);
         return view('dicts.edit', [
             'record'=>$record,'zagolovok'=>'підстанцій',
             'dictName'=>'Substations',
@@ -106,7 +107,7 @@ class DictSubstationsController extends BaseController
             'body'     => 'required',
             'type'     => 'required'
         );
-    // далі має бути якась валідація        
+    // далі має бути якась валідація
     // store
     $record = Substation::find($record_id);
     $record->body = $request->input('body');

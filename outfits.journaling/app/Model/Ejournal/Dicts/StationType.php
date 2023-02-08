@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Ejournal\Dicts;
+namespace App\Model\Ejournal\Dicts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

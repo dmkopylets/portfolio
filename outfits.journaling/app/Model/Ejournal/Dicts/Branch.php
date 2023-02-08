@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models\Ejournal\Dicts;
+namespace App\Model\Ejournal\Dicts;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -25,10 +24,10 @@ class Branch extends Model
 
     public static function dataFromLoginPrefix()
     {
-        $user = \Illuminate\Support\Facades\Auth::user();
+//      $user = \Illuminate\Support\Facades\Auth::user();
 //      $companyName = $user->ldap->getFirstAttribute('company');
 //      $userlogin   = $user->name;
-        $userlogin = '09_DemoUser';
+        $userlogin = 'kl_DemoUser';
         $branch = Branch::where('prefix', 'like', '%' . substr($userlogin, 0, 3) . '%')->get()->first();
         return $branch;
     }

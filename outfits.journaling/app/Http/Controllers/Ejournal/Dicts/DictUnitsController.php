@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Ejournal;
+namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Models\Ejournal\Dicts\Unit;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Ejournal\BaseController;
-use Session;
+use App\Model\Ejournal\Dicts\Unit;
+use Illuminate\Http\Request;
 use Redirect;
+use Session;
+use function App\Http\Controllers\Ejournal\view;
 
 class DictUnitsController extends BaseController
 {
@@ -20,17 +21,17 @@ class DictUnitsController extends BaseController
         //$branch = $this->getBranch();
         $branch_id = $this->getBranch()->id;
         $searchMybody =  '%'.$request->input('searchMybody').'%';
-        $records = Unit:: 
+        $records = Unit::
             select('dict_units.id AS id', 'dict_units.body AS body', 'dict_branches.body AS branch_name')->
             leftJoin('dict_branches', 'dict_branches.id', '=', 'dict_units.branch_id')->
             where('dict_units.branch_id',$branch_id)->
             where('dict_units.body','like',$searchMybody)->
             orderBy('dict_units.id')->get();
-        return view('dicts.index', 
-            ['branch_name'=>$this->getBranch()->body,
+        return view('dicts.index',
+            ['branchName'=>$this->getBranch()->body,
              'records'=>$records,
              'zagolovok'=>'дільниць філії',
-             'modelName'=>'App\Models\Ejournal\Dicts\Unit',
+             'modelName'=> 'App\Model\Ejournal\Dicts\Unit',
              'dictName'=>'Units',
              'add_th'=>array('дільниця'),          // 'add_th'=>array('філія','дільниця'),      // для адмін режиму (всі філії)
              'add_td'=>array('body'),              // 'add_td'=>array('branch_name','body')]);
@@ -67,10 +68,10 @@ class DictUnitsController extends BaseController
         $record->save();
         // redirect
         Session::flash('message', 'Запис успішно додано. Нова дільниця '.$record->body);
-        return Redirect::to('dicts/Units');  
+        return Redirect::to('dicts/Units');
     }
 
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -80,7 +81,7 @@ class DictUnitsController extends BaseController
      */
     public function edit($id)
     {
-        $record = Unit::find($id);    
+        $record = Unit::find($id);
         return view('dicts.edit', [
             'record'=>$record,
             'zagolovok'=>'дільниць філії',

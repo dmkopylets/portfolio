@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ReadModel;
 
-use App\Models\Ejournal\Dicts\Substation;
+use App\Model\Ejournal\Dicts\Substation;
 
 class SubstationFetcher
 {

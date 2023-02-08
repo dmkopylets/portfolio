@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Http\Controllers\Ejournal\Dicts\DictBaseController;
-use App\Models\Ejournal\Dicts\TypicalTask;
-use App\Models\Ejournal\Dicts\WorksSpec;
+use App\Model\Ejournal\Dicts\TypicalTask;
+use App\Model\Ejournal\Dicts\WorksSpec;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
@@ -24,7 +23,7 @@ class DictTypicalTasksBaseController extends DictBaseController
             ->orderBy('dict_typicaltasks.works_specs_id')
             ->orderBy('dict_typicaltasks.body')->get();
         return view('dicts.index', [
-            'branch_name'=>$this->getBranch()->name,
+            'branchName'=>$this->getBranch()->name,
             'records'=>$records,
             'zagolovok'=>'завдання',
             'dictName'=>'Tasks',
@@ -73,7 +72,7 @@ class DictTypicalTasksBaseController extends DictBaseController
      /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Ejournal\Dicts\TypicalTask  $typicaltask
+     * @param  \App\Model\Ejournal\Dicts\TypicalTask  $typicaltask
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -96,7 +95,7 @@ class DictTypicalTasksBaseController extends DictBaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ejournal\Dicts\TypicalTask  $typicaltask
+     * @param  \App\Model\Ejournal\Dicts\TypicalTask  $typicaltask
      * @return \Illuminate\Http\Response
      */
     public function update($record_id, Request $request)
@@ -114,7 +113,7 @@ class DictTypicalTasksBaseController extends DictBaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Ejournal\Dicts\TypicalTask  $typicaltask
+     * @param  \App\Model\Ejournal\Dicts\TypicalTask  $typicaltask
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

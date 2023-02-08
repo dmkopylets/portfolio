@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Ejournal;
 use App\Http\Controllers\Controller;
-use App\Models\Ejournal\Dicts\Branch;
-use App\Models\Ejournal\Dicts\Substation;
+use App\Model\Ejournal\Dicts\Branch;
 
 
- class BaseController extends Controller
+class BaseController extends Controller
 {
     private string $displayName;
     private string  $userLogin;

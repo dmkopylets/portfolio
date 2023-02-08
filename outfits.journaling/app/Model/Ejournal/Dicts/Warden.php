@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Ejournal\Dicts;
+namespace App\Model\Ejournal\Dicts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +11,7 @@ class Warden extends Model
     protected $table = 'dict_wardens';
     public function branch()
     {
-        return $this->belongsTo('App\Models\Ejournal\Dicts\Branch','branch_id','id');
+        return $this->belongsTo('App\Model\Ejournal\Dicts\Branch','branch_id','id');
     }
      public static function getTableName()
     {

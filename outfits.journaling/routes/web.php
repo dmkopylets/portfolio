@@ -40,14 +40,14 @@ Route::post('naryads/{naryad}/reedit4',   [App\Http\Controllers\Ejournal\Ejourna
 Route::get('naryads/{naryad}/pdf', [App\Http\Controllers\Ejournal\EjournalController::class,'pdf']);
 
 Route::prefix('dicts')->group(function () {
-    Route::resource('/Branches', \App\Http\Controllers\Ejournal\Dicts\DictBaseController::class)->only(['index','edit','create','store','update']);
-    Route::resource('/Units', App\Http\Controllers\Ejournal\DictUnitsController::class)->only(['index','edit','create','store','update']);
-    Route::resource('/Wardens', App\Http\Controllers\Ejournal\DictWardensController::class)->only(['index','edit','create','store','update']);
-    Route::resource('/Adjusters', App\Http\Controllers\Ejournal\DictAdjustersController::class)->only(['index','edit','create','store','update']);
+    Route::resource('/Branches', \App\Http\Controllers\Ejournal\Dicts\DictBranchesController::class)->only(['index','edit','create','store','update']);
+    Route::resource('/Units', \App\Http\Controllers\Ejournal\Dicts\DictUnitsController::class)->only(['index','edit','create','store','update']);
+    Route::resource('/Wardens', \App\Http\Controllers\Ejournal\Dicts\DictWardensController::class)->only(['index','edit','create','store','update']);
+    Route::resource('/Adjusters', \App\Http\Controllers\Ejournal\Dicts\DictAdjustersController::class)->only(['index','edit','create','store','update']);
     Route::resource('/BrigadeMembers', App\Http\Controllers\Ejournal\Dicts\DictBrigadeMembersController::class)->only(['index','edit','create','store','update']);
     Route::resource('/BrigadeEngineers', \App\Http\Controllers\Ejournal\Dicts\DictBrigadeEngineersController::class)->only(['index','edit','create','store','update']);
-    Route::resource('/Substations', App\Http\Controllers\Ejournal\DictSubstationsController::class)->only(['index','edit','create','store','update',]);
-    Route::resource('/Lines', App\Http\Controllers\Ejournal\DictLinesController::class)->only(['index','edit','create','store','update']);
+    Route::resource('/Substations', \App\Http\Controllers\Ejournal\Dicts\DictSubstationsController::class)->only(['index','edit','create','store','update',]);
+    Route::resource('/Lines', \App\Http\Controllers\Ejournal\Dicts\DictLinesController::class)->only(['index','edit','create','store','update']);
     Route::resource('/Tasks', \App\Http\Controllers\Ejournal\Dicts\DictTypicalTasksBaseController::class)->only(['index','edit','create','store','update']);
 });
 

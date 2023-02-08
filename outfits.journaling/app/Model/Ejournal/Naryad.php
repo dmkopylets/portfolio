@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Ejournal;
+namespace App\Model\Ejournal;
 
+use App\Model\Ejournal\Dicts\Substation;
+use App\Model\Ejournal\Dicts\Warden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Ejournal\Dicts\Warden;
-use App\Models\Ejournal\Dicts\Substation;
 
 class Naryad extends Model
 {

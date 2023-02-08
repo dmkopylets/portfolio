@@ -3,21 +3,32 @@
 namespace App\Http\Controllers\Ejournal\Dicts;
 
 use App\Http\Controllers\Ejournal\BaseController;
-use App\Models\Ejournal\Dicts\Branch;
+use App\Model\Ejournal\Dicts\Branch;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
 
-class DictBranchesController extends BaseController
+class DictBranchesController extends DictBaseController
 {
-    public function index(): array
+    private Branch $model;
+    public function index(Request $request)
     {
-        $records = Branch::
-        where('body', 'like', $searchMyBody)->
-        where('prefix', 'like', $searchMyPrefix)->
-        orderBy('id')->get();
-        return ($records);
+        $repertory = 'App\Model\Ejournal\Dicts\Branch';
+        $records =  $this->getList($request, $repertory);
+
+        $parameters = [
+            'branchName' => $this->getBranch()->body,
+            'records' => $records,
+            'zagolovok' => 'філій',
+            'dictName' => substr(\Request::getRequestUri(),7),
+            'modelName' => $repertory,
+            'add_th' => array('філія', 'префікс'),
+            'add_td' => array('body', 'prefix'),
+            'th_width' => array(280, 70)
+        ];
+        return view('dicts.index', $parameters);
     }
+
 
     public function create()
     {

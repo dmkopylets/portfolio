@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Ejournal;
+namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Models\Ejournal\Dicts\Line;
 use App\Http\Controllers\Ejournal\BaseController;
-use App\Models\Ejournal\Dicts\Substation;
+use App\Http\Controllers\Ejournal\Redirect;
+use App\Http\Controllers\Ejournal\Session;
+use App\Model\Ejournal\Dicts\Line;
+use App\Model\Ejournal\Dicts\Substation;
 use Illuminate\Http\Request;
+use function App\Http\Controllers\Ejournal\view;
 
 class DictLinesController extends BaseController
 {
@@ -28,17 +31,17 @@ class DictLinesController extends BaseController
          where('branch_id',$branch_id)->
          where('body','like',$searchMystation)->
          pluck('id');
-        
+
          $records = Line::select(Line::raw('dict_lines.id*1000+dict_lines.line_id AS id, dict_station_types.body AS station_type, dict_substations.body AS station, dict_lines.line_id AS line_id'))
-         ->leftJoin('dict_substations',  'dict_substations.id', '=', 'dict_lines.substation_id')  
-         ->leftJoin('dict_station_types','dict_station_types.id','=','dict_substations.type_id')         
+         ->leftJoin('dict_substations',  'dict_substations.id', '=', 'dict_lines.substation_id')
+         ->leftJoin('dict_station_types','dict_station_types.id','=','dict_substations.type_id')
          //->where('dict_lines.branch_id',$branch_id)
          ->whereIn('substation_id',$stationList)
          ->where('line_id','like',$searchMyline_id)
          ->get();
 
           return view('dicts.index', [
-              'branch_name'=>$this->getBranch()->body,
+              'branchName'=>$this->getBranch()->body,
               'records'=>$records,
               'zagolovok'=>'бригада',
               'dictName'=>'Lines',
@@ -46,7 +49,7 @@ class DictLinesController extends BaseController
               'add_td'=>array('station_type','station','line_id'),
               'th_width'=>array(100,220,80)
               ]);
-            
+
 
 //              @if ($record->Line->type_id==1)
 //                 <td width="105px">ПЛ-0,4 кВ</td>
@@ -55,7 +58,7 @@ class DictLinesController extends BaseController
 //              @endif
 //          <td width="295px">{{$record->Line->body}}</td>
 
-         
+
     }
 
     /**
@@ -89,19 +92,19 @@ class DictLinesController extends BaseController
         $record->save();
         // redirect
         Session::flash('message', 'Запис успішно додано!');
-        return Redirect::to('dicts/Lines');     
+        return Redirect::to('dicts/Lines');
     }
 
-    
+
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Ejournal\Dicts\Line $line
+     * @param  \App\Model\Ejournal\Dicts\Line $line
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $record = Line::find($id);    
+        $record = Line::find($id);
         return view('dicts.edit', [
             'record'=>$record,'zagolovok'=>'ліній',
             'dictName'=>'Lines',
@@ -114,7 +117,7 @@ class DictLinesController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ejournal\Dicts\Line  $line
+     * @param  \App\Model\Ejournal\Dicts\Line  $line
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $record_id)
@@ -124,7 +127,7 @@ class DictLinesController extends BaseController
             'station'    => 'required',
             'line_id'    => 'required'
         );
-    // далі має бути якась валідація        
+    // далі має бути якась валідація
     // store
     $record = Line::find($record_id);
         $record->body = $request->input('Line_type');
@@ -140,7 +143,7 @@ class DictLinesController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Ejournal\Dicts\Line  $line
+     * @param  \App\Model\Ejournal\Dicts\Line  $line
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

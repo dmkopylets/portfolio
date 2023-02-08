@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Ejournal\Dicts;
 
 use App\Http\Controllers\Ejournal\BaseDictController;
-use App\Models\Ejournal\Dicts\BrigadeMember;
+use App\Model\Ejournal\Dicts\BrigadeMember;
 use Illuminate\Http\Request;
-
-use Session;
 use Redirect;
+use Session;
 
-class DictBrigadeMembersController extends BaseController
+class DictBrigadeMembersController extends DictBaseController
 {
     public function index(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
@@ -24,10 +23,10 @@ class DictBrigadeMembersController extends BaseController
 
 
         return view('dicts.index',
-           ['branch_name'=>$this->getBranch()->name,
+           ['branchName'=>$this->getBranch()->name,
             'records'=>$records,
             'zagolovok'=>'бригада',
-            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeMember',
+            'modelName'=> 'App\Model\Ejournal\Dicts\BrigadeMember',
             'dictName'=>'BrigadeMembers',
             'add_th'=>array('П.І.Б.','група'),
             'add_td'=>array('body','group'),
@@ -43,7 +42,7 @@ class DictBrigadeMembersController extends BaseController
     {
         return view('dicts.create',
            ['zagolovok'=>'члені бригади',
-            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeMember',
+            'modelName'=> 'App\Model\Ejournal\Dicts\BrigadeMember',
             'dictName'=>'BrigadeMembers',
             'add_th'=>array('П.І.Б.','група'),
             'add_td'=>array('body','group')]);
@@ -81,7 +80,7 @@ class DictBrigadeMembersController extends BaseController
            ['record'=>$record,
             'zagolovok'=>'машиністів-стропальщиків',
             'dictName'=>'BrigadeMembers',
-            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeMember',
+            'modelName'=> 'App\Model\Ejournal\Dicts\BrigadeMember',
             'add_th'=>array('П.І.Б.','група'),
             'add_td'=>array('body','group')]);
     }

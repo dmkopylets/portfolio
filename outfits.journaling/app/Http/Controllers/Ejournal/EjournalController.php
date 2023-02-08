@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Ejournal;
 
 use App\Http\Controllers\Ejournal\BaseController as BaseController;
-use Illuminate\Http\Request;
-use App\Models\Ejournal\Dicts\Substation;
-use App\Models\Ejournal\Dicts\Adjuster;
-use App\Models\Ejournal\Dicts\Warden;
-use App\Models\Ejournal\Dicts\Unit;
-use App\Models\Ejournal\Dicts\BrigadeMember;
-use App\Models\Ejournal\Dicts\BrigadeEngineer;
-use App\Models\Ejournal\Dicts\StationType;
-use App\Models\Ejournal\Dicts\TypicalTask;
-use App\Models\Ejournal\Naryad;
-use App\Models\Ejournal\Preparation;
-use App\Models\Ejournal\Measure;
+use App\Model\Ejournal\Dicts\Adjuster;
+use App\Model\Ejournal\Dicts\BrigadeEngineer;
+use App\Model\Ejournal\Dicts\BrigadeMember;
+use App\Model\Ejournal\Dicts\StationType;
+use App\Model\Ejournal\Dicts\Substation;
+use App\Model\Ejournal\Dicts\TypicalTask;
+use App\Model\Ejournal\Dicts\Unit;
+use App\Model\Ejournal\Dicts\Warden;
+use App\Model\Ejournal\Measure;
+use App\Model\Ejournal\Naryad;
+use App\Model\Ejournal\Preparation;
 use App\ReadModel\SubstationFetcher;
+use Illuminate\Http\Request;
 use Redirect;
 
 class EjournalController extends BaseController
@@ -28,7 +28,7 @@ class EjournalController extends BaseController
         session()->forget('mode');
 
         return view('naryads.welcome', [
-            'branch' => \App\Models\Ejournal\Dicts\Branch::dataFromLoginPrefix(),
+            'branch' => \App\Model\Ejournal\Dicts\Branch::dataFromLoginPrefix(),
             'userlogin' => $this->getUserLogin(),
             'displayName' => $this->getDisplayName()
         ]);
@@ -71,7 +71,7 @@ class EjournalController extends BaseController
     public function precreate()
     {
         return view('naryads.precreate', [
-            'workspecs' => \App\Models\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
+            'workspecs' => \App\Model\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
             'workspecs_id' => 0,
             // $this->__set('workspecs_id',0)  // не осилив покищо
         ]);
@@ -141,7 +141,7 @@ class EjournalController extends BaseController
             'brigade_e' => '',
             'branch' => $branch,
             'substations' => $this->getSubstationsList($branch->id, $substation_type_id), // функція прописана в BaseController
-            'workspecs' => \App\Models\Ejournal\Dicts\WorksSpec::worksSpecCollect(), // список - де робитиметься : на 10-ках, чи на 0.4, чи ...
+            'workspecs' => \App\Model\Ejournal\Dicts\WorksSpec::worksSpecCollect(), // список - де робитиметься : на 10-ках, чи на 0.4, чи ...
             'workslist' => ' виконати ', // саме текст завдання
             'preparations_rs' => $this->preparations_rs,
             'measures_rs' => $this->measures_rs,
@@ -233,7 +233,7 @@ class EjournalController extends BaseController
             'adjusters' => $adjusters,
             'countbrigade' => $countbrigade,
             'substations' => $substations,
-            'workspecs' => \App\Models\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
+            'workspecs' => \App\Model\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
             'workslist' => $record->ojects . ' виконати ' . $record->tasks,
             'brigade_txt' => $brigade_txt,
             'engineers_txt' => $engineers_txt,
@@ -455,7 +455,7 @@ class EjournalController extends BaseController
         $count_prepr_row = count($preparations_rs);
         if ($count_prepr_row > 0) {
             foreach ($preparations_rs as $prRow) {
-                $preparationsDBRecord = new \App\Models\Ejournal\Preparation;
+                $preparationsDBRecord = new \App\Model\Ejournal\Preparation;
                 $preparationsDBRecord->naryad_id = $naryad->id;
                 $preparationsDBRecord->target_obj = $prRow['target_obj'];
                 $preparationsDBRecord->body = $prRow['body'];
@@ -466,7 +466,7 @@ class EjournalController extends BaseController
         $count_meashures_row = count($meashures_rs);
         if ($count_meashures_row > 0) {
             foreach ($meashures_rs as $msRow) {
-                $meashuresDBRecord = new \App\Models\Ejournal\Measure();
+                $meashuresDBRecord = new \App\Model\Ejournal\Measure();
                 $meashuresDBRecord->naryad_id = $naryad->id;
                 $meashuresDBRecord->licensor = $msRow['licensor'];
                 $meashuresDBRecord->lic_date = $msRow['lic_date'];
@@ -530,7 +530,7 @@ class EjournalController extends BaseController
             'order_creator' => $this->naryadRecord['order_creator'],
             'order_longer' => $this->naryadRecord['order_longer'],
             'under_voltage' => $this->naryadRecord['under_voltage'],
-            'workspecs' => \App\Models\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
+            'workspecs' => \App\Model\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
             'workspecs_id' => $this->naryadRecord['workspecs_id'],
             'workslist' => $this->naryadRecord['objects'] . ' виконати ' . $this->naryadRecord['tasks'],
             'naryadRecord' => $this->naryadRecord,
@@ -624,7 +624,7 @@ class EjournalController extends BaseController
     /**
      * !! Remove the specified resource from storage.
      *
-     * @param \App\Models\Ejournal\Naryad $naryad
+     * @param \App\Model\Ejournal\Naryad $naryad
      * @return \Illuminate\Http\Response
      */
     public function destroy($order_id)
@@ -647,15 +647,15 @@ class EjournalController extends BaseController
         }
         $engineers_txt = '';
         if (isset($this->naryadRecord['brig_e_ch'])) {
-            $engineers_txt = Brigade_Engineer::find(explode(",", $this->naryadRecord['brig_e_ch']));
+            $engineers_txt = BrigadeEngineer::find(explode(",", $this->naryadRecord['brig_e_ch']));
         }
 
         $brigade_txt = BrigadeMember::find(explode(",", $naryad->brigade_m));
-        $engineers_txt = Brigade_Engineer::find(explode(",", $naryad->brigade_e));
+        $engineers_txt = BrigadeEngineer::find(explode(",", $naryad->brigade_e));
 
         $substation_txt = Substation::find($naryad->substation_id)->body;
         $substation_type_id = Substation::find($naryad->substation_id)->type_id;
-        $substation_type = Station_Type::find($substation_type_id)->body;
+        $substation_type = StationType::find($substation_type_id)->body;
         $preparations = Preparation::get_data($naryad->id);
         $measures = Measure::get_data($naryad->id);
         /*PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);*/

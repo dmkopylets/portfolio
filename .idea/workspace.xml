@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f60aa33d-e53a-487d-98c1-66604ad2efb8" name="Changes" comment="added another project">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/outfits.journaling/resources/views/naryads/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/outfits.journaling/resources/views/naryads/index.blade.php" afterDir="false" />
-    </list>
+    <list default="true" id="f60aa33d-e53a-487d-98c1-66604ad2efb8" name="Changes" comment="added another project" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -236,6 +233,7 @@
       <workItem from="1673428376665" duration="24000" />
       <workItem from="1675686167605" duration="6041000" />
       <workItem from="1675739386612" duration="2093000" />
+      <workItem from="1675769616730" duration="315000" />
     </task>
     <task id="LOCAL-00001" summary="first push">
       <created>1663152661590</created>

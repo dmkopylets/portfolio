@@ -69,11 +69,11 @@ return [
             'model' => LdapRecord\Models\ActiveDirectory\User::class,
             //'model' => LdapRecord\Models\OpenLdap\User::class,
             'database' => [
-                'password_column' => false, 
-                'model' => App\Models\User::class,
+                'password_column' => false,
+                'model' => \App\Model\User\Entity\User::class,
                 'sync_passwords' => false,
                 'sync_attributes' => [
-                    'name' => 'cn',  
+                    'name' => 'cn',
                     'username' => 'samaccountname',
                     //'LASTNAME' => 'sn',
                     //'FIRSTNAME' => 'givenname',

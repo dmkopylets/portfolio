@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Ejournal\Dicts;
 
 use App\Http\Controllers\Ejournal\BaseController;
-use App\Models\Ejournal\Dicts\BrigadeEngineer;
+use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
 
-class DictBrigadeEngineersController extends BaseController
+class DictBrigadeEngineersController extends DictBaseController
 {
     public function index(Request $request)
     {
@@ -24,10 +24,10 @@ class DictBrigadeEngineersController extends BaseController
            where('specialization','like',$searchMyspecialization)->
            orderBy('body')->get();
         return view('dicts.index',
-           ['branch_name'=>$this->getBranch()->name,
+           ['branchName'=>$this->getBranch()->name,
             'records'=>$records,
             'zagolovok'=>'механіки-стропальщики',
-            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeEngineer',
+            'modelName'=> 'App\Model\Ejournal\Dicts\BrigadeEngineer',
             'dictName'=>'BrigadeEngineers',
             'add_th'=>array('спеціалізація','П.І.Б.','група'),
             'add_td'=>array('specialization','body','group'),
@@ -44,7 +44,7 @@ class DictBrigadeEngineersController extends BaseController
     {
         return view('dicts.create',
            ['zagolovok'=>'машиністів-стропальщиків',
-            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeEngineer',
+            'modelName'=> 'App\Model\Ejournal\Dicts\BrigadeEngineer',
             'dictName'=>'BrigadeEngineers',
             'add_th'=>array('спеціалізація','П.І.Б.','група'),
             'add_td'=>array('specialization','body','group')]);
@@ -75,7 +75,7 @@ class DictBrigadeEngineersController extends BaseController
     /**
      * Show the form for editing the specified resource.
      * !! EDIT
-     * @param  \App\Models\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
+     * @param  \App\Model\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -85,7 +85,7 @@ class DictBrigadeEngineersController extends BaseController
            ['record'=>$record,
             'zagolovok'=>'машиністів-стропальщиків',
             'dictName'=>'BrigadeEngineers',
-            'modelName'=>'App\Models\Ejournal\Dicts\BrigadeEngineer',
+            'modelName'=> 'App\Model\Ejournal\Dicts\BrigadeEngineer',
             'add_th'=>array('спеціалізація','П.І.Б.','група'),
             'add_td'=>array('specialization','body','group')]);
     }
@@ -94,7 +94,7 @@ class DictBrigadeEngineersController extends BaseController
      * !! Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
+     * @param  \App\Model\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
      * @return \Illuminate\Http\Response
      * originalstring -  public function update(Request $request, BrigadeEngineer $BrigadeEngineer)
      */
@@ -114,7 +114,7 @@ class DictBrigadeEngineersController extends BaseController
     /**
      * !! Remove the specified resource from storage.
      *
-     * @param  \App\Models\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
+     * @param  \App\Model\Ejournal\Dicts\BrigadeEngineer  $BrigadeEngineer
      * @return \Illuminate\Http\Response
      */
     public function destroy(BrigadeEngineer $BrigadeEngineer)
