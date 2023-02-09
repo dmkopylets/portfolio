@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Ejournal\Dicts;
 
 use App\Http\Controllers\Ejournal\BaseController;
@@ -7,8 +9,6 @@ use App\Model\Ejournal\Dicts\Adjuster;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
-use function App\Http\Controllers\Ejournal\view;
-use App\Http\Controllers\Ejournal\Dicts\DictBaseController;
 
 class DictAdjustersController extends BaseController
 {
@@ -19,24 +19,24 @@ class DictAdjustersController extends BaseController
      */
     public function index(Request $request)
     {
-        $branch = $this->getBranch();
+        $branch = $this->currentUser->userBranch;
         $branch_id = $branch->id;
-        $searchMybody =  '%'.$request->input('searchMybody').'%';
-        $searchMygroup =  '%'.$request->input('searchMygroup').'%';
+        $searchMybody = '%' . $request->input('searchMybody') . '%';
+        $searchMygroup = '%' . $request->input('searchMygroup') . '%';
         $records = Adjuster::
-            where('branch_id',$branch_id)->
-            where('group','like',$searchMygroup)->
-            where('body','like',$searchMybody)->
-            orderBy('body')->get();
+        where('branch_id', $branch_id)->
+        where('group', 'like', $searchMygroup)->
+        where('body', 'like', $searchMybody)->
+        orderBy('body')->get();
         return view('dicts.index',
-             ['branchName'=>$branch->body,
-              'records'=>$records,
-              'zagolovok'=>'допускачів',
-              'dictName'=>'Adjusters',
-              'modelName'=> 'App\Model\Ejournal\Dicts\Adjuster',
-              'add_th'=>array('допускач','група'),
-              'add_td'=>array('body','group'),
-              'th_width'=>array(305,70)]);
+            ['branchName' => $branch->body,
+                'records' => $records,
+                'zagolovok' => 'допускачів',
+                'dictName' => 'Adjusters',
+                'modelName' => 'App\Model\Ejournal\Dicts\Adjuster',
+                'add_th' => array('допускач', 'група'),
+                'add_td' => array('body', 'group'),
+                'th_width' => array(305, 70)]);
     }
 
 
@@ -47,25 +47,25 @@ class DictAdjustersController extends BaseController
      */
     public function create()
     {
-        return view('dicts.create', ['zagolovok'=>'допускачів','modelName'=> 'App\Model\Ejournal\Dicts\Adjuster','dictName'=>'Adjusters','add_th'=>array('допускач','група'),'add_td'=>array('body','group')]);
+        return view('dicts.create', ['zagolovok' => 'допускачів', 'modelName' => 'App\Model\Ejournal\Dicts\Adjuster', 'dictName' => 'Adjusters', 'add_th' => array('допускач', 'група'), 'add_td' => array('body', 'group')]);
     }
 
     /**
      * !!! STORE a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $record = new Adjuster;
         $record->branch_id = \App\Model\Ejournal\Dicts\Branch::dataFromLoginPrefix()->id;
-        $record->id = Adjuster::max('id')+1;
+        $record->id = Adjuster::max('id') + 1;
         $record->body = $request->input('body');
         $record->group = $request->input('group');
         $record->save();
         // redirect
-        Session::flash('message', 'Запис успішно додано допускача '.$record->body);
+        Session::flash('message', 'Запис успішно додано допускача ' . $record->body);
         return Redirect::to('dicts/Adjusters');
     }
 
@@ -73,43 +73,40 @@ class DictAdjustersController extends BaseController
     /**
      * Show the form for editing the specified resource.
      * !! EDIT
-     * @param  \App\Models\eNaryd\Dicts\Adjuster $adjusters
+     * @param \App\Models\eNaryd\Dicts\Adjuster $adjusters
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $record = Adjuster::find($id);
-        return view('dicts.edit', ['record'=>$record,'zagolovok'=>'допускачів','dictName'=>'Adjusters','modelName'=> 'App\Model\Ejournal\Dicts\Adjuster','add_th'=>array('допускач','група'),'add_td'=>array('body','group')]);
+        return view('dicts.edit', ['record' => $record, 'zagolovok' => 'допускачів', 'dictName' => 'Adjusters', 'modelName' => 'App\Model\Ejournal\Dicts\Adjuster', 'add_th' => array('допускач', 'група'), 'add_td' => array('body', 'group')]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\eNaryd\Dicts\Adjuster $adjusters
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\eNaryd\Dicts\Adjuster $adjusters
      * @return \Illuminate\Http\Response
      * !!!! public function update(Request $request, Adjuster $adjuster)
      */
     public function update(Request $request, $record_id)
     {
-    $record = Adjuster::find($record_id);
-    $record->body       = $request->input('body');
-    $record->group      = $request->input('group');
-    $record->save();
+        $record = Adjuster::find($record_id);
+        $record->body = $request->input('body');
+        $record->group = $request->input('group');
+        $record->save();
 
-    // redirect
-    Session::flash('message', 'Запис № '.$record_id.' успішно змінено!');
-    return Redirect::to('dicts/Adjusters');
+        // redirect
+        Session::flash('message', 'Запис № ' . $record_id . ' успішно змінено!');
+        return Redirect::to('dicts/Adjusters');
     }
-
-
-
 
 
     /**
      * !!! Remove the specified resource from storage.
      *
-     * @param  \App\Models\eNaryd\Dicts\Adjuster $adjusters
+     * @param \App\Models\eNaryd\Dicts\Adjuster $adjusters
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -119,7 +116,7 @@ class DictAdjustersController extends BaseController
         $record->delete();
 
         // redirect
-        Session::flash('message', 'Успішно видалено допускача '.$msgtxt);
+        Session::flash('message', 'Успішно видалено допускача ' . $msgtxt);
         return Redirect::to('dicts/Adjusters');
     }
 }

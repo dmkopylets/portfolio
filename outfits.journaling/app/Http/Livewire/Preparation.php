@@ -8,8 +8,8 @@ class Preparation extends Component
     public $updatePreparation = false;
     public $rowkey; // індекс рядка (одномірного масива) у бегатомірному масиві $preparation_rs
     public                $branch_id, $substation_type_id, $substation_id, $substations, $preparations_rs, $maxIdpreparation, $preparation_id, $target_obj, $body, $count_prepr_row, $naryadRecord;
-    
-    
+
+
     public function mount($substations, $preparations_rs, $maxIdpreparation, $count_prepr_row, $naryadRecord)
     {
         $this->reset();
@@ -38,7 +38,7 @@ class Preparation extends Component
 
     public function render()
     {
-        return view('naryads.edit.f6Preparation',[
+        return view('orders.edit.f6Preparation',[
            'substations'=>$this->substations,
            'substation_id'=>$this->substation_id,
            'preparations_rs'=>$this->preparations_rs,
@@ -80,9 +80,9 @@ class Preparation extends Component
             $this->resetFields();
         }
         finally{
-            $this->count_prepr_row = count($this->preparations_rs);       
+            $this->count_prepr_row = count($this->preparations_rs);
             $this->maxIdpreparation = max(array_column($this->preparations_rs,'id'));
-            return view('naryads.edit.f6Preparation',[
+            return view('orders.edit.f6Preparation',[
                 'substations'=>$this->substations,
                 'substation_id'=>$this->substation_id,
                 'preparations_rs'=>$this->preparations_rs,
@@ -117,8 +117,8 @@ class Preparation extends Component
             $this->preparations_rs[$this->rowkey]=[
                      'id'=>$this->preparation_id,
                      'target_obj'=>$this->target_obj,
-                     'body'=>$this->body];   
-            session(['preparations_rs' => $this->preparations_rs]);                     
+                     'body'=>$this->body];
+            session(['preparations_rs' => $this->preparations_rs]);
             session()->flash('success','Препарація змінена успішно!!');
             $this->cancel();
         }catch(\Exception $e){
@@ -139,9 +139,9 @@ class Preparation extends Component
             session()->flash('error',"Під час видалення Препарації сталася помилка!!");
         }
         finally{
-            $this->count_prepr_row = count($this->preparations_rs);       
+            $this->count_prepr_row = count($this->preparations_rs);
             $this->maxIdpreparation = max(array_column($this->preparations_rs,'id'));
-            return view('naryads.edit.f6Preparation',[
+            return view('orders.edit.f6Preparation',[
                 'substations'=>$this->substations,
                 'substation_id'=>$this->substation_id,
                 'preparations_rs'=>$this->preparations_rs,

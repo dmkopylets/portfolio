@@ -9,7 +9,7 @@ class Measure extends Component
     public $rowkey;     // індекс рядка (одномірного масива) у двомірному масиві $measure_rs
     public $measure_id; // номер рядка для для запису в таблицю бази даних в поле id (не номер в масиві !  )
     public $branch_id, $measures_rs, $maxIdMeasure, $count_meas_row, $naryadRecord, $licensor, $lic_date, $mode;
-    
+
     public function mount($mode, $measures_rs, $maxIdMeasure, $count_meas_row, $naryadRecord)
     {
         $this->reset();
@@ -36,7 +36,7 @@ class Measure extends Component
 
     public function render()
     {
-        return view('naryads.edit.f7Measures',[
+        return view('orders.edit.f7Measures',[
            'measures_rs'=>$this->measures_rs,
            'mode'=>$this->mode,
            'count_meas_row'=>$this->count_meas_row,
@@ -77,9 +77,9 @@ class Measure extends Component
             $this->resetFields();
         }
         finally{
-            $this->count_meas_row = count($this->measures_rs);       
+            $this->count_meas_row = count($this->measures_rs);
             $this->maxIdMeasure = max(array_column($this->measures_rs,'id'));
-            return view('naryads.edit.f7Measures',[
+            return view('orders.edit.f7Measures',[
                 'count_meas_row'=>$this->count_meas_row,
                 'maxIdMeasure'=>$this->maxIdMeasure,
                 'measures_rs'=>$this->measures_rs,
@@ -112,7 +112,7 @@ class Measure extends Component
                      'id'=>$this->measure_id,  // "прилітає з editMeasure($id)
                      'licensor'=>$this->licensor,
                      'lic_date'=>$this->lic_date];
-            session(['measures_rs'  => $this->measures_rs]);                     
+            session(['measures_rs'  => $this->measures_rs]);
             session()->flash('success','рядок змінено успішно!!');
             $this->cancel();
         }catch(\Exception $e){
@@ -128,14 +128,14 @@ class Measure extends Component
             $this->measures_rs=array_values($this->measures_rs);  // переіндексація масива
             session(['measures_rs'  => $this->measures_rs]);
             session()->flash('success',"рядок видалено успішно!!!!");
-            $this->cancel(); 
+            $this->cancel();
         }catch(\Exception $e){
             session()->flash('error',"Під час видалення рядка сталася помилка!!");
         }
         finally{
-            $this->count_meas_row = count($this->measures_rs);       
+            $this->count_meas_row = count($this->measures_rs);
             $this->maxIdMeasure = max(array_column($this->measures_rs,'id'));
-            return view('naryads.edit.f7Measures',[
+            return view('orders.edit.f7Measures',[
                 'measures_rs'=>$this->measures_rs,
                 'count_meas_row'=>$this->count_meas_row,
                 'maxIdMeasure'=>$this->maxIdMeasure,

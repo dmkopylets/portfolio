@@ -120,7 +120,7 @@ class DirectionTask extends Component
         // "заганяємо" зчитані змінені значенні з полів введення в масив в session
         session(['naryadRecord' => $newNaryadRecord]);
 
-        return view('naryads.edit.f4_direction-task', [
+        return view('orders.edit.f4_direction-task', [
             'lines'=>$this->lines,
             'line_id'=> $this->line_id,
             'workspecs'=>$this->workspecs,

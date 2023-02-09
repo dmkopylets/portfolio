@@ -7,9 +7,6 @@ use App\Model\Ejournal\Dicts\Warden;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
-use function App\Http\Controllers\Ejournal\view;
-
-//use App\Http\Controllers\Ejournal\BaseController;
 
 class DictWardensController extends BaseController
 {
@@ -20,7 +17,7 @@ class DictWardensController extends BaseController
      */
     public function index(Request $request)
     {
-        $branch = $this->getBranch();
+        $branch = $this->currentUser->userBranch;
         $branch_id = $branch->id;
         $searchMybody =  '%'.$request->input('searchMybody').'%';
         $searchMygroup =  '%'.$request->input('searchMygroup').'%';

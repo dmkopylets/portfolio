@@ -27,17 +27,17 @@ use Illuminate\Support\Facades\Route;
 //*************************************************************************************************************
 Route::get('/', [App\Http\Controllers\Ejournal\EjournalController::class,'welcome']);
 Route::get('login', [App\Http\Controllers\Ejournal\EjournalController::class,'welcome']);
-Route::resource('naryads', App\Http\Controllers\Ejournal\EjournalController::class)->only(['index','edit','create','store']);
-Route::get('naryads/precreate', [App\Http\Controllers\Ejournal\EjournalController::class,'precreate']);
-Route::post('naryads/{naryad}/editpart2', [App\Http\Controllers\Ejournal\EjournalController::class,'editpart2']);
-Route::post('naryads/{naryad}/editpart3', [App\Http\Controllers\Ejournal\EjournalController::class,'editpart3']);
-Route::post('naryads/{naryad}/editpart4', [App\Http\Controllers\Ejournal\EjournalController::class,'editpart4']);
-Route::post('naryads/{naryad}/editpart5', [App\Http\Controllers\Ejournal\EjournalController::class,'editpart5']);
-Route::post('naryads/{naryad}/reedit',    [App\Http\Controllers\Ejournal\EjournalController::class,'reedit']);
-Route::post('naryads/{naryad}/reedit2',   [App\Http\Controllers\Ejournal\EjournalController::class,'reedit2']);
-Route::post('naryads/{naryad}/reedit3',   [App\Http\Controllers\Ejournal\EjournalController::class,'reedit3']);
-Route::post('naryads/{naryad}/reedit4',   [App\Http\Controllers\Ejournal\EjournalController::class,'reedit4']);
-Route::get('naryads/{naryad}/pdf', [App\Http\Controllers\Ejournal\EjournalController::class,'pdf']);
+Route::resource('orders', App\Http\Controllers\Ejournal\EjournalController::class)->only(['index','edit','create','store']);
+Route::get('orders/precreate', [App\Http\Controllers\Ejournal\EjournalController::class,'precreate']);
+Route::post('orders/{naryad}/editpart2', [App\Http\Controllers\Ejournal\EjournalController::class,'editpart2']);
+Route::post('orders/{naryad}/editpart3', [App\Http\Controllers\Ejournal\EjournalController::class,'editpart3']);
+Route::post('orders/{naryad}/editpart4', [App\Http\Controllers\Ejournal\EjournalController::class,'editpart4']);
+Route::post('orders/{naryad}/editpart5', [App\Http\Controllers\Ejournal\EjournalController::class,'editpart5']);
+Route::post('orders/{naryad}/reedit',    [App\Http\Controllers\Ejournal\EjournalController::class,'reedit']);
+Route::post('orders/{naryad}/reedit2',   [App\Http\Controllers\Ejournal\EjournalController::class,'reedit2']);
+Route::post('orders/{naryad}/reedit3',   [App\Http\Controllers\Ejournal\EjournalController::class,'reedit3']);
+Route::post('orders/{naryad}/reedit4',   [App\Http\Controllers\Ejournal\EjournalController::class,'reedit4']);
+Route::get('orders/{naryad}/pdf', [App\Http\Controllers\Ejournal\EjournalController::class,'pdf']);
 
 Route::prefix('dicts')->group(function () {
     Route::resource('/Branches', \App\Http\Controllers\Ejournal\Dicts\DictBranchesController::class)->only(['index','edit','create','store','update']);

@@ -13,8 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-      'naryads/create/*',
-      'naryads/edit/*',
+      'orders/create/*',
+      'orders/edit/*',
       'livewire/*',
     ];
 }

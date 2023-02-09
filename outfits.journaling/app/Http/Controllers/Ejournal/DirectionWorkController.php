@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Ejournal;
 
 use App\Model\Ejournal\Dicts\Direction;
 use App\Model\Ejournal\Dicts\Substation;
-use App\Model\Ejournal\Naryad;
+use App\Model\Ejournal\Order;
 use Livewire\Component;
 
 class DirectionWorkController extends Component
@@ -16,7 +16,7 @@ class DirectionWorkController extends Component
     {
     	$searchTerm = '%'.$this->searchTerm.'%';
         $substationlist = Substation::where('body','like',$searchTerm)->pluck('id');
-        $this->records = Naryad::whereIn('substation_id',$substationlist)->orderBy('id','desc')->paginate(10);
+        $this->records = Order::whereIn('substation_id',$substationlist)->orderBy('id','desc')->paginate(10);
         return view('livewire.search', compact('direction'));
 
     }

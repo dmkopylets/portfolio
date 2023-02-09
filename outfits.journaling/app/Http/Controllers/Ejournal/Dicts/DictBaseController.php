@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Ejournal\Dicts;
 
 use App\Http\Controllers\Ejournal\BaseController;

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f60aa33d-e53a-487d-98c1-66604ad2efb8" name="Changes" comment="added another project" />
+    <list default="true" id="f60aa33d-e53a-487d-98c1-66604ad2efb8" name="Changes" comment="renamed some variables, according to camel style" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -234,6 +234,7 @@
       <workItem from="1675686167605" duration="6041000" />
       <workItem from="1675739386612" duration="2093000" />
       <workItem from="1675769616730" duration="315000" />
+      <workItem from="1675851927304" duration="171000" />
     </task>
     <task id="LOCAL-00001" summary="first push">
       <created>1663152661590</created>
@@ -326,7 +327,21 @@
       <option name="project" value="LOCAL" />
       <updated>1673336676939</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="renamed some variables, according to camel style">
+      <created>1675852049432</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1675852049433</updated>
+    </task>
+    <task id="LOCAL-00015" summary="renamed some variables, according to camel style">
+      <created>1675852082852</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1675852082852</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -354,7 +369,8 @@
     <MESSAGE value="adminLTE : &#10;minor improvements:&#10;application of regex when reading txt files" />
     <MESSAGE value="Racig Report : &#10;minor improvements" />
     <MESSAGE value="added another project" />
-    <option name="LAST_COMMIT_MESSAGE" value="added another project" />
+    <MESSAGE value="renamed some variables, according to camel style" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed some variables, according to camel style" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

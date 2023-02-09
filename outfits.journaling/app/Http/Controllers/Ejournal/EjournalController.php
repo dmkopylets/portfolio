@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Ejournal;
 
 use App\Http\Controllers\Ejournal\BaseController as BaseController;
@@ -12,7 +14,7 @@ use App\Model\Ejournal\Dicts\TypicalTask;
 use App\Model\Ejournal\Dicts\Unit;
 use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Measure;
-use App\Model\Ejournal\Naryad;
+use App\Model\Ejournal\Order;
 use App\Model\Ejournal\Preparation;
 use App\ReadModel\SubstationFetcher;
 use Illuminate\Http\Request;
@@ -27,10 +29,10 @@ class EjournalController extends BaseController
         session()->forget('measures_rs');
         session()->forget('mode');
 
-        return view('naryads.welcome', [
-            'branch' => \App\Model\Ejournal\Dicts\Branch::dataFromLoginPrefix(),
-            'userlogin' => $this->getUserLogin(),
-            'displayName' => $this->getDisplayName()
+        return view('orders.welcome', [
+            'userBranch' => $this->currentUser->userBranch,
+            'userLogin' => $this->currentUser->userLogin,
+            'userName' => $this->currentUser->userName
         ]);
     }
 
@@ -43,18 +45,16 @@ class EjournalController extends BaseController
     {
         $searchWarden = '%' . $request->input('searchWarden') . '%';
         $searchTerm = '%' . $request->input('searchTerm') . '%';
-        $branch = $this->getBranch();
 
-
-        if ($branch->id == 0) {
+        if ($this->currentUser->userBranch->id == 0) {
             $wardenlistid = Warden::where('body', 'like', $searchWarden)->pluck('id');
             $substationlistid = Substation::where('body', 'like', $searchTerm)->pluck('id');
         } else {
-            $wardenlistid = Warden::where('body', 'like', $searchWarden)->where('branch_id', $branch->id)->pluck('id');
-            $substationlistid = Substation::where('body', 'like', $searchTerm)->where('branch_id', $branch->id)->pluck('id');
+            $wardenlistid = Warden::where('body', 'like', $searchWarden)->where('branch_id', $this->currentUser->userBranch->id)->pluck('id');
+            $substationlistid = Substation::where('body', 'like', $searchTerm)->where('branch_id', $this->currentUser->userBranch->id)->pluck('id');
         }
 
-        $records = Naryad::whereIn('substation_id', $substationlistid)->whereIn('warden_id', $wardenlistid)->orderBy('id', 'desc')->paginate(5);
+        $records = Order::whereIn('substation_id', $substationlistid)->whereIn('warden_id', $wardenlistid)->orderBy('id', 'desc')->paginate(5);
 
         // чистимо Session
         session()->forget('naryadRecord');
@@ -62,7 +62,7 @@ class EjournalController extends BaseController
         session()->forget('measures_rs');
         session()->forget('mode');
 
-        return view('naryads.index', ['records' => $records, 'mode' => 'index', 'branch' => $branch]);
+        return view('orders.index', ['records' => $records, 'mode' => 'index', 'branch' => $this->currentUser->userBranch]);
     }
 
     /**
@@ -70,7 +70,7 @@ class EjournalController extends BaseController
      */
     public function precreate()
     {
-        return view('naryads.precreate', [
+        return view('orders.precreate', [
             'workspecs' => \App\Model\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
             'workspecs_id' => 0,
             // $this->__set('workspecs_id',0)  // не осилив покищо
@@ -84,7 +84,7 @@ class EjournalController extends BaseController
     public function create(Request $request)
     {
         //$this->mode='create';
-        $branch = $this->getBranch();
+        $branch = $this->currentUser->userBranch;
         $tasks = TypicalTask::orderBy('id')->get();
         $units = Unit::where('branch_id', $branch->id)->orderBy('id')->get();
         $wardens = Warden::where('branch_id', $branch->id)->orderBy('id')->get();
@@ -128,7 +128,7 @@ class EjournalController extends BaseController
         session(['naryadRecord' => $this->naryadRecord]);
 
 
-        return view('naryads.edit', [
+        return view('orders.edit', [
             'mode' => 'create',
             'title' => 'новий',
             'tasks' => $tasks,
@@ -164,8 +164,8 @@ class EjournalController extends BaseController
          !! Але зберігаємо цю частину новоствореного наряду в масив
          !! і передаємо у session для наступних форм введення */
     {
-        $record = Naryad::find($order_id);  // !! по номеру наряду який клонуємо
-        $branch = $this->getBranch();
+        $record = Order::find($order_id);  // !! по номеру наряду який клонуємо
+        $branch = $this->currentUser->userBranch;
         $unit_id = $record->unit_id;
         $brig_m_arr = BrigadeMember::where('branch_id', $branch->id)->orderBy('id')->get();   // масив усіх можливих членів бригади
         $brig_e_arr = BrigadeEngineer::where('branch_id', $branch->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
@@ -222,7 +222,7 @@ class EjournalController extends BaseController
         session()->forget('naryadRecord');
         session(['naryadRecord' => $this->naryadRecord]);
 
-        return view('naryads.edit', [
+        return view('orders.edit', [
             'mode' => 'clone',
             'title' => '№ ' . $order_id,
             'branch' => $branch,
@@ -247,7 +247,7 @@ class EjournalController extends BaseController
         /**********************************************************
          * !! спочатку з session('naryadRecord') витягуємо всі попередньо відомі дані по конкретному наряду, потім
          * !! за техлогією метода store(Request $request) зчитуємо те, що могло змінитися у попередній в'юшці
-         * !! через $request-> витягуємо даніх попередньої в'юшки (naryads.edit)
+         * !! через $request-> витягуємо даніх попередньої в'юшки (orders.edit)
          * !! і цією частиною доповнюємо  новостворений наряд в масиві session
          * !! і передаємо у наступну форму введення
          * @param \Illuminate\Http\Request $request
@@ -335,7 +335,7 @@ class EjournalController extends BaseController
         session(['mode' => $mode]);
 
         // потім з цієї в'юшки буде через контролер livewire.preparation визвано "асинхроний" livewire фрейм edit.f6Preparation -->
-        return view('naryads.editPart2', [
+        return view('orders.editPart2', [
             'title' => '№ ' . $order_id . ' препарації',
             'mode' => $mode,
             'substations' => $this->getSubstationsList($this->naryadRecord['branch_id'], $this->naryadRecord['substation_type_id']),
@@ -357,7 +357,7 @@ class EjournalController extends BaseController
             $mode = 'clone';
         }
 
-        return view('naryads.editPart3', [
+        return view('orders.editPart3', [
             'title' => 'клонуємо наряд № ' . $order_id,
             'mode' => $mode,
             'naryadRecord' => $this->naryadRecord,
@@ -404,7 +404,7 @@ class EjournalController extends BaseController
         session(['measures_rs' => $this->measures_rs]);
 
 
-        return view('naryads.editPart4', [
+        return view('orders.editPart4', [
             'title' => '№ ' . $order_id . ' підготовка2',
             'mode' => session('mode'),
             'maxIdMeasure' => $maxIdMeasure,
@@ -417,7 +417,7 @@ class EjournalController extends BaseController
     public function editpart5($order_id, Request $request)
     {
         $this->naryadRecord = session('naryadRecord');
-        return view('naryads.editPart5', [
+        return view('orders.editPart5', [
             'title' => '№ ' . $order_id . ' завершення',
             'naryadRecord' => $this->naryadRecord,
             'mode' => session('mode'),
@@ -427,9 +427,9 @@ class EjournalController extends BaseController
 
     public function store(Request $request)
     {
-        $naryad = new Naryad;
+        $naryad = new Order;
         $naryadStored = $request->session()->get('naryadRecord'); //$naryadStored = session('naryadRecord'); // можна і так
-        $naryad->id = Naryad::max('id') + 1;
+        $naryad->id = Order::max('id') + 1;
         $naryad->branch_id = $naryadStored['branch_id'];
         $naryad->unit_id = $naryadStored['unit_id'];
         $naryad->warden_id = $naryadStored['warden_id'];
@@ -473,7 +473,7 @@ class EjournalController extends BaseController
                 $meashuresDBRecord->save;
             }
         }
-        return Redirect::to('naryads')->with('success', 'Наряд додано!');
+        return Redirect::to('orders')->with('success', 'Наряд додано!');
     }
 
 
@@ -483,7 +483,7 @@ class EjournalController extends BaseController
         session(['mode' => 'reedit']);
         $this->preparations_rs = session('preparations_rs');
         $this->naryadRecord = session('naryadRecord');
-        $branch = $this->getBranch();
+        $branch = $this->currentUser->userBranch;
         $wardens = Warden::where('branch_id', $branch->id)->orderBy('id')->get();
         $warden = Warden::find($this->naryadRecord['warden_id']);
         $adjusters = Adjuster::where('branch_id', $branch->id)->orderBy('id')->get();
@@ -500,7 +500,7 @@ class EjournalController extends BaseController
         if (isset($this->naryadRecord['brigade_e'])) {
             $engineers_txt = BrigadeEngineer::find(explode(",", $this->naryadRecord['brigade_e']));
         }
-        return view('naryads.edit', [
+        return view('orders.edit', [
             'mode' => 'reedit',
             'order_id' => $order_id,
             'title' => ' клон № ' . $order_id,
@@ -566,7 +566,7 @@ class EjournalController extends BaseController
         session()->forget('naryadRecord');
         session(['naryadRecord' => $this->naryadRecord]);
 
-        return view('naryads.editPart2', [
+        return view('orders.editPart2', [
             'mode' => 'reedit',
             'title' => ' клон № ' . $order_id,
             'branch_id' => $this->naryadRecord['branch_id'],
@@ -586,7 +586,7 @@ class EjournalController extends BaseController
     {
         // session(['measures_rs'  => $this->measures_rs]);
         session(['mode' => 'reedit']);
-        return view('naryads.editPart3', [
+        return view('orders.editPart3', [
             'mode' => 'reedit',
             'title' => ' клон № ' . $order_id,
             'naryadRecord' => session('naryadRecord')
@@ -610,7 +610,7 @@ class EjournalController extends BaseController
         $this->naryadRecord['under_voltage'] = trim($request->get('under_voltage'));
         session(['naryadRecord' => $this->naryadRecord]);
 
-        return view('naryads.editPart4', [
+        return view('orders.editPart4', [
             'mode' => 'reedit',
             'title' => ' клон № ' . $order_id,
             'measures_rs' => $this->measures_rs,
@@ -624,19 +624,19 @@ class EjournalController extends BaseController
     /**
      * !! Remove the specified resource from storage.
      *
-     * @param \App\Model\Ejournal\Naryad $naryad
+     * @param \App\Model\Ejournal\Order $naryad
      * @return \Illuminate\Http\Response
      */
     public function destroy($order_id)
     {
         //        Обережно! бо працює харашо
-//        $record = Naryad::find($order_id);
+//        $record = Order::find($order_id);
 //        $record->delete();
     }
 
-    public function pdf(Naryad $naryad)
+    public function pdf(Order $naryad)
     {
-        $branch = $this->getBranch();
+        $branch = $this->currentUser->userBranch;
         $nom_naryad = '№ ' . $naryad->id;
         $unit_txt = Unit::find($naryad->unit_id)->body;
         $warden_txt = Warden::find($naryad->warden_id)->body . ', ' . Warden::find($naryad->warden_id)->group;
@@ -660,8 +660,8 @@ class EjournalController extends BaseController
         $measures = Measure::get_data($naryad->id);
         /*PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);*/
 
-        /* $pdf = Facade::loadView('naryads.pdf', [ */
-        $pdf = \Barryvdh\DomPDF\Facade::loadView('naryads.pdf', [
+        /* $pdf = Facade::loadView('orders.pdf', [ */
+        $pdf = \Barryvdh\DomPDF\Facade::loadView('orders.pdf', [
             'naryad' => $naryad,
             'mode' => 'pdf',
             'nom_naryad' => $nom_naryad,
@@ -678,14 +678,14 @@ class EjournalController extends BaseController
             'measures' => $measures
         ])->setPaper('a4', 'landscape')->setWarnings(false);
 
-        // $responce = $pdf->download('Naryad.pdf');
+        // $responce = $pdf->download('Order.pdf');
 
-        return $pdf->stream('Naryad.pdf');
-        // return $pdf->download  ('Naryad.pdf');
+        return $pdf->stream('Order.pdf');
+        // return $pdf->download  ('Order.pdf');
         //$this->assertInstanceOf(Response::class, $response);
         //$this->assertNotEmpty($response->getContent());
         //$this->assertEquals('application/pdf', $response->headers->get('Content-Type'));
-        //$this->assertEquals('attachment; filename="Naryad.pdf"', $response->headers->get('Content-Disposition'));
+        //$this->assertEquals('attachment; filename="Order.pdf"', $response->headers->get('Content-Disposition'));
 
     }
 

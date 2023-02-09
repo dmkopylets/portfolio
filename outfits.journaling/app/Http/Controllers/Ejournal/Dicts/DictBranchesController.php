@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Ejournal\Dicts;
 
-use App\Http\Controllers\Ejournal\BaseController;
 use App\Model\Ejournal\Dicts\Branch;
 use Illuminate\Http\Request;
 use Redirect;
@@ -17,7 +18,7 @@ class DictBranchesController extends DictBaseController
         $records =  $this->getList($request, $repertory);
 
         $parameters = [
-            'branchName' => $this->getBranch()->body,
+            'branchName' => $this->currentUser->userBranch->body,
             'records' => $records,
             'zagolovok' => 'філій',
             'dictName' => substr(\Request::getRequestUri(),7),

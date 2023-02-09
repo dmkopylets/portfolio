@@ -21,15 +21,4 @@ class Branch extends Model
     {
         return $this->hasMany(Substation::class);
     }
-
-    public static function dataFromLoginPrefix()
-    {
-//      $user = \Illuminate\Support\Facades\Auth::user();
-//      $companyName = $user->ldap->getFirstAttribute('company');
-//      $userlogin   = $user->name;
-        $userlogin = 'kl_DemoUser';
-        $branch = Branch::where('prefix', 'like', '%' . substr($userlogin, 0, 3) . '%')->get()->first();
-        return $branch;
-    }
-
 }
