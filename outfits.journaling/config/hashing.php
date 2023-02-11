@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Hash Driver
+    | Default Hash DriverTxt
     |--------------------------------------------------------------------------
     |
     | This option controls the default hash driver that will be used to hash
@@ -44,9 +44,9 @@ return [
     */
 
     'argon' => [
-        'memory' => 1024,
-        'threads' => 2,
-        'time' => 2,
+        'memory' => 65536,
+        'threads' => 1,
+        'time' => 4,
     ],
 
 ];

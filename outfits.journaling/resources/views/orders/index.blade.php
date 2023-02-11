@@ -6,7 +6,7 @@
     <div class="flex-center position-ref full-height">
         <form class="grid_with_search">
             <div class="col-md-12">
-                <table class="table  table-fixed table-striped table-bordered" id="orders-table"  style="margin: 10px 0 10px 0;">
+                <table class="table table-fixed table-striped table-bordered" id="orders-table"  style="margin: 10px 0 10px 0;">
                     <thead>
                     <tr>
                         <th scope="col" width="50px">#</th>
@@ -21,7 +21,7 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="height: 600px;">
                     @foreach($records as $record)
                         <th scope="row" width="50px">{{$record->id}}</th>
                         <td width="120px">{{$record->order_date}}</td>
@@ -42,7 +42,5 @@
         </form>
 </div>
 </div>
-
-<script type="text/javascript" src="{{asset('js/jquery.min.js')}}" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="{{ asset('js/bootstrap.min.js')}}" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+@include('layouts.bootstrapjs')
 @endsection

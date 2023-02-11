@@ -6,7 +6,6 @@
             <h2><strong>Оберіть специфіку робіт</strong></h2>
         <div class="content">
 
-
 <form action="{{ url('orders/create') }}" method="GET">
 @csrf
 <div class="direction-task">
@@ -16,7 +15,7 @@
             @foreach($workspecs as $workspec)
                 &nbsp
                 <div class="form-check form-check-inline .col-md-1">
-                    <input class="form-check-input works_specs_id" type="radio" name="direction" value="{{$workspec->id}}")" >
+                    <input class="form-check-input works_specs_id" type="radio" name="direction" value="{{$workspec->id}}" >
                     <label class="form-check-label" for="inlineRadio{{$workspec->id}}">{{$workspec->body}}</label>
                 </div>
             @endforeach
@@ -31,8 +30,7 @@
 </div>
 </div>
 
-<script type="text/javascript" src="{{asset('js/jquery.min.js')}}" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="{{ asset('js/bootstrap.min.js')}}" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+@include('layouts.bootstrapjs')
 @endsection
 
 

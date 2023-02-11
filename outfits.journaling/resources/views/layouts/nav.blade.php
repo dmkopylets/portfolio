@@ -36,11 +36,11 @@
 
   <strong>
     <div class="d-inline-block" style="float: right; margin-right: 30px;">
-        <a class="btn btn-small btn-outline-info" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        <a class="btn btn-small btn-outline-info" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
         style="color:rgb(182, 38, 12); text-decoration: none; font-style:italic;">
              {{ __('Вийти ') }} <i class="fa fa-sign-out" aria-hidden="true"></i></a>
 
-         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+         <form id="logout-form" action="#" method="POST" style="display: none;">
              @csrf
          </form>
      </div>

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f60aa33d-e53a-487d-98c1-66604ad2efb8" name="Changes" comment="renamed some variables, according to camel style" />
+    <list default="true" id="f60aa33d-e53a-487d-98c1-66604ad2efb8" name="Changes" comment="outfits.journaling: renamed table naryads to orders, renamed some variables" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -235,6 +235,7 @@
       <workItem from="1675739386612" duration="2093000" />
       <workItem from="1675769616730" duration="315000" />
       <workItem from="1675851927304" duration="171000" />
+      <workItem from="1675942265381" duration="138000" />
     </task>
     <task id="LOCAL-00001" summary="first push">
       <created>1663152661590</created>
@@ -341,7 +342,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675852082852</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="outfits.journaling: renamed table naryads to orders, renamed some variables">
+      <created>1675942386475</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1675942386475</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -370,7 +378,8 @@
     <MESSAGE value="Racig Report : &#10;minor improvements" />
     <MESSAGE value="added another project" />
     <MESSAGE value="renamed some variables, according to camel style" />
-    <option name="LAST_COMMIT_MESSAGE" value="renamed some variables, according to camel style" />
+    <MESSAGE value="outfits.journaling: renamed table naryads to orders, renamed some variables" />
+    <option name="LAST_COMMIT_MESSAGE" value="outfits.journaling: renamed table naryads to orders, renamed some variables" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

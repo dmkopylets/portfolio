@@ -1,4 +1,4 @@
-FROM webdevops/php-apache-dev:8.0-alpine AS e-journal-php8_apache-Alpine
+FROM webdevops/php-apache-dev:8.1-alpine AS e-journal-php81-apache-Alpine
 
 # PHP_INI_DIR to be symmetrical with official php docker image
 ENV PHP_INI_DIR /usr/local/etc/php
@@ -29,20 +29,20 @@ ARG DEPS="\
         libzip-dev"
 
 RUN set -x \
-    && apk add --update --no-cache $DEPS 
+    && apk add --update --no-cache $DEPS
 
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer  
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 
 ## монтуєм файл конфигурації php в контейнер
 ADD ./php.ini /usr/local/etc/php/
 
-# очищуємо папку логів Apache2 в контейнері (насправді у прокинутій із-зовні папки)
+# очищуємо папку логів в контейнері (насправді у прокинутій із-зовні папки)
 RUN rm -rf /var/www/logs \
  && mkdir /var/www/logs \
  && ln -sf /dev/stdout /var/www/logs/access.log \
- && ln -sf /dev/stderr /var/www/logs/error.log 
+ && ln -sf /dev/stderr /var/www/logs/error.log
 
 #USER application
 

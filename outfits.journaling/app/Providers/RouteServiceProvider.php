@@ -11,25 +11,16 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * The path to the "home" route for your application.
+     * The path to the "flights" route for your application.
      *
-     * This is used by Laravel authentication to redirect users after login.
-     *
-     * @var string
-     */
-    public const HOME = '/welcome';
-
-    /**
-     * If specified, this namespace is automatically applied to your controller routes.
-     *
-     * In addition, it is set as the URL generator's root namespace.
+     * Typically, users are redirected here after authentication.
      *
      * @var string
      */
-    protected $namespace = null;
+    public const HOME = '/flights';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
+     * Define your route model bindings, pattern filters, and other route configuration.
      *
      * @return void
      */
@@ -38,12 +29,12 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
+            Route::middleware('api')
+                ->prefix('api/v1')
+                ->group(base_path('routes/api/v1.php'));
+
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
-
-            Route::prefix('api')
-                ->middleware('api')
-                ->group(base_path('routes/api.php'));
         });
     }
 
@@ -55,7 +46,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60);
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
 }

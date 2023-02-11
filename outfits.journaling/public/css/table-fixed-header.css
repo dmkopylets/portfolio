@@ -8,7 +8,7 @@ body {
 
 .table-fixed tbody{
          display:block;
-         height:260px;
+         height:460px;
          overflow:auto;
  }
 

@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{{asset('css/nunito-200-600.css')}}" >
     <link rel="stylesheet" href="{{asset('css/table-fixed-header.css')}}" />
     <link rel="stylesheet" href="{{asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" href="{{asset('css/naryad.css')}}" />    
+    <link rel="stylesheet" href="{{asset('css/order.css')}}" />
 
 
     <!-- Styles -->

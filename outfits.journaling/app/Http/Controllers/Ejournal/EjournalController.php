@@ -18,6 +18,7 @@ use App\Model\Ejournal\Order;
 use App\Model\Ejournal\Preparation;
 use App\ReadModel\SubstationFetcher;
 use Illuminate\Http\Request;
+use PDF;
 use Redirect;
 
 class EjournalController extends BaseController
@@ -54,7 +55,7 @@ class EjournalController extends BaseController
             $substationlistid = Substation::where('body', 'like', $searchTerm)->where('branch_id', $this->currentUser->userBranch->id)->pluck('id');
         }
 
-        $records = Order::whereIn('substation_id', $substationlistid)->whereIn('warden_id', $wardenlistid)->orderBy('id', 'desc')->paginate(5);
+        $records = Order::whereIn('substation_id', $substationlistid)->whereIn('warden_id', $wardenlistid)->orderBy('id', 'desc')->paginate(8);
 
         // чистимо Session
         session()->forget('naryadRecord');
@@ -73,7 +74,6 @@ class EjournalController extends BaseController
         return view('orders.precreate', [
             'workspecs' => \App\Model\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
             'workspecs_id' => 0,
-            // $this->__set('workspecs_id',0)  // не осилив покищо
         ]);
     }
 
@@ -83,8 +83,9 @@ class EjournalController extends BaseController
      */
     public function create(Request $request)
     {
-        //$this->mode='create';
+        $this->mode='create';
         $branch = $this->currentUser->userBranch;
+        $this->orderRecord = new Order();
         $tasks = TypicalTask::orderBy('id')->get();
         $units = Unit::where('branch_id', $branch->id)->orderBy('id')->get();
         $wardens = Warden::where('branch_id', $branch->id)->orderBy('id')->get();
@@ -100,6 +101,9 @@ class EjournalController extends BaseController
         }
         $this->preparations_rs = array();
         $this->measures_rs = array();
+
+        $this->orderRecord->branch_id = $branch->id;
+
         $this->naryadRecord = [
             'order_id' => 0,
             'branch_id' => $branch->id,
@@ -113,7 +117,6 @@ class EjournalController extends BaseController
             'brigade_e' => '',
             'substation_id' => 1,
             'substation_type_id' => $substation_type_id,
-            //'substation_type'=>$substation_type,
             'line_id' => 1,
             'sep_instrs' => '',
             'order_creator' => '',
@@ -128,8 +131,9 @@ class EjournalController extends BaseController
         session(['naryadRecord' => $this->naryadRecord]);
 
 
-        return view('orders.edit', [
-            'mode' => 'create',
+        return view('orders.edit.editPart1', [
+            'orderRecord' => $this->orderRecord,
+            'mode' => $this->mode,
             'title' => 'новий',
             'tasks' => $tasks,
             'units' => $units,
@@ -140,7 +144,7 @@ class EjournalController extends BaseController
             'brigade_m' => '',
             'brigade_e' => '',
             'branch' => $branch,
-            'substations' => $this->getSubstationsList($branch->id, $substation_type_id), // функція прописана в BaseController
+            'substations' => $this->getSubstationsList($branch->id, $substation_type_id),
             'workspecs' => \App\Model\Ejournal\Dicts\WorksSpec::worksSpecCollect(), // список - де робитиметься : на 10-ках, чи на 0.4, чи ...
             'workslist' => ' виконати ', // саме текст завдання
             'preparations_rs' => $this->preparations_rs,
@@ -403,7 +407,6 @@ class EjournalController extends BaseController
 
         session(['measures_rs' => $this->measures_rs]);
 
-
         return view('orders.editPart4', [
             'title' => '№ ' . $order_id . ' підготовка2',
             'mode' => session('mode'),
@@ -448,7 +451,7 @@ class EjournalController extends BaseController
         $naryad->order_longer = $naryadStored['order_longer'];
         $naryad->works_spec_id = $naryadStored['workspecs_id'];
         $naryad->line_id = $naryadStored['line_id'];
-        $naryad->under_voltage = trim($request->get('under_voltage'));
+        $naryad->under_voltage = trim($request->get('under_voltage_txt'));
         $request->flash();
         $naryad->save();
         $preparations_rs = session('preparations_rs');
@@ -661,7 +664,7 @@ class EjournalController extends BaseController
         /*PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);*/
 
         /* $pdf = Facade::loadView('orders.pdf', [ */
-        $pdf = \Barryvdh\DomPDF\Facade::loadView('orders.pdf', [
+        $pdf =  PDF::loadView('orders.pdf', [
             'naryad' => $naryad,
             'mode' => 'pdf',
             'nom_naryad' => $nom_naryad,

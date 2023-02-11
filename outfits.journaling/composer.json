@@ -2,43 +2,34 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
+    "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
-        "barryvdh/laravel-debugbar": "dev-master",
-        "barryvdh/laravel-dompdf": "^0.9.0",
-        "directorytree/ldaprecord-laravel": "^2.0",
-        "fideloper/proxy": "^4.2",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.0",
-        "laravel/jetstream": "^2.1",
-        "laravel/tinker": "^2.0",
-        "laravel/ui": "^3.2",
-        "laravelcollective/html": "^6.2",
-        "livewire/livewire": "^2.0",
-        "tightenco/ziggy": "^1.0"
+        "php": "^8.1.2",
+        "ext-simplexml": "*",
+        "barryvdh/laravel-dompdf": "^2.0",
+        "darkaonline/l5-swagger": "^8.4",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^9.19",
+        "laravel/sanctum": "^3.0",
+        "laravel/tinker": "^2.7",
+        "vlucas/phpdotenv": "^5.5"
     },
     "require-dev": {
-        "facade/ignition": "^2.3.6",
-        "mockery/mockery": "^1.3.1",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-            ]
-        }
+        "barryvdh/laravel-ide-helper": "^2.12",
+        "fakerphp/faker": "^1.9.1",
+        "friendsofphp/php-cs-fixer": "^3.9",
+        "laravel/pint": "^1.0",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^6.1",
+        "phpunit/php-code-coverage": "^9.2",
+        "phpunit/phpunit": "^9.5.10",
+        "spatie/laravel-ignition": "^1.0",
+        "phpstan/phpstan": "1.0.2",
+        "vimeo/psalm": "^4.30.0",
+        "squizlabs/php_codesniffer": "3.*",
+        "phpmd/phpmd" : "@stable"
     },
     "autoload": {
         "psr-4": {
@@ -52,21 +43,42 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
+        ],
+        "code-sniffer": [
+            "./vendor/bin/phpcs --config-set default_standard phpcs.xml",
+            "./vendor/bin/phpcs --config-set colors 1"
+        ],
+        "post-install-cmd": [
+            "@code-sniffer"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@code-sniffer"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ],
-        "post-update-cmd": [
-        "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ]
-    }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

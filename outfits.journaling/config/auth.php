@@ -31,20 +31,14 @@ return [
     | users are actually retrieved out of your database or other storage
     | mechanisms used by this application to persist your user's data.
     |
-    | Supported: "session", "token"
+    | Supported: "session"
     |
     */
 
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'ldap', // було   'provider' => 'users',
-        ],
-
-        'api' => [
-            'driver' => 'token',
             'provider' => 'users',
-            'hash' => false,
         ],
     ],
 
@@ -61,26 +55,20 @@ return [
     | sources which represent each model / table. These sources may then
     | be assigned to any extra authentication guards you have defined.
     |
+    | Supported: "database", "eloquent"
+    |
     */
 
     'providers' => [
-        'ldap' => [
-            'driver' => 'ldap',
-            'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            //'model' => LdapRecord\Models\OpenLdap\User::class,
-            'database' => [
-                'password_column' => false,
-                'model' => \App\Model\User\Entity\User::class,
-                'sync_passwords' => false,
-                'sync_attributes' => [
-                    'name' => 'cn',
-                    'username' => 'samaccountname',
-                    //'LASTNAME' => 'sn',
-                    //'FIRSTNAME' => 'givenname',
-                    //'ACTIVE_DIRECTORY_USER' => 'comptent'
-            ],
-          ],
-       ],
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
     ],
 
     /*
@@ -92,7 +80,7 @@ return [
     | than one user table or model in the application and you want to have
     | separate password reset settings based on the specific user types.
     |
-    | The expire time is the number of minutes that the reset token should be
+    | The expire time is the number of minutes that each reset token will be
     | considered valid. This security feature keeps tokens short-lived so
     | they have less time to be guessed. You may change this as needed.
     |

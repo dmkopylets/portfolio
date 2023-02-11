@@ -40,7 +40,7 @@
                 <div style="float: center; margin-right: 1px;">
                     <button type="submit"
                             class="fa-hover btn btn-info btn-lg btn-block" style="float: right;"
-                            formaction="{{route('naryads.store')}}"
+                            formaction="{{route('orders.store')}}"
                             formmethod="post">
                         <i class="fa fa-save fa-fw" aria-hidden="true"></i> Зберегти ВСЕ!!!
                     </button>
