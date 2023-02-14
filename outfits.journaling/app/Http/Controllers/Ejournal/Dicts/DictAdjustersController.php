@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Redirect;
 use Session;
 
-class DictAdjustersController extends BaseController
+class DictAdjustersController extends DictBaseController
 {
     /**
      * Display a listing of the resource.

@@ -24,18 +24,18 @@
                     <p style="font-size: 10pt; margin-bottom: 0;">Підрозділ</p>
                 </td>
                 <td width="15.5cm" style="border: none;  line-height: 1pt; border-bottom: 0.5px solid #000">
-                    <p style="font-size: 10pt; text-align: left; margin-bottom:0; padding:2px"><i>{{$branch_name}} ({{$unit_txt}})</i></p>
+                    <p style="font-size: 10pt; text-align: left; margin-bottom:0; padding:2px"><i>{{$branchName}} ( дільниця {{$unitName}})</i></p>
                 </td>
             </tr>
     </table>
-    <h4 style="text-align:center; margin-top: 0; margin-bottom: 0; padding:0;">НАРЯД - ДОПУСК № {{$naryad->id}}</h4>
+    <h4 style="text-align:center; margin-top: 0; margin-bottom: 0; padding:0;">НАРЯД - ДОПУСК № {{$order->id}}</h4>
     <h5 style="text-align:center; margin-top: 0; margin-bottom: 0; padding:0;">(для виконання робіт в електроустановках)</h5>
 
         <table width="19cm" ><col width="4.5cm"/><col width="14cm"/>
             <tr>
                 <td width="4.5cm" style="line-height:16pt; border:none;"><p style="font-size: 10pt; margin-top: 0; margin-bottom:0; vertical-align: bottom">Керівнику робіт (наглядачу)</p></td>
                 <td width="14cm"  style="line-height:16pt; border-bottom:0.5px solid #000; vertical-align: bottom;">
-                    <p style="font-size: 10pt; text-align: center; margin-top:0; margin-bottom: 0; line-height: 80%;"><i>{{$warden_txt}}</i></p>
+                    <p style="font-size: 10pt; text-align: center; margin-top:0; margin-bottom: 0; line-height: 80%;"><i>{{$wardenTxt}}</i></p>
                 </td>
             </tr>
             <tr><td height="8" style="border: none; line-height: 1pt; padding: 0;"><p style="font-size: 8pt; margin-top: 0; margin-bottom: 0;"></p></td>
@@ -48,7 +48,7 @@
             <tr>
                 <td style="line-height:70%; margin-bottom:0; border:none; vertical-align:bottom;"><p style="font-size: 10pt;  margin-top: 0; margin-bottom:0;">допускачу</p></td>
                 <td style="line-height:70%; border-bottom:0.5px solid #000; vertical-align: bottom;">
-                    <p style="font-size:10pt; text-align:center; margin-top:0; margin-bottom:0; line-height:70%;"><i>{{$adjuster_txt}}</i></p></td>
+                    <p style="font-size:10pt; text-align:center; margin-top:0; margin-bottom:0; line-height:70%;"><i>{{$adjusterTxt}}</i></p></td>
             </tr>
             <tr><td height="8" style="border:none; line-height: 1pt;"><p style="font-size:2pt; margin-top:0; margin-bottom:0;"></p></td>
                 <td height="8" style="border:none; line-height: 6pt; vertical-align:top;">
@@ -59,8 +59,8 @@
                 <td style="line-height: 70%; border-bottom: 0.5px solid #000; vertical-align:bottom;">
                     <p style="font-size: 10pt; text-align: left; margin-top:0; margin-bottom:0; line-height:70%;"><i>
                     <?php $brlist=''; ?>
-                    @foreach($brigade_txt as $txt1)    <?php $brlist=$brlist.$txt1->body.' '.$txt1->group.', '; ?>  @endforeach
-                    @foreach($engineers_txt as $txt1)  <?php $brlist=$brlist.$txt1->specialization.' '.$txt1->body.' '.$txt1->group.', '; ?>   @endforeach
+                    @foreach($brigadeTxt as $txt1)    <?php $brlist=$brlist.$txt1->body.' '.$txt1->group.', '; ?>  @endforeach
+                    @foreach($engineersTxt as $txt1)  <?php $brlist=$brlist.$txt1->specialization.' '.$txt1->body.' '.$txt1->group.', '; ?>   @endforeach
                     {{ substr($brlist, 0, -2)}}</i></p></td>
             </tr>
             <tr>
@@ -71,23 +71,23 @@
         </table>
 
         <table width="19cm" >
-            <tr><td class="statistics_underlines"> доручається     на: <u><i>{{$substation_type.', '.$substation_txt.', '.$naryad->objects}}</i></td></tr>
+            <tr><td class="statistics_underlines"> доручається на: <u><i>{{$substationType.', '.$substationTxt.', '.$order->objects}}</i></td></tr>
             <tr>
                 <td style="line-height: 70%; margin-top:0; margin-bottom:0; border:none; vertical-align: center;"> <p style="font-size:10pt; margin-top: 0; margin-bottom:0;">виконати: <u><i>
-                    {{$naryad->tasks}}</i></p></td>
+                    {{$order->tasks}}</i></p></td>
             </tr>
         </table>
 
 
     <div class="wrap_dates">
         <div class="bblock" >Роботу почати: <em>дата</em></div>
-        <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$naryad->w_begin), 'd.m.Y')}}</div>
+        <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->w_begin), 'd.m.Y')}}</div>
         <div class="bblock" ><em>час</em></div>
-        <div class="bblock" style="margin-right: 20px; border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$naryad->w_begin), 'H год. i хв.')}}</div>
+        <div class="bblock" style="margin-right: 20px; border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->w_begin), 'H год. i хв.')}}</div>
         <div class="bblock" >Роботу закінчити: <em>дата</em></div>
-        <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$naryad->w_end), 'd.m.Y')}}</div>
+        <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->w_end), 'd.m.Y')}}</div>
         <div class="bblock" ><em>час</em></div>
-        <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$naryad->w_end), 'H год. i хв.')}}</div>
+        <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->w_end), 'H год. i хв.')}}</div>
     </div>
 
     <h5 style="margin-bottom: 0; line-height: 70%;">Таблиця 1</h5>
@@ -117,26 +117,26 @@
           <table width="19cm" >
             <tr><td  class="statistics_underlines"
                 >Окремі вказівки : <u><i
-                >{{$naryad->sep_instrs}}</i></u></td>
+                >{{$order->sep_instrs}}</i></u></td>
             </tr>
          </table>
 
          <div id="order" class="wrap_dates"   style="margin-top: 10px;" >
             <div class="bblock" >Наряд видав: <em>дата</em></div>
-            <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$naryad->order_date), 'd.m.Y')}}</div>
+            <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->order_date), 'd.m.Y')}}</div>
             <div class="bblock" ><em>час</em></div>
-            <div class="bblock" style="margin-right: 56px; border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$naryad->order_date), 'H год. i хв.')}}</div>
+            <div class="bblock" style="margin-right: 56px; border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->order_date), 'H год. i хв.')}}</div>
             <div class="bblock" >Підпис _______________ Прізвище, ініціали </div>
-            <div class="bblock" style="border-bottom: 0.5px solid #000;"><em>{{$naryad->order_creator}}</em></div>
+            <div class="bblock" style="border-bottom: 0.5px solid #000;"><em>{{$order->order_creator}}</em></div>
         </div>
 
         <div id="long" class="wrap_dates">
             <div class="bblock" >Наряд продовжив до: <em>дата</em></div>
-            <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$naryad->order_longto), 'd.m.Y')}}</div>
+            <div class="bblock" style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->order_longto), 'd.m.Y')}}</div>
             <div class="bblock" ><em>час</em></div>
-            <div class="bblock" style="margin-right: 10px; border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$naryad->order_longto), 'H год. i хв.')}}</div>
+            <div class="bblock" style="margin-right: 10px; border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->order_longto), 'H год. i хв.')}}</div>
             <div class="bblock" >Підпис _______________ Прізвище, ініціали </div>
-            <div class="bblock" style="border-bottom: 0.5px solid #000;"><em>{{$naryad->order_longer}}</em></div>
+            <div class="bblock" style="border-bottom: 0.5px solid #000;"><em>{{$order->order_longer}}</em></div>
         </div>
 
     <h5 style="margin-bottom: 0; line-height: 160%;">Таблиця 2</h5>

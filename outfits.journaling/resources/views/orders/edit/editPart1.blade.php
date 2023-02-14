@@ -7,13 +7,14 @@
     <div class="container">
         <div class="jumbotron mt-3" style="padding-top: 0; margin-top:0;">
 
-            {{ Form::model('Order', array('url' => array('orders/'.$naryadRecord['order_id'].'/editpart2'), 'method' => 'POST')) }}
+            {{ Form::model('Order', array('url' => array('orders/'.$orderRecord->id.'/editpart2'), 'method' => 'POST')) }}
 
-            @include('orders.edit.f1HidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
+            @include('orders.edit.hidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
             <div class="text-lg-left">
                 <div class="row">
                     <div class="col-md-3"><p class="lead" style="font-size: 12pt;">підприємство</p></div>
-                    <div class="col-md-6"><h3 style="font-size: 14pt;">АТ "ANYОБЛЕНЕРГО" {{'mode='.$mode}} {{'branchId= '. $orderRecord->branch_id}}</h3></div>
+                    <div class="col-md-6"><h3 style="font-size: 14pt;">АТ
+                            "ANYОБЛЕНЕРГО" {{'mode='.$mode}} {{'branchId= '. $orderRecord->branch_id}}</h3></div>
                 </div>
                 <div class="row">
                     <div class="col-md-3"><p class="lead" style="font-size: 12pt;">підрозділ</p></div>
@@ -27,7 +28,7 @@
                                     id="district" name="district" required>
                                 @foreach($units as $unit)
                                     <option
-                                        @if (($mode !=='create') and ($unit->id == $naryadRecord['unit_id']))
+                                        @if (($mode !=='create') and ($unit->id == $orderRecord['unit_id']))
                                             {{' selected = true '}}
                                         @endif
                                         VALUE="{{$unit->id}}">{{$unit->body}}
@@ -45,26 +46,24 @@
             </div>
 
             <div class="row">
-                @include('orders.edit.f2Rpanel')  <!-- Права Панелька з чекбоксами вибору членів бригади  -->
+                @include('orders.edit.editPart1_RightPanel')  <!-- Права Панелька з чекбоксами вибору членів бригади  -->
 
                 <!-- Ліва частина "робоча частина"  -->
                 <div class="col-md-8 order-md-1">
-                    @include('orders.edit.f3BrigadeBody')            <!-- "хто робитиме"  -->
+                    @include('orders.edit.editPart1_BrigadeBody')            <!-- "хто робитиме"  -->
                     <!-- "що і де робити"  // вибір select-ами ктп...
-                    визов "фрейма" edit.f4_direction-task виконується через контролер livewire.direction-task -->
-                    @livewire('direction-task',[
-                    'workspecs'=>$workspecs,
+                    визов "фрейма" edit.f4_direction-task виконується через livewire-контролер direction-task = DirectionTask -->
+                    @livewire('direction-task', [
                     'substations' => $substations,
                     'mode' => $mode,
-                    'naryadRecord' => $naryadRecord,
+                    'orderRecord' => $orderRecord,
                     ])
                 </div>
             </div>
 
             <hr class="mb-4">  <!-- просто розділова горизонтальн рисочка через всю форму -->
-            @include('orders.edit.f5Calendares')
+            @include('orders.edit.editPart1_Calendares')
             <hr class="mb-4">  <!-- просто розділова горизонтальн рисочка через всю форму -->
-
 
             <button
                 class="btn btn-primary btn-lg btn-block"
@@ -75,9 +74,7 @@
         </div>
     </div>
 
-    </div>
-
-    @include('orders.edit.js')
+    @include('orders.edit.editPart1_js')
     @livewireScripts
 @endsection
 

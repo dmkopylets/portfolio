@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\ReadModel;
 
 use App\Model\Ejournal\Dicts\Substation;
+use Illuminate\Database\Eloquent\Collection;
+
 
 class SubstationFetcher
 {
@@ -18,10 +20,10 @@ class SubstationFetcher
         $this->substationTypeId = $substationTypeId;
     }
 
-    public function getSubstationsList()
+    public function getSubstationsList(): Collection
     {
         return Substation::
-        select('id', 'body')
+        select('id', 'body', 'type_id')
             ->where('branch_id', $this->branchId)
             ->where('type_id', $this->substationTypeId)
             ->orderBy('type_id', 'asc')
