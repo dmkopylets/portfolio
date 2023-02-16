@@ -7,17 +7,23 @@ namespace App\Http\Controllers\Ejournal\Edit;
 use App\Http\Controllers\Ejournal\BaseController;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
-use App\Model\Ejournal\Order;
+use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\Ejournal\Preparation;
+use App\Model\User\Entity\BranchInfo;
+use App\Model\User\Entity\UserRepository;
 use Illuminate\Http\Request;
 
 class EditPart2Controller extends BaseController
 {
 
-    private Order $orderRecord;
-    public function __construct()
+    private OrderRecordDTO $orderRecord;
+    protected BranchInfo $branch;
+
+    public function __construct(public UserRepository $userRepository, private EditRepository $repo)
     {
-        $this->orderRecord = $this->getOrderRecord();
+        parent::__construct($userRepository);
+        $this->branch = $this->currentUser->userBranch;
+        $this->repo = $repo;
     }
 
     public function editpart2(int $orderId, Request $request)
@@ -35,8 +41,13 @@ class EditPart2Controller extends BaseController
             $mode = 'clone';
         }
 
-        $brig_m_arr = BrigadeMember::where('branch_id', $this->getBranch()->id)->orderBy('id')->get();   // масив усіх можливих членів бригади
-        $brig_e_arr = BrigadeEngineer::where('branch_id', $this->getBranch()->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
+        $orderRecord = $this->orderRecord;
+        var_dump($orderRecord);
+        die();
+        //->getOrderRecord();
+        $branch = $this->branch;
+        $brig_m_arr = BrigadeMember::where('branch_id', $branch->id)->orderBy('id')->get();   // масив усіх можливих членів бригади
+        $brig_e_arr = BrigadeEngineer::where('branch_id', $branch->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
         $brigade_m = $request->input('write_to_db_brigade');
         $brigade_e = $request->input('write_to_db_engineers');
         $substation_id = $request->input('choose_substation');
@@ -51,12 +62,10 @@ class EditPart2Controller extends BaseController
         // розділяємо текст на частини: об'єкти та робота з поля введення workslist по слову  ' виконати '
         $workslist = trim($request->get('workslist'));
         $pos = strpos($workslist, ' виконати ');
-//        $this->orderRecord = [
-//            'order_id' => $orderId,
-//            'branch_id' => $branch_id,
-//            'unit_id' => $request->input('district'),
-//            'warden_id' => $request->input('warden'),
-//            'adjuster_id' => $request->input('adjuster'),
+
+            $orderRecord->unit_id = $request->input('district');
+            $orderRecord->wardenId = $request->input('warden');
+            $orderRecord->adjusterId = $request->input('adjuster');
 //            'brigade_m' => $brigade_m,
 //            'brigade_e' => $brigade_e,
 //            'workspecs_id' => $workspecs_id,
@@ -112,7 +121,7 @@ class EditPart2Controller extends BaseController
         return view('orders.editPart2', [
             'title' => '№ ' . $orderId . ' препарації',
             'mode' => $mode,
-            'substations' => $this->getSubstationsList($this->getOrderRecord()['branch_id'], $this->getOrderRecord()['substation_type_id']),
+            'substations' => $this->getSubstationsList($branch->id, $this->getOrderRecord()['substation_type_id']),
             'maxIdpreparation' => $maxIdpreparation,
             'count_prepr_row' => $count_prepr_row,
             'brig_m_arr' => $brig_m_arr,

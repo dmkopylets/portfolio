@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Ejournal\Edit;
 
 use App\Model\Ejournal\Dicts\TypicalTask;
 use App\Model\Ejournal\Dicts\WorksSpec;
-use App\Model\Ejournal\Order;
+use App\Model\Ejournal\OrderRecordDTO;
 use Livewire\Component;
 
 class DirectionTask extends Component
 {
-    public array $changedOrderRecord = [];
-    private int $unitId;
-    private array $lines;
-    private array $substations;
-    private array $taskslist;
+    protected OrderRecordDTO $changedOrderRecord;
+    private array $lines = [];
+    private array $substations = [];
+    private array $taskslist = [];
     private array $workspecs = [];
     public $choosedSubstation;
     private string $workslist = '';
@@ -22,29 +21,32 @@ class DirectionTask extends Component
     private string $mode = '';
     private int $substation_type_id = 0;
     private EditRepository $repo;
+    private int $lineId;
 
-    public function mount(array $substations, string $mode, Order $orderRecord)
+    public function mount(array $substations, string $mode, OrderRecordDTO $orderRecord)
     {
-        $this->reset();
+        //$this->reset();
         $this->mode = $mode;
         $this->repo = new EditRepository;
-        $this->changedOrderRecord = $orderRecord->toArray();
+        $this->changedOrderRecord = $orderRecord;
         $this->workspecs = WorksSpec::getWorksSpecs();
-        $this->worksSpecsId = $orderRecord->works_spec_id;
-        $this->choosedSubstation = $orderRecord->substation_id;
-        $this->branchId = $orderRecord->branch_id;
+        $this->worksSpecsId = $orderRecord->worksSpecsId;
+        $this->choosedSubstation = $orderRecord->substationId;
+        $this->branchId = $orderRecord->branchId;
         $this->workslist = $orderRecord->objects . ' ' . $orderRecord->tasks;
         $this->substations = $substations;
         $this->substation_type_id = $substations[0]['type_id'];
+        $this->lineId = 1;
         if ($mode !== 'create') {
-            $this->line_id = $orderRecord->line_id;
-            $this->lines = $this->repo->getLinesList($this->branchId, $orderRecord->substation_id);
+            $this->lineId = $orderRecord->lineId;
+            $this->lines = $this->repo->getLinesList($this->branchId, $orderRecord->substationId);
         }
         $this->taskslist = TypicalTask::getListArray($this->worksSpecsId);// список робіт визначених, в функціях mount або choose_direction
     }
 
     public function directDialer($choice)
     {
+        $this->repo = new EditRepository;
         $this->worksSpecsId = $choice;
         // тільки при works_specs_id==3 , що означає =
         // тільки для 10-ток
@@ -55,7 +57,7 @@ class DirectionTask extends Component
             $this->substation_type_id = 1;
         }
         $this->taskslist = TypicalTask::getListArray($this->worksSpecsId); // список робіт визначених, в функціях mount або choose_direction
-        $this->substations = $this->repo->getSubstationsList($this->changedOrderRecord['branch_id'], $this->substation_type_id);
+        $this->substations = $this->repo->getSubstationsList($this->branchId, $this->substation_type_id);
     }
 
     public function substationDialer($choice)
@@ -69,8 +71,8 @@ class DirectionTask extends Component
     public function render()
     {
         $this->taskslist = TypicalTask::getListArray($this->worksSpecsId); // список робіт визначених, в функціях mount або choose_direction
-        $this->substations = $this->repo->getSubstationsList($this->changedOrderRecord['branch_id'], $this->substation_type_id);
-        $this->lines = $this->repo->getLinesList($this->changedOrderRecord['branch_id'], $this->choosedSubstation);
+        $this->substations = $this->repo->getSubstationsList($this->branchId, $this->substation_type_id);
+        $this->lines = $this->repo->getLinesList($this->branchId, $this->choosedSubstation);
 
         return view('orders.edit.DirectionTask', [
             'lines' => $this->lines,

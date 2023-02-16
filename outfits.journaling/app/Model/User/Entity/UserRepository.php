@@ -8,20 +8,17 @@ use App\Model\Ejournal\Dicts\Branch;
 
 class UserRepository
 {
-    private UserInfo $userInfo;
-
     public function getUserInfo(): UserInfo
     {
 //      On full version:
 //      $user = \Illuminate\Support\Facades\Auth::user();
 //      $companyName = $user->ldap->getFirstAttribute('company');
 //      $this->userInfo->userLogin  = $user->name;
-
-        $this->userInfo = new UserInfo();
-        $this->userInfo->userLogin = $this->getUserLogin();
-        $this->userInfo->userName = $this->getUserName();
-        $this->userInfo->userBranch = $this->dataFromLoginPrefix($this->userInfo->userLogin);
-        return $this->userInfo;
+        $userInfo = new UserInfo();
+        $userInfo->userLogin = $this->getUserLogin();
+        $userInfo->userName = $this->getUserName();
+        $userInfo->userBranch = $this->branchInfoFromLoginPrefix($userInfo->userLogin);
+        return $userInfo;
     }
 
     public function getUserLogin(): string
@@ -44,11 +41,17 @@ class UserRepository
         return 'Demo User';
     }
 
-    public static function dataFromLoginPrefix(string $userlogin): Branch
+    public static function branchInfoFromLoginPrefix(string $userlogin): BranchInfo
     {
-        return Branch::
+        $result = new BranchInfo();
+        $tmp = Branch::
         where('prefix', 'like', '%' . substr($userlogin, 0, 3) . '%')
             ->get()
             ->first();
+        $result->id = $tmp->id;
+        $result->body = $tmp->body;
+        return $result;
     }
+
+
 }

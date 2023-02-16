@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-md-3"><p class="lead" style="font-size: 12pt;">підприємство</p></div>
                     <div class="col-md-6"><h3 style="font-size: 14pt;">АТ
-                            "ANYОБЛЕНЕРГО" {{'mode='.$mode}} {{'branchId= '. $orderRecord->branch_id}}</h3></div>
+                            "ANYОБЛЕНЕРГО" {{'mode='.$mode}}</h3></div>
                 </div>
                 <div class="row">
                     <div class="col-md-3"><p class="lead" style="font-size: 12pt;">підрозділ</p></div>
@@ -28,7 +28,7 @@
                                     id="district" name="district" required>
                                 @foreach($units as $unit)
                                     <option
-                                        @if (($mode !=='create') and ($unit->id == $orderRecord['unit_id']))
+                                        @if (($mode !=='create') and ($unit->id === $orderRecord->unitId))
                                             {{' selected = true '}}
                                         @endif
                                         VALUE="{{$unit->id}}">{{$unit->body}}

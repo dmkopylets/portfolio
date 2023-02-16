@@ -8,38 +8,38 @@
         @endif
     </h4>
     <ul class="list-group mb-3" style="padding-left:20px">
-        @foreach($brig_m_arr as $br_member)
+        @foreach($allPossibleTeamMembers as $teamMember)
             <li class="list-group-item-brmem d-flex justify-content-between lh-condensed">
                 <div>
                     @if ($mode!=='create')
                         <input class="form-check-input" type="checkbox" style="padding-left:10px"
-                               <?php if (in_array($br_member->id, explode(",", $orderRecord->brigade_m))) {
+                               <?php if (in_array($teamMember['id'], explode(",", $orderRecord->brigadeMembersIds))) {
                                    echo ' checked ';
-                               } ?>  id="brigade_member{{$br_member->id}}" onclick="brig_engr_checked()">
+                               } ?>  id="teamMember{{$teamMember['id']}}" onclick="brig_engr_checked()">
                     @else
                         <input class="form-check-input" type="checkbox" style="padding-left:10px"
-                               id="brigade_member{{$br_member->id}}" onclick="brig_engr_checked()">
+                               id="teamMember{{$teamMember['id']}}" onclick="brig_engr_checked()">
                     @endif
                     <label class="form-check-label" style="font-size: 12px;padding-left:10px"
-                           for="brigade_member{{$br_member->id}}">{{$br_member->body}}</label>
+                           for="teamMember{{$teamMember['id']}}">{{$teamMember['body']}}</label>
                 </div>
             </li>
         @endforeach
         <!--  машиністи-стропальщики  -->
-        @foreach($brig_e_arr as $engineer)
+        @foreach($allPossibleTeamEngineer as $engineer)
             <li class="list-group-item-enineers d-flex justify-content-between lh-condensed">
                 <div>
                     @if ($mode!=='create')
                         <input class="form-check-input" type="checkbox"
-                               <?php if (in_array($engineer->id, explode(",", $orderRecord->brigade_m))) {
+                               <?php if (in_array($engineer['id'], explode(",", $orderRecord->brigadeEngineerIds))) {
                                    echo ' checked ';
-                               } ?>  id="engineer{{$engineer->id}}" onclick="brig_engr_checked()">
+                               } ?>  id="engineer{{$engineer['id']}}" onclick="brig_engr_checked()">
                     @else
-                        <input class="form-check-input" type="checkbox" id="engineer{{$engineer->id}}"
+                        <input class="form-check-input" type="checkbox" id="engineer{{$engineer['id']}}"
                                onclick="brig_engr_checked()">
                     @endif
                     <label class="form-check-label" style="font-size: 12px; color: #ef7f1a"
-                           for="engineer{{$engineer->id}}">{{$engineer->body.' '.$engineer->specialization}}</label>
+                           for="engineer{{$engineer['id']}}">{{$engineer['body'].' '.$engineer['specialization']}}</label>
                 </div>
             </li>
         @endforeach

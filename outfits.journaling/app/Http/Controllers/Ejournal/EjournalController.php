@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Ejournal;
 
 use App\Http\Controllers\Ejournal\BaseController as BaseController;
+use App\Http\Controllers\Ejournal\Edit\EditRepository;
 use App\Model\Ejournal\Dicts\Adjuster;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
@@ -15,22 +16,25 @@ use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\WorksSpec;
 use App\Model\Ejournal\Measure;
 use App\Model\Ejournal\Order;
+use App\Model\User\Entity\BranchInfo;
+use App\Model\User\Entity\UserRepository;
 use Illuminate\Http\Request;
 use PDF;
 use Redirect;
-use function Amp\Iterator\toArray;
 
 class EjournalController extends BaseController
 {
-    // private Edit\EditPart2Controller $editPart2Controller;
 
-    private EditPart1Controller $editPart1Controller;
+    protected BranchInfo $branch;
+    //private Edit\EditPart1Controller $editPart1Controller;
+    //   private Edit\EditPart2Controller $editPart2Controller;
 
-    public function __construct(public \App\Model\User\Entity\UserRepository $userRepository)
+    public function __construct(public UserRepository $userRepository, public EditRepository $myRepo)
     {
         parent::__construct($userRepository);
+        $this->branch = $this->currentUser->userBranch;
+        // $this->editPart1Controller = new Edit\EditPart1Controller($this->myRepo, $this->branch);
         // $this->editPart2Controller = new EditPart2Controller($this);
-        // $this->editPart1Controller = new EditPart1Controller($this);
     }
 
     public function welcome()
@@ -45,8 +49,7 @@ class EjournalController extends BaseController
             'userName' => $this->currentUser->userName
         ]);
     }
-
-
+    
     /**  INDEX **
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
@@ -56,18 +59,16 @@ class EjournalController extends BaseController
         $searchWarden = '%' . $request->input('searchWarden') . '%';
         $searchTerm = '%' . $request->input('searchTerm') . '%';
 
-        if ($this->currentUser->userBranch->id == 0) {
-            $wardenlistid = Warden::where('body', 'like', $searchWarden)->pluck('id');
-            $substationlistid = Substation::where('body', 'like', $searchTerm)->pluck('id');
+        if ($this->branch->id == 0) {   // if user from main office (nobranch)
+            $wardenListId = Warden::where('body', 'like', $searchWarden)->pluck('id');
+            $substationListId = Substation::where('body', 'like', $searchTerm)->pluck('id');
         } else {
-            $wardenlistid = Warden::where('body', 'like', $searchWarden)->where('branch_id', $this->currentUser->userBranch->id)->pluck('id');
-            $substationlistid = Substation::where('body', 'like', $searchTerm)->where('branch_id', $this->currentUser->userBranch->id)->pluck('id');
+            $wardenListId = Warden::where('body', 'like', $searchWarden)->where('branch_id', $this->branch->id)->pluck('id');
+            $substationListId = Substation::where('body', 'like', $searchTerm)->where('branch_id', $this->branch->id)->pluck('id');
         }
-
-        $records = Order::whereIn('substation_id', $substationlistid)->whereIn('warden_id', $wardenlistid)->orderBy('id', 'desc')->paginate(8);
+        $records = $this->myRepo->fetchOrdersList($substationListId, $wardenListId);
 
         // чистимо Session
-        session()->forget('orderRecord');
         session()->forget('preparations_rs');
         session()->forget('measures_rs');
         session()->forget('mode');
@@ -155,21 +156,10 @@ class EjournalController extends BaseController
         ]);
     }
 
-//    /**
-//     * Show the form for editing the specified resource - model "order".
-//     *
-//     * @param  $orderId - id конкретного наряду з таблиці  Orders
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function edit($orderId)
-//        /*
-//         !! більшість даних берем з бази
-//         !! передаєм їх у в'юшку
-//         !! Але зберігаємо цю частину новоствореного наряду в масив
-//         !! і передаємо у session для наступних форм введення */
-//    {
-//        return $this->editPart1Controller->edit($orderId);
-//    }
+    public function editpart1(int $orderId)
+    {
+        return $this->editPart1Controller->editpart1($orderId, $this->branch);
+    }
 //
 //    public function editpart2($orderId, Request $request)
 //        /**********************************************************

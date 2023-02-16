@@ -34,7 +34,7 @@
                             OnChange=GetSelectedSubstation()
                             wire:model="substationDialer" required>
                         @foreach($substations as $substation)
-                            <option @if ($substation['id'] == $orderRecord['substation_id'])
+                            <option @if ($substation['id'] === $orderRecord->substationId)
                                         {{' selected=true '}}
                                     @endif
                                     VALUE="{{$substation['id']}}"
@@ -50,7 +50,7 @@
                             required> <!--   Перелік ліній завантажуємо у випадаючий список       -->
                         @foreach($lines as $line)
                             <option
-                                @if ($line['line_id'] === $orderRecord['line_id']))
+                                @if ($line['line_id'] === $orderRecord->lineId))
                                     {{' selected=true '}}
                                 @endif
                                 VALUE="{{$line['line_id']}}">

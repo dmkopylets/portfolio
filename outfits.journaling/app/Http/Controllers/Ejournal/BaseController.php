@@ -7,15 +7,17 @@ namespace App\Http\Controllers\Ejournal;
 use App\Http\Controllers\Controller;
 use App\Model\Ejournal\Dicts\Branch;
 use App\Model\Ejournal\Order;
+use App\Model\Ejournal\OrderRecordDTO;
+use App\Model\User\Entity\BranchInfo;
 use App\Model\User\Entity\UserInfo;
 use App\Model\User\Entity\UserRepository;
 
 
 class BaseController extends Controller
 {
-    private Order $orderRecord;
+    private OrderRecordDTO $orderRecord;
     public UserInfo $currentUser;
-    protected Branch $branch;
+    protected BranchInfo $branch;
     protected string $mode;
     protected array $preparations_rs;
     protected array $measures_rs;
@@ -23,17 +25,23 @@ class BaseController extends Controller
     public function __construct(public UserRepository $userRepository)
     {
         $this->currentUser = $this->userRepository->getUserInfo();
-        $this->branch = $this->currentUser->userBranch;
     }
 
-    public function getBranch(): Branch
+    public function getBranch(): BranchInfo
     {
         return $this->currentUser->userBranch;
     }
 
-    public function getOrderRecord(): Order
+    public function getOrderRecord(): OrderRecordDTO
     {
+        //return session('orderRecord');
         return $this->orderRecord;
+    }
+
+    public function setOrderRecord(OrderRecordDTO $orderRecord): void
+    {
+        session(['orderRecord' => $orderRecord]);
+        $this->orderRecord = $orderRecord;
     }
 
     public function getPreparationsRs(): array
