@@ -5,52 +5,37 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Ejournal\Edit;
 
 use App\Http\Controllers\Ejournal\BaseController;
+use App\Http\Controllers\Ejournal\EjournalController;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\Ejournal\Preparation;
 use App\Model\User\Entity\BranchInfo;
-use App\Model\User\Entity\UserRepository;
 use Illuminate\Http\Request;
 
 class EditPart2Controller extends BaseController
 {
-
-    private OrderRecordDTO $orderRecord;
     protected BranchInfo $branch;
+    private EjournalController $ejournalController;
+    private OrderRecordDTO $orderRecord;
 
-    public function __construct(public UserRepository $userRepository, private EditRepository $repo)
+    public function __construct(EditRepository $repo, BranchInfo $branch, EjournalController $ejournalController)
     {
-        parent::__construct($userRepository);
-        $this->branch = $this->currentUser->userBranch;
+        $this->ejournalController = $ejournalController;
+        $this->branch = $branch;
         $this->repo = $repo;
     }
 
-    public function editpart2(int $orderId, Request $request)
-        /**********************************************************
-         * !! через $request-> витягуємо даніх попередньої в'юшки (orders.editPar1)
-         * !! і цією частиною доповнюємо  новостворений наряд в масиві session
-         * !! і передаємо у наступну форму введення
-         * @param \Illuminate\Http\Request $request
-         * @return \Illuminate\Http\Response
-         */
+    public function editpart2(string $mode, Request $request)
     {
-        if ($orderId == 0) {
-            $mode = 'create';
-        } else {
-            $mode = 'clone';
-        }
+        $orderRecord = $this->ejournalController->getOrderRecord();
+        $mode = $this->ejournalController->getMode();
 
-        $orderRecord = $this->orderRecord;
-        var_dump($orderRecord);
-        die();
-        //->getOrderRecord();
-        $branch = $this->branch;
-        $brig_m_arr = BrigadeMember::where('branch_id', $branch->id)->orderBy('id')->get();   // масив усіх можливих членів бригади
-        $brig_e_arr = BrigadeEngineer::where('branch_id', $branch->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
+        $brig_m_arr = BrigadeMember::where('branch_id', $this->branch->id)->orderBy('id')->get();   // масив усіх можливих членів бригади
+        $brig_e_arr = BrigadeEngineer::where('branch_id', $this->branch->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
         $brigade_m = $request->input('write_to_db_brigade');
         $brigade_e = $request->input('write_to_db_engineers');
-        $substation_id = $request->input('choose_substation');
+        $substation_id = $request->input('substationDialer');
         $workspecs_id = $request->input('directions');
         if ($workspecs_id == 3) {
             $substation_type_id = 2;
@@ -63,9 +48,10 @@ class EditPart2Controller extends BaseController
         $workslist = trim($request->get('workslist'));
         $pos = strpos($workslist, ' виконати ');
 
-            $orderRecord->unit_id = $request->input('district');
-            $orderRecord->wardenId = $request->input('warden');
-            $orderRecord->adjusterId = $request->input('adjuster');
+
+        $orderRecord->unitId = (int)$request->input('district');
+        $orderRecord->wardenId = (int)$request->input('warden');
+        $orderRecord->adjusterId = (int)$request->input('adjuster');
 //            'brigade_m' => $brigade_m,
 //            'brigade_e' => $brigade_e,
 //            'workspecs_id' => $workspecs_id,
@@ -119,7 +105,7 @@ class EditPart2Controller extends BaseController
 
         // потім з цієї в'юшки буде через контролер livewire.preparation визвано "асинхроний" livewire фрейм edit.f6Preparation -->
         return view('orders.editPart2', [
-            'title' => '№ ' . $orderId . ' препарації',
+            'title' => '№ ' . $orderRecord->id . ' препарації',
             'mode' => $mode,
             'substations' => $this->getSubstationsList($branch->id, $this->getOrderRecord()['substation_type_id']),
             'maxIdpreparation' => $maxIdpreparation,

@@ -8,6 +8,8 @@ use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
 use App\Model\Ejournal\Dicts\Line;
 use App\Model\Ejournal\Dicts\Substation;
+use App\Model\Ejournal\Order;
+use App\Model\Ejournal\OrderRecordDTO;
 use Illuminate\Support\Facades\DB;
 
 class EditRepository
@@ -83,5 +85,57 @@ class EditRepository
             ->orderBy('id')
             ->get()
             ->toArray();
+    }
+
+    public static function readOrderFromDB(Order $order): OrderRecordDTO
+    {
+        $dto = new OrderRecordDTO();
+        $dto->id = $order->id;
+        $dto->branchId = $order->branch_id;
+        $dto->unitId = $order->unit_id;
+        $dto->wardenId = $order->warden_id;
+        $dto->adjusterId = $order->adjuster_id;
+        $dto->brigadeMembersIds = $order->brigade_m;
+        $dto->brigadeEngineerIds = $order->brigade_e;
+        $dto->worksSpecsId = $order->works_spec_id;
+        $dto->substationId = $order->substation_id;
+        $dto->lineId = $order->line_id;
+        $dto->objects = $order->objects;
+        $dto->tasks = $order->tasks;
+        $dto->workBegin = $order->w_begin;
+        $dto->workEnd = $order->w_end;
+        $dto->separateInstructions = $order->sep_instrs;
+        $dto->orderDate = $order->order_date;
+        $dto->orderCreator = $order->order_creator;
+        $dto->orderLongTo = $order->order_longto;
+        $dto->orderLonger = $order->order_longer;
+        $dto->underVoltage = $order->under_voltage;
+        return $dto;
+    }
+
+    public function initOrderRecord(int $branchId, int $worksSpecsId)
+    {
+        $dto = new OrderRecordDTO();
+        $dto->id = 0;
+        $dto->branchId = $branchId;
+        $dto->unitId = 1;
+        $dto->wardenId = 0;
+        $dto->adjusterId = 0;
+        $dto->brigadeMembersIds = '';
+        $dto->brigadeEngineerIds = '';
+        $dto->worksSpecsId= $worksSpecsId;
+        $dto->substationId = 1;
+        $dto->lineId = 0;
+        $dto->objects = '';
+        $dto->tasks = '';
+        $dto->workBegin = '';
+        $dto->workEnd = '';
+        $dto->separateInstructions = '';
+        $dto->orderDate = '';
+        $dto->orderCreator = '';
+        $dto->orderLongTo = '';
+        $dto->orderLonger = '';
+        $dto->underVoltage = '';
+        return $dto;
     }
 }

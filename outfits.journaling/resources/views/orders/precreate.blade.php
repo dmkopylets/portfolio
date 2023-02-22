@@ -15,7 +15,7 @@
             @foreach($workspecs as $workspec)
                 &nbsp
                 <div class="form-check form-check-inline .col-md-1">
-                    <input class="form-check-input works_specs_id" type="radio" name="direction" value="{{$workspec['id']}}" >
+                    <input class="form-check-input worksSpecs" type="radio" name="direction" value="{{$workspec['id']}}" >
                     <label class="form-check-label" for="inlineRadio{{$workspec['id']}}">{{$workspec['body']}}</label>
                 </div>
             @endforeach

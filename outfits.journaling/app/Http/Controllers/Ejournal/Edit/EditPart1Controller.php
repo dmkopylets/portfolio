@@ -6,71 +6,38 @@ namespace App\Http\Controllers\Ejournal\Edit;
 
 use App\Http\Controllers\Ejournal\BaseController;
 use App\Model\Ejournal\Dicts\Adjuster;
-use App\Model\Ejournal\Dicts\StationType;
 use App\Model\Ejournal\Dicts\Substation;
 use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\Unit;
-use App\Model\Ejournal\Order;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\User\Entity\BranchInfo;
-use App\Model\User\Entity\UserRepository;
+
 
 class EditPart1Controller extends BaseController
 {
     protected BranchInfo $branch;
+    private EditRepository $repo;
 
-    public function __construct(public UserRepository $userRepository, private EditRepository $repo)
+    public function __construct(EditRepository $repo, BranchInfo $branch)
     {
-        parent::__construct($userRepository);
-        $this->branch = $this->currentUser->userBranch;
+        $this->branch = $branch;
         $this->repo = $repo;
     }
 
-    public function editpart1(int $orderId)
+    public function editpart1(OrderRecordDTO $orderRecord, string $mode)
     {
-        $mode = session('mode');
-        if (!isset($mode)){
-            $mode = 'clone';
-        }
-        $branch = $this->branch;
-        $orderFinded = Order::find($orderId);
-        $orderRecord = new OrderRecordDTO();
-        $orderRecord->id = $orderFinded->id;
-        $orderRecord->branchId = $orderFinded->branch_id;
-        $orderRecord->unitId = $orderFinded->unit_id;
-        $orderRecord->wardenId = $orderFinded->warden_id;
-        $orderRecord->adjusterId = $orderFinded->adjuster_id;
-        $orderRecord->brigadeMembersIds = $orderFinded->brigade_m;
-        $orderRecord->brigadeEngineerIds = $orderFinded->brigade_e;
-        $orderRecord->substationId = $orderFinded->substation_id;
-        $orderRecord->worksSpecsId = $orderFinded->works_spec_id;
-        $orderRecord->objects = $orderFinded->objects;
-        $orderRecord->tasks = $orderFinded->tasks;
-        $orderRecord->lineId = $orderFinded->line_id;
-        $orderRecord->workBegin = $orderFinded->w_begin;
-        $orderRecord->workEnd = $orderFinded->w_end;
-        $orderRecord->separateInstructions = $orderFinded->sep_instrs;
-        $orderRecord->orderDate = $orderFinded->order_date;
-        $orderRecord->orderCreator = $orderFinded->order_creator;
-        $orderRecord->orderLongTo = $orderFinded->order_longto;
-        $orderRecord->orderLonger = $orderFinded->order_longer;
-        $orderRecord->underVoltage = $orderFinded->under_voltage;
+        $allPossibleTeamMembers = $this->repo->getAllPossibleTeamMembersArray($orderRecord->branchId);
+        $allPossibleTeamEngineer = $this->repo->getAllPossibleTeamEngineerArray($orderRecord->branchId);
 
-        $allPossibleTeamMembers = $this->repo->getAllPossibleTeamMembersArray($branch->id);
-        $allPossibleTeamEngineer = $this->repo->getAllPossibleTeamEngineerArray($branch->id);
-
-        $wardens = Warden::where('branch_id', $branch->id)->orderBy('id')->get();
+        $wardens = Warden::where('branch_id', $orderRecord->branchId)->orderBy('id')->get();
         $adjusters = Adjuster::where('branch_id', $this->getBranch()->id)->orderBy('id')->get();
         if (isset($orderRecord->brigadeMembersIds)) $brigadeText = $this->repo->fetchBrigadeMembers($orderRecord->brigadeMembersIds);
         if (isset($orderRecord->brigadeEngineerIds)) $engineersText = $this->repo->fetchBrigadeEngineer($orderRecord->brigadeEngineerIds);
         $countbrigade = count(explode(",", $orderRecord->brigadeMembersIds)) + count(explode(",", $orderRecord->brigadeEngineerIds));
         $substation = Substation::find($orderRecord->substationId);
 
-        $substationTxt = $substation->body;
-        $substation_type_id = $substation->type_id;
-        $substation_type = StationType::find($substation_type_id)->body;
-        $substations = $this->repo->getSubstationsList($branch->id, $substation_type_id);   // однотипні підстанції підрозділу
-        $this->setOrderRecord($orderRecord);
+        $substationTxt = $substation->body; // назва обраної підстанції
+        $substations = $this->repo->getSubstationsList($orderRecord->branchId, $substation->type_id);   // список однотипних підстанцій підрозділу
 
         $teamList = '';
 
@@ -87,24 +54,22 @@ class EditPart1Controller extends BaseController
             }
         }
 
-
         return view('orders.edit.editPart1', [
             'mode' => $mode,
-            'title' => '№ ' . $orderId,
-            'branch' => $branch,
+            'title' => '№ ' . $orderRecord->id,
+            'branch' => $this->getBranch(),
             'allPossibleTeamMembers' => $allPossibleTeamMembers,
             'allPossibleTeamEngineer' => $allPossibleTeamEngineer,
-            'units' => Unit::where('branch_id', $branch->id)->orderBy('id')->get(),
+            'units' => Unit::where('branch_id', $orderRecord->branchId)->orderBy('id')->get(),
             'wardens' => $wardens,
             'adjusters' => $adjusters,
             'countbrigade' => $countbrigade,
-            'substations' => $substations,
             'worksSpecsId' => $orderRecord->worksSpecsId,
             'workslist' => $orderRecord->objects . ' виконати ' . $orderRecord->tasks,
             'teamList' => $teamList,
-//            'engineersText' => $engineersText,
             'substation_txt' => $substationTxt,
             'orderRecord' => $orderRecord,
+            'editRopository' => $this->repo,
         ]);
     }
 }

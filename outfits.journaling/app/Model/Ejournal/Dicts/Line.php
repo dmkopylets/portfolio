@@ -20,6 +20,15 @@ class Line extends Model
     {
         return $this->belongsTo('Substation','substation_id','id');
     }
-
+    public static function getListArray(int $branchId, int $substationId): array
+    {
+        return Line::
+        select('line_id')
+            ->where('branch_id', $branchId)
+            ->where('substation_id', $substationId)
+            ->orderBy('line_id', 'asc')
+            ->get()
+            ->toArray();
+    }
 
 }

@@ -49,27 +49,27 @@
     var obj_txt = '';
 
     //  Визначаємо обране із випадаючого списку завдання
-    function GetSelectedTask() {
+    function getSelectedTask() {
 //   отримуємо індекс обраного елемента
-        var selind = document.getElementById("sel_w_list").options.selectedIndex;
-        task_txt = task_txt + ',' + document.getElementById("sel_w_list").options[selind].text;
+        var selind = document.getElementById("selectTask").options.selectedIndex;
+        task_txt = task_txt + ',' + document.getElementById("selectTask").options[selind].text;
         workslist.value = 'На ' + obj_txt + ' виконати ' + task_txt.replace(/^,*/, "");  //Видалення всіх ком на початку        Приклад : s = s.replace(/^,*/,"");
     }
 
     //  Визначаємо обрану із випадаючого  списку підстанцію
-    function GetSelectedSubstation() {
+    function getSelectedSubstation() {
 //   отримуємо індекс обраного елемента
-        var selind = document.getElementById("choose_substation").options.selectedIndex;
-        obj_txt = document.getElementById("choose_substation").options[selind].text;
+        var selind = document.getElementById("substationDialer").options.selectedIndex;
+        obj_txt = document.getElementById("substationDialer").options[selind].text;
         workslist.value = 'На ' + obj_txt + ' виконати ' + task_txt;
 
     }
 
     //  Визначаємо обрану із випадаючого списку лінію
-    function GetSelectedLine() {
+    function getSelectedLine() {
 //   отримуємо індекс обраного елемента
-        var selind = document.getElementById("sel_line_list").options.selectedIndex;
-        obj_txt = obj_txt + ', ПЛ ' + document.getElementById("sel_line_list").options[selind].text;
+        var selind = document.getElementById("selectLine").options.selectedIndex;
+        obj_txt = obj_txt + ', ПЛ ' + document.getElementById("selectLine").options[selind].text;
         workslist.value = 'На ' + obj_txt + ' виконати ' + task_txt;
     }
 

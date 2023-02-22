@@ -31,8 +31,9 @@ Route::get('/', [App\Http\Controllers\Ejournal\EjournalController::class, 'welco
 Route::get('login', [App\Http\Controllers\Ejournal\EjournalController::class, 'welcome']);
 Route::resource('orders', App\Http\Controllers\Ejournal\EjournalController::class)->only(['index', 'create', 'store']);
 Route::get('orders/precreate', [App\Http\Controllers\Ejournal\EjournalController::class, 'precreate']);
-Route::get('orders/{order}/editpart1', [App\Http\Controllers\Ejournal\Edit\EditPart1Controller::class, 'editpart1']);
-Route::post('orders/{order}/editpart2', [App\Http\Controllers\Ejournal\Edit\EditPart2Controller::class, 'editpart2']);
+Route::get('orders/{order}/clone', [App\Http\Controllers\Ejournal\EjournalController::class, 'clone']);
+Route::post('orders/{order}/editpart1', [App\Http\Controllers\Ejournal\EjournalController::class, 'editpart1']);
+Route::post('orders/{order}/editpart2', [App\Http\Controllers\Ejournal\EjournalController::class, 'editpart2']);
 Route::post('orders/{order}/editpart3', [App\Http\Controllers\Ejournal\EjournalController::class, 'editpart3']);
 Route::post('orders/{order}/editpart4', [App\Http\Controllers\Ejournal\EjournalController::class, 'editpart4']);
 Route::post('orders/{order}/editpart5', [App\Http\Controllers\Ejournal\EjournalController::class, 'editpart5']);

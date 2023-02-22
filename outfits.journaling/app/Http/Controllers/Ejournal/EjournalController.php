@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Ejournal;
 
 use App\Http\Controllers\Ejournal\BaseController as BaseController;
+use App\Http\Controllers\Ejournal\Edit\EditPart1Controller;
 use App\Http\Controllers\Ejournal\Edit\EditRepository;
 use App\Model\Ejournal\Dicts\Adjuster;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
@@ -16,6 +17,7 @@ use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\WorksSpec;
 use App\Model\Ejournal\Measure;
 use App\Model\Ejournal\Order;
+use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\User\Entity\BranchInfo;
 use App\Model\User\Entity\UserRepository;
 use Illuminate\Http\Request;
@@ -24,17 +26,21 @@ use Redirect;
 
 class EjournalController extends BaseController
 {
-
+    public UserRepository $userRepository;
+    public EditRepository $editRepository;
     protected BranchInfo $branch;
-    //private Edit\EditPart1Controller $editPart1Controller;
-    //   private Edit\EditPart2Controller $editPart2Controller;
+    private CreateOrder $createOrder;
+    private Edit\EditPart1Controller $editPart1;
+    private Edit\EditPart2Controller $editPart2;
 
-    public function __construct(public UserRepository $userRepository, public EditRepository $myRepo)
+    public function __construct()
     {
-        parent::__construct($userRepository);
+        parent::__construct();
         $this->branch = $this->currentUser->userBranch;
-        // $this->editPart1Controller = new Edit\EditPart1Controller($this->myRepo, $this->branch);
-        // $this->editPart2Controller = new EditPart2Controller($this);
+        $this->editRepository = new EditRepository();
+        $this->createOrder = new CreateOrder($this->editRepository, $this->branch, $this);
+        $this->editPart1 = new Edit\EditPart1Controller($this->editRepository, $this->branch, $this);
+        $this->editPart2 = new Edit\EditPart2Controller($this->editRepository, $this->branch, $this);
     }
 
     public function welcome()
@@ -49,7 +55,7 @@ class EjournalController extends BaseController
             'userName' => $this->currentUser->userName
         ]);
     }
-    
+
     /**  INDEX **
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
@@ -66,7 +72,7 @@ class EjournalController extends BaseController
             $wardenListId = Warden::where('body', 'like', $searchWarden)->where('branch_id', $this->branch->id)->pluck('id');
             $substationListId = Substation::where('body', 'like', $searchTerm)->where('branch_id', $this->branch->id)->pluck('id');
         }
-        $records = $this->myRepo->fetchOrdersList($substationListId, $wardenListId);
+        $records = $this->editRepository->fetchOrdersList($substationListId, $wardenListId);
 
         // чистимо Session
         session()->forget('preparations_rs');
@@ -88,90 +94,34 @@ class EjournalController extends BaseController
     }
 
     /**
-     *   !! створюєно НОВИЙ наряд
+     *    створюєно НОВИЙ наряд
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
     {
-        $this->mode = 'create';
-        $branch = $this->currentUser->userBranch;
-        $this->orderRecord = new Order();
-        $tasks = TypicalTask::orderBy('id')->get();
-        $units = Unit::where('branch_id', $branch->id)->orderBy('id')->get();
-        $wardens = Warden::where('branch_id', $branch->id)->orderBy('id')->get();
-        $adjusters = Adjuster::where('branch_id', $branch->id)->orderBy('id')->get();
-        $brig_m_arr = BrigadeMember::where('branch_id', $branch->id)->orderBy('id')->get();
-        $brig_e_arr = BrigadeEngineer::where('branch_id', $branch->id)->orderBy('id')->get();
-        $worksSpecsId = $request->input('direction'); // визначена позиція списка - де робитиметься :
-        // тільки для "10-ток" буде зміна типу підстанцій (і тому й переліку в dict_substations), а так "завжди =0,4"
-        if ($worksSpecsId == 3) {
-            $substation_type_id = 2;
-        } else {
-            $substation_type_id = 1;
-        }
+        $mode = 'create';
+        return $this->createOrder->create($request);
 
-        $substantions = $this->getSubstationsList($branch->id, $substation_type_id);
-
-        $this->preparations_rs = array();
-        $this->measures_rs = array();
-
-        $this->orderRecord->branch_id = $branch->id;
-        $this->orderRecord->unit_id = 1;
-        $this->orderRecord->warden_id = 0;
-        $this->orderRecord->adjuster_id = 0;
-        $this->orderRecord->brigade_m = '';
-        $this->orderRecord->brigade_e = '';
-        $this->orderRecord->substation_id = 1;
-        $this->orderRecord->ojects = '';
-        $this->orderRecord->w_begin = '';
-        $this->orderRecord->w_end = '';
-        $this->orderRecord->sep_instrs = '';
-        $this->orderRecord->order_date = '';
-        $this->orderRecord->order_creator = '';
-        $this->orderRecord->order_longto = '';
-        $this->orderRecord->order_longer = '';
-        $this->orderRecord->works_spec_id = $worksSpecsId;
-        $this->orderRecord->line_id = 0;
-        $this->orderRecord->under_voltage = '';
-
-
-        return view('orders.edit.editPart1', [
-            'orderRecord' => $this->orderRecord,
-            'mode' => $this->mode,
-            'title' => 'новий',
-            'tasks' => $tasks,
-            'units' => $units,
-            'wardens' => $wardens,
-            'adjusters' => $adjusters,
-            'brig_m_arr' => $brig_m_arr,
-            'brig_e_arr' => $brig_e_arr,
-            'branch' => $branch,
-            'substations' => $substantions,
-            'workspecs' => WorksSpec::getWorksSpecs(), // список - де робитиметься : на 10-ках, чи на 0.4, чи ...
-            'workslist' => ' виконати ', // саме текст завдання
-            'preparations_rs' => $this->preparations_rs,
-            'measures_rs' => $this->measures_rs,
-            'maxIdpreparation' => 0,
-            'maxIdmeasure' => 0,
-        ]);
     }
 
-    public function editpart1(int $orderId)
+    public function clone(int $orderId): \Illuminate\View\View
     {
-        return $this->editPart1Controller->editpart1($orderId, $this->branch);
+        $orderFinded = Order::find($orderId);
+        $orderRecord = $this->editRepository->readOrderFromDB($orderFinded);
+        $mode = 'clone';
+        return $this->editPart1->editpart1($orderRecord, $mode);
     }
-//
-//    public function editpart2($orderId, Request $request)
-//        /**********************************************************
-//         * !! через $request-> витягуємо даніх попередньої в'юшки (orders.editPar1)
-//         * !! і цією частиною доповнюємо  новостворений наряд в масиві session
-//         * !! і передаємо у наступну форму введення
-//         * @param \Illuminate\Http\Request $request
-//         * @return \Illuminate\Http\Response
-//         */
-//    {
-//        return $this->editPart2Controller->editpart2($orderId, $request);
-//    }
+
+    public function editpart1(OrderRecordDTO $orderRecord, string $mode)
+    {
+       return $this->editPart1->editpart1($orderRecord, $mode);
+    }
+
+    public function editpart2(string $mode, Request $request)
+    {
+        $orderRecord = $this->getOrderRecord();
+        return $this->editPart2->editpart2( $mode, $request);
+    }
 
     public function editpart3($orderId, Request $request)
     {

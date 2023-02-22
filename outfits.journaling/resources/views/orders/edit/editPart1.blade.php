@@ -54,9 +54,9 @@
                     <!-- "що і де робити"  // вибір select-ами ктп...
                     визов "фрейма" edit.f4_direction-task виконується через livewire-контролер direction-task = DirectionTask -->
                     @livewire('direction-task', [
-                    'substations' => $substations,
                     'mode' => $mode,
                     'orderRecord' => $orderRecord,
+                    'editRopository' => $editRopository,
                     ])
                 </div>
             </div>

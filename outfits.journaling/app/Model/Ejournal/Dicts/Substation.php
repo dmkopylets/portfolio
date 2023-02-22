@@ -17,12 +17,12 @@ class Substation extends Model
     }
 
 
-    public function station_type()
+    public function stationType()
     {
-        return $this->belongsTo('App\Models\Ejournal\Dicts\Station_Type','type_id','id');
+        return $this->belongsTo('App\Models\Ejournal\Dicts\StationType','type_id','id');
     }
 
-    public static function type_id($substation_id)
+    public static function getTypeId($substation_id)
     {
         return Substation::find($substation_id)->type_id;
     }
@@ -30,5 +30,17 @@ class Substation extends Model
      public static function getTableName()
     {
         return 'dict_substations';
+    }
+
+    public static function getListArray(int $branchId, int $substationTypeId): array
+    {
+        return Substation::
+        select('id', 'body', 'type_id')
+            ->where('branch_id', $branchId)
+            ->where('type_id', $substationTypeId)
+            ->orderBy('type_id', 'asc')
+            ->orderBy('body', 'asc')
+            ->get()
+            ->toArray();
     }
 }

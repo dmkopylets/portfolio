@@ -29,7 +29,7 @@
                         <td width="130px">{{$record->substation}}</td>
                         <td>{{$record->tasks}}</td>
                         <td width="190px">
-                            <a class="btn btn-danger btn-sm" href="{{asset('/').'orders/'.$record->id.'/editpart1'}}"><i class="fa fa-pencil fa-fw"></i>клон</a>
+                            <a class="btn btn-danger btn-sm" href="{{asset('/').'orders/'.$record->id.'/clone'}}"><i class="fa fa-pencil fa-fw"></i>клон</a>
                             &nbsp&nbsp
                             <a class="btn btn-info btn-sm"  href="{{asset('/').'orders/'.$record->id.'/pdf'}}"><i class="fa fa-eye fa-lg" ></i>&nbsp;друк</a>
                         </td>

@@ -57,7 +57,7 @@ table {
 
 
 .wrap_dates {
-    width: 1310px;/*фиксуємо ширину обгортки*/
+    width: 1310px;/*фіксуємо ширину обгортки*/
     margin: 0 auto;/*центрируємо її*/
     height: 1px;/*Задаемо висоту обгортки*/
     display: inline-block;
