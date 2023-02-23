@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Ejournal\Edit;
 
 use App\Http\Controllers\Ejournal\BaseController;
 use App\Model\Ejournal\Dicts\Adjuster;
-use App\Model\Ejournal\Dicts\Substation;
 use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\Unit;
 use App\Model\Ejournal\OrderRecordDTO;
@@ -26,21 +25,15 @@ class EditPart1Controller extends BaseController
 
     public function editpart1(OrderRecordDTO $orderRecord, string $mode)
     {
-        $allPossibleTeamMembers = $this->repo->getAllPossibleTeamMembersArray($orderRecord->branchId);
-        $allPossibleTeamEngineer = $this->repo->getAllPossibleTeamEngineerArray($orderRecord->branchId);
-
         $wardens = Warden::where('branch_id', $orderRecord->branchId)->orderBy('id')->get();
         $adjusters = Adjuster::where('branch_id', $this->getBranch()->id)->orderBy('id')->get();
+        $allPossibleTeamMembers = $this->repo->getAllPossibleTeamMembersArray($orderRecord->branchId);
+        $allPossibleTeamEngineer = $this->repo->getAllPossibleTeamEngineerArray($orderRecord->branchId);
         if (isset($orderRecord->brigadeMembersIds)) $brigadeText = $this->repo->fetchBrigadeMembers($orderRecord->brigadeMembersIds);
         if (isset($orderRecord->brigadeEngineerIds)) $engineersText = $this->repo->fetchBrigadeEngineer($orderRecord->brigadeEngineerIds);
         $countbrigade = count(explode(",", $orderRecord->brigadeMembersIds)) + count(explode(",", $orderRecord->brigadeEngineerIds));
-        $substation = Substation::find($orderRecord->substationId);
-
-        $substationTxt = $substation->body; // назва обраної підстанції
-        $substations = $this->repo->getSubstationsList($orderRecord->branchId, $substation->type_id);   // список однотипних підстанцій підрозділу
 
         $teamList = '';
-
         if ($mode !== 'create') {
             if (isset($brigadeText)) {
                 foreach ($brigadeText as $txtPart1) {
@@ -53,7 +46,7 @@ class EditPart1Controller extends BaseController
                 }
             }
         }
-
+        session(['orderRecord' => $orderRecord]);
         return view('orders.edit.editPart1', [
             'mode' => $mode,
             'title' => '№ ' . $orderRecord->id,
@@ -67,7 +60,6 @@ class EditPart1Controller extends BaseController
             'worksSpecsId' => $orderRecord->worksSpecsId,
             'workslist' => $orderRecord->objects . ' виконати ' . $orderRecord->tasks,
             'teamList' => $teamList,
-            'substation_txt' => $substationTxt,
             'orderRecord' => $orderRecord,
             'editRopository' => $this->repo,
         ]);

@@ -20,9 +20,8 @@ class BaseController extends Controller
     protected BranchInfo $branch;
     public UserRepository $userRepository;
     protected string $mode;
-    protected array $preparations_rs;
-    protected array $measures_rs;
-
+    protected array $preparations = [];
+    protected array $measures = [];
     public function __construct()
     {
         $this->userRepository = new UserRepository();
@@ -58,15 +57,7 @@ class BaseController extends Controller
         $this->mode = $mode;
     }
 
-    public function getPreparationsRs(): array
-    {
-        return $this->preparations_rs;
-    }
 
-    public function setPreparationsRs(array $preparations_rs): void
-    {
-        $this->preparations_rs = $preparations_rs;
-    }
 
     /**
      * @return array

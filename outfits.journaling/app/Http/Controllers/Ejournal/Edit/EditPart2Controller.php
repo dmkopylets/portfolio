@@ -6,8 +6,7 @@ namespace App\Http\Controllers\Ejournal\Edit;
 
 use App\Http\Controllers\Ejournal\BaseController;
 use App\Http\Controllers\Ejournal\EjournalController;
-use App\Model\Ejournal\Dicts\BrigadeEngineer;
-use App\Model\Ejournal\Dicts\BrigadeMember;
+use App\Model\Ejournal\Dicts\Substation;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\Ejournal\Preparation;
 use App\Model\User\Entity\BranchInfo;
@@ -28,92 +27,58 @@ class EditPart2Controller extends BaseController
 
     public function editpart2(string $mode, Request $request)
     {
-        $orderRecord = $this->ejournalController->getOrderRecord();
-        $mode = $this->ejournalController->getMode();
-
-        $brig_m_arr = BrigadeMember::where('branch_id', $this->branch->id)->orderBy('id')->get();   // масив усіх можливих членів бригади
-        $brig_e_arr = BrigadeEngineer::where('branch_id', $this->branch->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
-        $brigade_m = $request->input('write_to_db_brigade');
-        $brigade_e = $request->input('write_to_db_engineers');
-        $substation_id = $request->input('substationDialer');
-        $workspecs_id = $request->input('directions');
-        if ($workspecs_id == 3) {
-            $substation_type_id = 2;
-        } else {
-            $substation_type_id = 1;
-        }
-        //$substation_type_id = Substation::type_id($substation_id);
-
-        // розділяємо текст на частини: об'єкти та робота з поля введення workslist по слову  ' виконати '
+        $this->orderRecord = $this->ejournalController->getOrderRecord();
+        $allPossibleTeamMembers = $this->repo->getAllPossibleTeamMembersArray($this->orderRecord->branchId);
+        $allPossibleTeamEngineer = $this->repo->getAllPossibleTeamEngineerArray($this->orderRecord->branchId);
+        $this->orderRecord->worksSpecsId = (int)$request->input('directions');
+        $this->orderRecord->substationId = (int)$request->input('substationDialer');
+        $this->orderRecord->lineId = (int)$request->input('selectLine');
+        $this->orderRecord->unitId = (int)$request->input('district');
+        $this->orderRecord->wardenId = (int)$request->input('warden');
+        $this->orderRecord->adjusterId = (int)$request->input('adjuster');
+        $this->orderRecord->brigadeMembersIds = $request->input('write_to_db_brigade');
+        $this->orderRecord->brigadeEngineerIds = $request->input('write_to_db_engineers');
         $workslist = trim($request->get('workslist'));
-        $pos = strpos($workslist, ' виконати ');
+        $pos = strpos($workslist, ' виконати '); // розділяємо текст на частини: об'єкти та робота з поля введення workslist по слову  ' виконати '
+        $this->orderRecord->objects = substr($workslist, 0, $pos);
+        $this->orderRecord->tasks = substr($workslist, $pos + 1);
+        $this->orderRecord->workBegin = date("Y-m-d H:i", strtotime($request->input('datetime_work_begin')));
+        $this->orderRecord->workEnd = date("Y-m-d H:i", strtotime($request->input('datetime_work_end')));
+        $this->setOrderRecord($this->orderRecord);
+        session(['orderRecord' => $this->orderRecord]); //  на всякий випадок
 
-
-        $orderRecord->unitId = (int)$request->input('district');
-        $orderRecord->wardenId = (int)$request->input('warden');
-        $orderRecord->adjusterId = (int)$request->input('adjuster');
-//            'brigade_m' => $brigade_m,
-//            'brigade_e' => $brigade_e,
-//            'workspecs_id' => $workspecs_id,
-//            'substation_id' => $substation_id,
-//            'substation_type_id' => $substation_type_id,
-//            'line_id' => $request->input('sel_line_list'),
-//            'objects' => substr($workslist, 0, $pos),
-//            'tasks' => substr($workslist, $pos + 1),
-//            'w_begin' => date("Y-m-d H:i", strtotime($request->input('datetime_work_begin'))),
-//            'w_end' => date("Y-m-d H:i", strtotime($request->input('datetime_work_end'))),
-//            'sep_instrs' => $this->orderRecordsep_instrs'],
-//            'order_creator' => $this->orderRecordorder_creator'],
-//            'order_longer' => $this->orderRecordorder_longer'],
-//            'under_voltage' => $this->orderRecordunder_voltage'],
-//        ];
-
-        // "заганяємо" зчитані змінені значенні з полів введення в масив в session
-        //      session(['orderRecord' => $this->orderRecord]);
-
-        /*
-        * займемося ровсетом preparations_rs
-        * набором рядочків таблиці preparations (підготовчих заходів), що мають прив`язку до номеру клонованого наряду
-        */
-
-        $count_prepr_row = 0;
-        $maxIdpreparation = 0;
+        $countRowPreparations = 0;
+        $maxIdPreparation = 0;
 
         if ($mode == 'reedit') {  // якщо reedit, дані берем не з бази, а з session
-            $this->setPreparationsRs(session('preparations_rs'));
-            if (!empty($this->getPreparationsRs())) {
-                $maxIdpreparation = max(array_column($this->getPreparationsRs(), 'id'));
-                $count_prepr_row = count($this->getPreparationsRs());
+            $this->preparations = session('preparations');
+            if (!empty($this->preparations)) {
+                $maxIdPreparation = max(array_column($this->preparations, 'id'));
+                $countRowPreparations = count($this->preparations);
             }
         }
         if ($mode == 'clone') {
-            $max_id_pr = Preparation::get_maxId($orderId);
-            //session(['max_id_pr' => $max_id_pr]); // for debug
-            if ($max_id_pr > 0) {
-                $pr_data = Preparation::get_data($orderId);
-                $this->setPreparationsRs(json_decode($pr_data, true));
-                $maxIdpreparation = max(array_column($this->getPreparationsRs(), 'id'));
-                $count_prepr_row = count($this->getPreparationsRs());
-                session(['preparations_rs' => $this->getPreparationsRs()]);
+            $maxIdPreparation = Preparation::getMaxId($this->orderRecord->id);
+            if ($maxIdPreparation > 0) {
+                $this->preparations = json_decode(Preparation::getData($this->orderRecord->id), true);
+                $maxIdPreparation = max(array_column($this->preparations, 'id'));
+                $countRowPreparations = count($this->preparations);
             }
         }
-        if ($mode == 'create') {
-            $this->setPreparationsRs([]);
-        }
-
+        session(['preparations' => $this->preparations]);
         session(['mode' => $mode]);
 
-        // потім з цієї в'юшки буде через контролер livewire.preparation визвано "асинхроний" livewire фрейм edit.f6Preparation -->
-        return view('orders.editPart2', [
-            'title' => '№ ' . $orderRecord->id . ' препарації',
+        $substationTypeId = Substation::getTypeId($this->orderRecord->substationId);
+        return view('orders.edit.editPart2', [
+            'title' => '№ ' . $this->orderRecord->id . ' препарації',
             'mode' => $mode,
-            'substations' => $this->getSubstationsList($branch->id, $this->getOrderRecord()['substation_type_id']),
-            'maxIdpreparation' => $maxIdpreparation,
-            'count_prepr_row' => $count_prepr_row,
-            'brig_m_arr' => $brig_m_arr,
-            'brig_e_arr' => $brig_e_arr,
-            'preparations_rs' => $this->getPreparationsRs(),
-            'orderRecord' => $this->getOrderRecord(),
+            'substations' => Substation::getListArray($this->orderRecord->branchId, $substationTypeId),
+            'maxIdPreparation' => $maxIdPreparation,
+            'countRowPreparations' => $countRowPreparations,
+            'allPossibleTeamMembers' => $allPossibleTeamMembers,
+            'allPossibleTeamEngineer' => $allPossibleTeamEngineer,
+            'preparations' => $this->preparations,
+            'orderRecord' => $this->orderRecord,
         ]);
     }
 }

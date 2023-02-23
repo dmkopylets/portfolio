@@ -4,20 +4,19 @@
     @include('orders.edit.hidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
     <div class="relative flex items-top justify-center min-h-screen  sm:items-center sm:pt-0">
         <div class="container jumbotron mt-3" style="padding-top: 10; margin-top:0;  margin-bottom:5px;">
-
-            @livewire('preparation',[
+            @livewire('edit-part2-preparation',[
             'substations'=>$substations,
-            'preparations_rs' => $preparations_rs,
-            'maxIdpreparation' => $maxIdpreparation,
-            'count_prepr_row' => $count_prepr_row,
-            'naryadRecord' => $naryadRecord
+            'preparations' => $preparations,
+            'maxIdPreparation' => $maxIdPreparation,
+            'countRowPreparations' => $countRowPreparations,
+            'orderRecordDTO' => $orderRecord
             ])
             <hr class="mb-4">
 
             <div class="row" style="margin-left:2pt; margin-right:2pt;">
                 <!--  кнопки переходу "назад-вперед" з методом POST -->
                 <div style="margin-right:670pt;">
-                    <form action="{{url('orders/'.$naryadRecord['order_id'].'/reedit')}}" method="POST">
+                    <form action="{{url('orders/'.$orderRecord->id.'/reedit')}}" method="POST">
                         @csrf
                         @method('POST')
                         <button type="submit" class="fa-hover btn btn-warning"><i class="fa fa-arrow-circle-o-left"
@@ -25,7 +24,7 @@
                         </button>
                     </form>
                 </div>
-                <form action="{{url('orders/'.$naryadRecord['order_id'].'/editpart3')}}" method="POST">
+                <form action="{{url('orders/'.$orderRecord->id.'/editpart3')}}" method="POST">
                     @csrf
                     @method('POST')
                     <button type="submit" class="fa-hover btn btn-info" style="float: right;"> далі <i

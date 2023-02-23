@@ -28,11 +28,12 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">підстанції</span>
                     <select class="form-control substationDialer"  name="substationDialer" OnChange=getSelectedSubstation()
-                            wire:model.defer="substationDialer" id="substationDialer" required>
+                            wire:model.defer="choosedSubstation" id="substationDialer" required>
                                 @foreach($substations as $substation)
                                     <option value="{{$substation['id']}}"
+                                            wire:key="{{$substation['id']}}"
                                         @if ($substation['id'] === $choosedSubstation)
-                                            {{' selected=true'}}
+                                            {{' selected="true" '}}
                                         @endif
                                     >{{$substation['body']}}</option>
                         @endforeach
@@ -47,7 +48,7 @@
                         @foreach($lines as $line)
                             <option
                                 @if ($line['line_id'] === $changedOrderRecord['lineId']))
-                                    {{' selected=true '}}
+                                    {{' selected="true" '}}
                                 @endif
                                 VALUE="{{$line['line_id']}}">
                                 {{$line['line_id']}}
@@ -72,11 +73,7 @@
             </div>
         </div>
         <div class="col-md-6 col-lg-9">
-            <textarea id="workslist" name="workslist" class="form-control" rows="5" style="text-align:left;">
-                @if ($mode!=='create')
-                    {{$workslist}}
-                @endif
-            </textarea>
+            <textarea id="workslist" name="workslist" class="form-control" rows="5" style="text-align:left;">@if ($mode!=='create'){{$workslist}}@endif</textarea>
         </div>
     </div>
 </div>

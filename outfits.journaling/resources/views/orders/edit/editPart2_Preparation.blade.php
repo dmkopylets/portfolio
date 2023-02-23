@@ -1,10 +1,10 @@
-<div class="preparation">
-    <!--'count_rows='.$count_prepr_row.' # maxId='.$maxIdpreparation.'# substation_id='.$substation_id.' # $preparations_rs='.json_encode($preparations_rs)-->
+<div class="edit-part2-preparation">
+    <!--'count_rows='.$count_prepr_row.' # maxId='.$maxIdpreparation.'# substation_id='.$substation_id.' # $preparations='.json_encode($preparations)-->
     @if(session()->has('success'))
         <div class="alert alert-success" role="alert">
             {{ session()->get('success') }}
         </div>
-        {{ session(['preparations_rs' => $preparations_rs])}}
+        {{ session(['preparations' => $preparations])}}
     @endif
     @if(session()->has('error'))
         <div class="alert alert-danger" role="alert">
@@ -13,8 +13,7 @@
     @endif
 
     <h4 class="mb-3" style="margin-bottom: 0; vertical-align: bottom; line-height: 1pt;">Таблиця 1</h4>
-    <h3 class="py-2 text-lg-center" style="margin-top: 10px; background: rgb(24, 38, 51);  color: white; "><b>Заходи
-            щодо підготовки робочих місць</b></h3>
+    <h3 class="py-2 text-lg-center" style="margin-top: 10px; background: rgb(24, 38, 51);  color: white; "><b>Заходи щодо підготовки робочих місць</b></h3>
 
     <table class="table  table-bordered table-sm" style="margin-top:0; margin-bottom: 1px;">
         <thead class="thead-dark">
@@ -32,8 +31,8 @@
         </tr>
         </thead>
         <tbody>
-        @if ($count_prepr_row > 0)
-            @foreach ($preparations_rs as $prrow)
+        @if ($countRowPreparations> 0)
+            @foreach ($preparations as $prrow)
                 <tr>
                     <td>
                         {{$prrow['target_obj']}}

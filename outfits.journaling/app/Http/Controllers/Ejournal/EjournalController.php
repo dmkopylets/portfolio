@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Ejournal;
 
 use App\Http\Controllers\Ejournal\BaseController as BaseController;
-use App\Http\Controllers\Ejournal\Edit\EditPart1Controller;
 use App\Http\Controllers\Ejournal\Edit\EditRepository;
 use App\Model\Ejournal\Dicts\Adjuster;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
 use App\Model\Ejournal\Dicts\Substation;
-use App\Model\Ejournal\Dicts\TypicalTask;
 use App\Model\Ejournal\Dicts\Unit;
 use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\WorksSpec;
@@ -75,8 +73,9 @@ class EjournalController extends BaseController
         $records = $this->editRepository->fetchOrdersList($substationListId, $wardenListId);
 
         // чистимо Session
-        session()->forget('preparations_rs');
-        session()->forget('measures_rs');
+        session()->forget('orderRecord');
+        session()->forget('preparations');
+        session()->forget('measures');
         session()->forget('mode');
 
         return view('orders.index', ['records' => $records, 'mode' => 'index', 'branch' => $this->currentUser->userBranch]);
@@ -99,9 +98,7 @@ class EjournalController extends BaseController
      */
     public function create(Request $request)
     {
-        $mode = 'create';
         return $this->createOrder->create($request);
-
     }
 
     public function clone(int $orderId): \Illuminate\View\View
@@ -119,33 +116,23 @@ class EjournalController extends BaseController
 
     public function editpart2(string $mode, Request $request)
     {
-        $orderRecord = $this->getOrderRecord();
         return $this->editPart2->editpart2( $mode, $request);
     }
 
     public function editpart3($orderId, Request $request)
     {
         $this->orderRecord = session('orderRecord');
-        if ($orderId == 0) {
-            $mode = 'create';
-        } else {
-            $mode = 'clone';
-        }
 
         return view('orders.editPart3', [
             'title' => 'клонуємо наряд № ' . $orderId,
-            'mode' => $mode,
+            'mode' => ($orderId == 0) ? 'create' : 'clone',
             'orderRecord' => $this->orderRecord,
         ]);
     }
 
     public function editpart4($orderId, Request $request)
     {
-        if ($orderId == 0) {
-            $mode = 'create';
-        } else {
-            $mode = 'clone';
-        }
+        $mode = ($orderId == 0) ? 'create' : 'clone';
         $this->orderRecord = session('orderRecord');
         $this->orderRecord['sep_instrs'] = trim($request->get('sep_instrs_txt'));
         $this->orderRecord['order_date'] = date("Y-m-d H:i", strtotime(trim($request->datetime_order_created)));

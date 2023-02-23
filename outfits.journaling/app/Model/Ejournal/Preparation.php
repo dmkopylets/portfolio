@@ -15,9 +15,9 @@ class Preparation extends Model
     protected $fillable = ['id', 'target_obj', 'body'];
     protected $table = 'preparations';
 
-    public static function get_data($naryadId)
+    public static function getData($orderId)
     {
-        return Preparation::select('id', 'target_obj', 'body')->where('order_id', $naryadId)->get();
+        return Preparation::select('id', 'target_obj', 'body')->where('order_id', $orderId)->get();
     }
 
     public static function get_row($id)
@@ -25,8 +25,8 @@ class Preparation extends Model
         return Preparation::select('id', 'target_obj', 'body')->where('id', $id)->get();
     }
 
-    public static function get_maxId($naryadId)
+    public static function getMaxId($orderId)
     {
-        return Preparation::select('id')->where('order_id', $naryadId)->get()->max('id');
+        return Preparation::select('id')->where('order_id', $orderId)->get()->max('id');
     }
 }

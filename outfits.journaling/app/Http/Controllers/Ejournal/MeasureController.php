@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\eNaryad;
+namespace App\Http\Controllers\Ejournal;
 
 use App\Models\Measure;
 use Illuminate\Http\Request;
 
-class MeasureController extends Controller
+class MeasureController extends BaseController
 {
     /**
      * Display a listing of the resource.
