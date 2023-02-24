@@ -20,12 +20,12 @@ class OrderRecordDTO
     public string $tasks;
     public string $workBegin;
     public string $workEnd;
-    public string $separateInstructions;
+    public ?string $separateInstructions;
     public string $orderDate;
     public string $orderCreator;
-    public string $orderLongTo;
-    public string $orderLonger;
-    public string $underVoltage;
+    public ?string $orderLongTo;
+    public ?string $orderLonger;
+    public ?string $underVoltage;
 
     public function toArray(): array
     {

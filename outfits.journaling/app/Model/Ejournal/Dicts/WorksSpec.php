@@ -13,11 +13,4 @@ class WorksSpec extends Model
     {
         return 'dict_works_spec';
     }
-
-    public static function getWorksSpecs()
-        {
-          return WorksSpec::select('id','body')->orderBy('id')->get()->toArray();
-        }
-
-
 }

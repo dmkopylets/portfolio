@@ -13,7 +13,7 @@
             <button type="submit"
                     class="fa-hover btn btn-warning input-group-text  ml-auto  align-self-center "
                     style="align-items: flex-end;"
-                    formaction="{{url('orders/'.$naryadRecord['order_id'].'/reedit4')}}"
+                    formaction="{{url('orders/' . $orderRecord->id . '/reedit4')}}"
                     formmethod="post">
                 <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i> назад
             </button>
@@ -29,7 +29,7 @@
                     <textarea class="form-control" rows="2" name="under_voltage_txt" aria-label="under_voltage_txt"
                               style="display: block; white-space: normal; text-align: left; text-align-last: left;">
                      @if ($mode!=='create')
-                            {{$naryadRecord['under_voltage']}}
+                            {{$orderRecord->underVoltage}}
                         @endif
                   </textarea>
                 </div>

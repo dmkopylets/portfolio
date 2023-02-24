@@ -11,16 +11,13 @@
             @csrf
             @method('post')
 
-
             <div class="input-group"
                  style="padding-top: 0; margin-top:0; margin-bottom: 10px; display: flex; text-align:left; ">
                 <span class="input-group-text">Окремі вказівки</span>
                 <textarea class="form-control  @error('sep_instrs') is-invalid @enderror" rows="2" id="sep_instrs_txt"
                           name="sep_instrs_txt"
                           aria-label="sep_instrs_txt"
-                          style="display: block; white-space: normal; text-align: left; text-align-last: left;">
-               @if ($mode!=='create')
-                        {{$naryadRecord['sep_instrs']}}
+                          style="display: block; white-space: normal; text-align: left; text-align-last: left;">@if ($mode!=='create'){{$orderRecord->separateInstructions}}
                     @endif
          </textarea>
                 @error('sep_instrs') <span class="text-danger">{{ $message }}</span>@enderror
@@ -47,7 +44,7 @@
                         </div>
                     </div>
                     <input class="form-control" type="text" name="inp_order_creator"
-                           value="@if ($mode!=='create') {{$naryadRecord['order_creator']}} @endif">
+                           value="@if ($mode!=='create') {{$orderRecord->orderCreator}} @endif">
                 </div>
             </div>
 
@@ -73,17 +70,16 @@
                         </div>
                     </div>
                     <input type="text" class="form-control" style="margin-bottom:30pt;" name="inp_order_longer"
-                           value="@if ($mode!=='create') {{$naryadRecord['order_longer']}}  @endif">
+                           value="@if ($mode!=='create') {{$orderRecord->orderLonger}}  @endif">
                 </div>
             </div>
-
 
             <div class="row" style="margin-left:2pt; margin-right:2pt;">
                 <!--  кнопки переходу "назад-вперед" з методом POST -->
                 <div style="margin-right:600pt;">
                     <button type="submit"
                             class="fa-hover btn btn-warning"
-                            formaction="{{url('orders/'.$naryadRecord['order_id'].'/reedit2')}}"
+                            formaction="{{url('orders/' . $orderRecord->id . '/reedit2')}}"
                             formmethod="post">
                         <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i> назад
                     </button>
@@ -92,7 +88,7 @@
                 <div style="float: right; margin-right: 10px;">
                     <button type="submit"
                             class="fa-hover btn btn-info" style="float: right;"
-                            formaction="{{url('orders/'.$naryadRecord['order_id'].'/editpart4')}}"
+                            formaction="{{url('orders/' . $orderRecord->id . '/editpart4')}}"
                             formmethod="post">
                         далі <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
                 </div>

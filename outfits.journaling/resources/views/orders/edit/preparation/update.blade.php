@@ -3,7 +3,7 @@
     <td>
     <div class="form-group mb-3">
         <!--label for="preparationTarget_obj">Назва установки:</label-->
-        <input type="text" class="form-control @error('підстанція') is-invalid @enderror" id="preparationTarget_obj" wire:model="target_obj" placeholder="введіть підстанцію">
+        <input type="text" class="form-control @error('підстанція') is-invalid @enderror" id="preparationTargetObj" wire:model="targetObj" placeholder="введіть підстанцію">
         @error('name') <span class="text-danger">{{ $message }}</span>@enderror
     </div>
     </td>

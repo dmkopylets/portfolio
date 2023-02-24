@@ -6,14 +6,9 @@ namespace App\Http\Controllers\Ejournal;
 
 use App\Http\Controllers\Ejournal\BaseController as BaseController;
 use App\Http\Controllers\Ejournal\Edit\EditRepository;
-use App\Model\Ejournal\Dicts\Adjuster;
-use App\Model\Ejournal\Dicts\BrigadeEngineer;
-use App\Model\Ejournal\Dicts\BrigadeMember;
 use App\Model\Ejournal\Dicts\Substation;
-use App\Model\Ejournal\Dicts\Unit;
 use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\WorksSpec;
-use App\Model\Ejournal\Measure;
 use App\Model\Ejournal\Order;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\User\Entity\BranchInfo;
@@ -27,9 +22,18 @@ class EjournalController extends BaseController
     public UserRepository $userRepository;
     public EditRepository $editRepository;
     protected BranchInfo $branch;
+    protected string $mode;
+    protected array $preparations = [];
+    protected array $measures = [];
+    private OrderRecordDTO $orderRecord;
     private CreateOrder $createOrder;
     private Edit\EditPart1Controller $editPart1;
     private Edit\EditPart2Controller $editPart2;
+    private Edit\EditPart3Controller $editPart3;
+    private Edit\EditPart4Controller $editPart4;
+    private Edit\EditPart5Controller $editPart5;
+    private Edit\StoreOrder $storeOrder;
+    private Edit\ReeditPart1 $reeditPart1;
 
     public function __construct()
     {
@@ -37,14 +41,20 @@ class EjournalController extends BaseController
         $this->branch = $this->currentUser->userBranch;
         $this->editRepository = new EditRepository();
         $this->createOrder = new CreateOrder($this->editRepository, $this->branch, $this);
-        $this->editPart1 = new Edit\EditPart1Controller($this->editRepository, $this->branch, $this);
-        $this->editPart2 = new Edit\EditPart2Controller($this->editRepository, $this->branch, $this);
+        $this->editPart1 = new Edit\EditPart1Controller($this->editRepository, $this->branch);
+        $this->editPart2 = new Edit\EditPart2Controller($this->editRepository, $this->branch);
+        $this->editPart3 = new Edit\EditPart3Controller($this->editRepository, $this->branch, $this);
+        $this->editPart4 = new Edit\EditPart4Controller($this->editRepository, $this->branch, $this);
+        $this->editPart5 = new Edit\EditPart5Controller($this->editRepository, $this->branch, $this);
+        $this->storeOrder = new Edit\StoreOrder($this->editRepository, $this->branch, $this);
+        $this->reeditPart1 = new Edit\ReeditPart1($this->editRepository, $this->branch, $this);
     }
 
     public function welcome()
     {
-        session()->forget('preparations_rs');
-        session()->forget('measures_rs');
+        session()->forget('orderRecord');
+        session()->forget('preparations');
+        session()->forget('measures');
         session()->forget('mode');
 
         return view('orders.welcome', [
@@ -96,16 +106,18 @@ class EjournalController extends BaseController
      *    створюєно НОВИЙ наряд
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(Request $request): \Illuminate\Http\Response
     {
         return $this->createOrder->create($request);
     }
 
     public function clone(int $orderId): \Illuminate\View\View
     {
+        $mode = 'clone';
         $orderFinded = Order::find($orderId);
         $orderRecord = $this->editRepository->readOrderFromDB($orderFinded);
-        $mode = 'clone';
+        $this->editRepository->setOrderRecord($orderRecord);
+        $this->editRepository->setMode('clone');
         return $this->editPart1->editpart1($orderRecord, $mode);
     }
 
@@ -114,189 +126,38 @@ class EjournalController extends BaseController
        return $this->editPart1->editpart1($orderRecord, $mode);
     }
 
-    public function editpart2(string $mode, Request $request)
+    public function editpart2(Request $request)
     {
-        return $this->editPart2->editpart2( $mode, $request);
+        $mode = $this->editRepository->getMode();
+        return $this->editPart2->editpart2($this->editRepository->getOrderRecord(), $mode, $request);
     }
 
-    public function editpart3($orderId, Request $request)
+    public function editpart3(Request $request)
     {
-        $this->orderRecord = session('orderRecord');
-
-        return view('orders.editPart3', [
-            'title' => 'клонуємо наряд № ' . $orderId,
-            'mode' => ($orderId == 0) ? 'create' : 'clone',
-            'orderRecord' => $this->orderRecord,
-        ]);
+        return $this->editPart3->editpart3($this->editRepository->getOrderRecord(), $request);
     }
 
-    public function editpart4($orderId, Request $request)
+    public function editpart4(Request $request)
     {
-        $mode = ($orderId == 0) ? 'create' : 'clone';
-        $this->orderRecord = session('orderRecord');
-        $this->orderRecord['sep_instrs'] = trim($request->get('sep_instrs_txt'));
-        $this->orderRecord['order_date'] = date("Y-m-d H:i", strtotime(trim($request->datetime_order_created)));
-        $this->orderRecord['order_longto'] = date("Y-m-d H:i", strtotime(trim($request->datetime_order_longed)));
-        $this->orderRecord['order_creator'] = trim($request->inp_order_creator);
-        $this->orderRecord['order_longer'] = trim($request->inp_order_longer);
-        session(['orderRecord' => $this->orderRecord]);
-
-
-        /* займемося ровсетом measures_rs - набором рядочків таблиці measures (підготовчих заходів), що мають прив`язку до номеру клонованого наряду  */
-        $count_meas_row = 0;
-        $maxIdMeasure = 0;
-        $this->measures_rs = array();
-        if ($mode == 'reedit') {  // якщо reedit, дані берем не з бази, а з session
-            $this->measures_rs = session('measures_rs');
-            if (!empty($this->measures_rs)) {
-                $maxIdMeasure = max(array_column($this->measures_rs, 'id'));
-                $count_meas_row = count($this->measures_rs);
-            }
-        }
-        if ($mode == 'clone') {
-            $maxIdMeasureTmp = Measure::get_maxId($orderId);
-            if ($maxIdMeasureTmp > 0) {
-                $meas_data = Measure::get_data($orderId);
-                $this->measures_rs = json_decode($meas_data, true);
-                $maxIdMeasure = max(array_column($this->measures_rs, 'id'));
-                $count_meas_row = count($this->measures_rs);
-            }
-        }
-
-        session(['measures_rs' => $this->measures_rs]);
-
-        return view('orders.editPart4', [
-            'title' => '№ ' . $orderId . ' підготовка2',
-            'mode' => session('mode'),
-            'maxIdMeasure' => $maxIdMeasure,
-            'count_meas_row' => $count_meas_row,
-            'orderRecord' => $this->orderRecord,
-            'measures_rs' => $this->measures_rs
-        ]);
+        return $this->editPart4->editpart4($this->editRepository->getOrderRecord(), $request);
     }
 
-    public function editpart5($orderId, Request $request)
+    public function editpart5(Request $request)
     {
-        $this->orderRecord = session('orderRecord');
-        return view('orders.editPart5', [
-            'title' => '№ ' . $orderId . ' завершення',
-            'orderRecord' => $this->orderRecord,
-            'mode' => session('mode'),
-        ]);
+        return $this->editPart5->editpart5($this->editRepository->getOrderRecord(), $request);
     }
 
 
     public function store(Request $request)
     {
-        //$orderStored = $request->session()->get('orderRecord'); //$orderStored = session('orderRecord'); // можна і так
-        $this->orderRecord->id = Order::max('id') + 1;
-//        $this->order->branch_id = $orderStored['branch_id'];
-//        $this->order->unit_id = $orderStored['unit_id'];
-//        $this->order->warden_id = $orderStored['warden_id'];
-//        $this->order->adjuster_id = $orderStored['adjuster_id'];
-//        $this->order->brigade_m = $orderStored['brigade_m'];
-//        $this->order->brigade_e = $orderStored['brigade_e'];
-//        $this->order->substation_id = $orderStored['substation_id'];
-//        $this->order->ojects = $orderStored['objects'];
-//        $this->order->tasks = $orderStored['tasks'];
-//        $this->order->w_begin = $orderStored['w_begin'];
-//        $this->order->w_end = $orderStored['w_end'];
-//        $this->order->order_date = $orderStored['order_date'];
-//        $this->order->order_longto = $orderStored['order_longto'];
-//        $this->order->sep_instrs = $orderStored['sep_instrs'];
-//        $this->order->order_creator = $orderStored['order_creator'];
-//        $this->order->order_longer = $orderStored['order_longer'];
-//        $this->order->works_spec_id = $orderStored['workspecs_id'];
-//        $this->order->line_id = $orderStored['line_id'];
-        $this->orderRecord->under_voltage = trim($request->get('under_voltage_txt'));
-        $request->flash();
-        $this->orderRecord->save();
-        $preparations_rs = session('preparations_rs');
-        $count_prepr_row = count($preparations_rs);
-        if ($count_prepr_row > 0) {
-            foreach ($preparations_rs as $prRow) {
-                $preparationsDBRecord = new \App\Model\Ejournal\Preparation;
-                $preparationsDBRecord->naryad_id = $this->order->id;
-                $preparationsDBRecord->target_obj = $prRow['target_obj'];
-                $preparationsDBRecord->body = $prRow['body'];
-                $preparationsDBRecord->save;
-            }
-        }
-        $meashures_rs = session('meashures_rs');
-        $count_meashures_row = count($meashures_rs);
-        if ($count_meashures_row > 0) {
-            foreach ($meashures_rs as $msRow) {
-                $meashuresDBRecord = new \App\Model\Ejournal\Measure();
-                $meashuresDBRecord->naryad_id = $this->order->id;
-                $meashuresDBRecord->licensor = $msRow['licensor'];
-                $meashuresDBRecord->lic_date = $msRow['lic_date'];
-                $meashuresDBRecord->save;
-            }
-        }
-        return Redirect::to('orders')->with('success', 'Наряд додано!');
+        return $this->storeOrder->store($this->editRepository->getOrderRecord(), $request);
     }
 
 
     // !!! повернення до редагування 1 частини наряду
     public function reedit($orderId)
     {
-        session(['mode' => 'reedit']);
-        $this->preparations_rs = session('preparations_rs');
-        $this->orderRecord = session('orderRecord');
-        $branch = $this->currentUser->userBranch;
-        $wardens = Warden::where('branch_id', $branch->id)->orderBy('id')->get();
-        $warden = Warden::find($this->orderRecord['warden_id']);
-        $adjusters = Adjuster::where('branch_id', $branch->id)->orderBy('id')->get();
-        $adjuster = Adjuster::find($this->orderRecord['adjuster_id']);
-
-        $brig_m_arr = BrigadeMember::where('branch_id', $branch->id)->orderBy('id')->get();   // масив усіх можливих членів бригади
-        $brig_e_arr = BrigadeEngineer::where('branch_id', $branch->id)->orderBy('id')->get(); // масив усіх можливих машиністів бригади
-        $this->substation_type_id = Substation::find($this->orderRecord['substation_id'])->type_id;
-        $brigadeText = '';
-        if (isset($this->orderRecord['brigade_m'])) {
-            $brigadeText = BrigadeMember::find(explode(",", $this->orderRecord['brigade_m']));
-        }
-        $engineersText = '';
-        if (isset($this->orderRecord['brigade_e'])) {
-            $engineersText = BrigadeEngineer::find(explode(",", $this->orderRecord['brigade_e']));
-        }
-        return view('orders.edit', [
-            'mode' => 'reedit',
-            'order_id' => $orderId,
-            'title' => ' клон № ' . $orderId,
-            'branch' => $branch,
-            'unit_id' => $this->orderRecord['unit_id'],
-            'unit_txt' => Unit::find($this->orderRecord['unit_id'])->body,
-            'units' => Unit::where('branch_id', $branch->id)->orderBy('id')->get(),
-            'wardens' => $wardens,
-            'warden_id' => $this->orderRecord['warden_id'],
-            'warden_txt' => $warden->body . ', ' . $warden->group,
-            'adjusters' => $adjusters,
-            'adjuster_id' => $this->orderRecord['adjuster_id'],
-            'adjuster_txt' => $adjuster->body . ', ' . $adjuster->group,
-            'brigade_m' => $this->orderRecord['brigade_m'], // id-шники через кому
-            'brig_m_arr' => $brig_m_arr,
-            'brigade_e' => $this->orderRecord['brigade_e'], // id-шники через кому
-            'brig_e_arr' => $brig_e_arr,
-            'brigade_txt' => $brigadeText,
-            'engineers_txt' => $engineersText,
-            'countbrigade' => count(explode(",", $this->orderRecord['brigade_m'])) + count(explode(",", $this->orderRecord['brigade_m'])),
-            'substation_id' => $this->orderRecord['substation_id'],
-            'substation_txt' => Substation::find($this->orderRecord['substation_id'])->body,
-            'substation_type_id' => $this->substation_type_id,
-            'substations' => Substation::select('id', 'body')->where('branch_id', $this->orderRecord['branch_id'])->where('type_id', $this->substation_type_id)->orderBy('body')->get(),
-            'line_id' => $this->orderRecord['line_id'],
-            'sep_instrs' => $this->orderRecord['sep_instrs'],
-            'order_creator' => $this->orderRecord['order_creator'],
-            'order_longer' => $this->orderRecord['order_longer'],
-            'under_voltage' => $this->orderRecord['under_voltage'],
-            'workspecs' => \App\Model\Ejournal\Dicts\WorksSpec::worksSpecCollect(),
-            'workspecs_id' => $this->orderRecord['workspecs_id'],
-            'workslist' => $this->orderRecord['objects'] . ' виконати ' . $this->orderRecord['tasks'],
-            'orderRecord' => $this->orderRecord,
-            'preparations_rs' => $this->preparations_rs,
-            'measures_rs' => $this->measures_rs
-        ]);
+        return $this->reeditPart1->reeditPart1($this->editRepository->getOrderRecord());
     }
 
     // !!! повернення до редагування 2 частини наряду

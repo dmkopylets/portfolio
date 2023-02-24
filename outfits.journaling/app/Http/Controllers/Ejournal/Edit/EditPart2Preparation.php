@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Model\Ejournal\Dicts\Substation;
 use App\Model\Ejournal\OrderRecordDTO;
 use Livewire\Component;
-use function App\Http\Livewire\count;
-use function App\Http\Livewire\session;
 
 class EditPart2Preparation extends Component
 {
@@ -14,16 +11,15 @@ class EditPart2Preparation extends Component
     public array $orderRecord = [];
     private OrderRecordDTO $orderRecordDTO;
     public int $rowkey = 0; // індекс рядка (одномірного масива) у бегатомірному масиві $preparation
-    public $branchId, $substationTypeId, $substationId, $substations, $preparations, $maxIdPreparation, $preparation_id, $targetObj, $body, $countRowPreparations;
+    public $branchId, $substationId, $substations, $preparations, $maxIdPreparation, $preparation_id, $targetObj, $body, $countRowPreparations;
 
 
-    public function mount($substations, $preparations, $maxIdPreparation, $countRowPreparations, $orderRecordDTO)
+    public function mount($substations, $preparations, $maxIdPreparation, $countRowPreparations, $orderRecordDTO, $editRepository)
     {
         $this->reset();
         $this->orderRecordDTO = $orderRecordDTO;
         $this->orderRecord = $this->orderRecordDTO->toArray();
         $this->branchId = $orderRecordDTO->branchId;
-        $this->substationTypeId = Substation::getTypeId($orderRecordDTO->substationId);
         $this->substationId = $orderRecordDTO->substationId;
         $this->substations = $substations;
         $this->preparations = $preparations;
@@ -53,7 +49,7 @@ class EditPart2Preparation extends Component
             'countRowPreparations' => $this->countRowPreparations,
             'maxIdPreparation' => $this->maxIdPreparation,
             'updatePreparation' => $this->updatePreparation,
-            'orderRecord' => $this->orderRecord
+            'orderRecord' => $this->orderRecord,
         ]);
     }
 
@@ -97,7 +93,6 @@ class EditPart2Preparation extends Component
                 'preparations' => $this->preparations,
                 'countRowPreparations' => $this->countRowPreparations,
                 'maxIdPreparation' => $this->maxIdPreparation,
-                'preparations' => $this->preparations,
             ]);
         }
         $this->cancel();

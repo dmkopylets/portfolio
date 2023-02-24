@@ -10,21 +10,16 @@ class Measure extends Model
     use HasFactory;
     protected $table='measures';
     protected $fillable = [
-        'naryad_id', 'licensor','lic_date'
+        'order_id', 'licensor','lic_date'
     ];
-    public static function get_data($naryadId)
+    public static function getData($orderId)
 	{
-        return Measure::select('id','licensor','lic_date')->where('naryad_id',$naryadId)->get();
+        return Measure::select('id','licensor','lic_date')->where('order_id',$orderId)->get();
 	}
 
-    public static function get_row($id)
+    public static function getMaxId($orderId)
 	{
-        return Measure::select('id','licensor','lic_date')->where('id',$id)->get();
-	}
-
-    public static function get_maxId($naryadId)
-	{
-        return Measure::select('id')->where('naryad_id',$naryadId)->get()->max('id');
+        return Measure::select('id')->where('order_id',$naryadId)->get()->max('id');
 	}
 }
 

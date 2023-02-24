@@ -53,7 +53,7 @@
                     @include('orders.edit.editPart1_BrigadeBody')            <!-- "хто робитиме"  -->
                     <!-- "що і де робити"  // вибір select-ами ктп...
                     визов "фрейма" edit.f4_direction-task виконується через livewire-контролер direction-task = DirectionTask -->
-                    @livewire('direction-task', [
+                    @livewire('edit-part1-direction-task', [
                     'mode' => $mode,
                     'orderRecord' => $orderRecord,
                     'editRopository' => $editRopository,

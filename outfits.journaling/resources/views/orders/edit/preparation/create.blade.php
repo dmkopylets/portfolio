@@ -19,8 +19,8 @@
                   @endforeach
               </ul>
             <input type="text" class="form-control @error('Target_obj') is-invalid @enderror" id="preparationTarget_obj"
-            name="preparationTarget_obj" placeholder="<-виберіть або введіть підстанцію" wire:model="target_obj" value={{$selectedSubtation}}>
-            @error('Target_obj') <span class="text-danger">{{ $message }}</span>@enderror
+            name="preparationTargetObj" placeholder="<-виберіть або введіть підстанцію" wire:model="targetObj" value={{$selectedSubtation}}>
+            @error('TargetObj') <span class="text-danger">{{ $message }}</span>@enderror
       </div>
     </td>
     <td style="padding: 0 0 0 0">

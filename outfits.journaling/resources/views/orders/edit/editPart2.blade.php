@@ -9,7 +9,8 @@
             'preparations' => $preparations,
             'maxIdPreparation' => $maxIdPreparation,
             'countRowPreparations' => $countRowPreparations,
-            'orderRecordDTO' => $orderRecord
+            'orderRecordDTO' => $orderRecord,
+            'editRepository' => $editRepository,
             ])
             <hr class="mb-4">
 

@@ -37,7 +37,7 @@ Route::post('orders/{order}/editpart2', [App\Http\Controllers\Ejournal\EjournalC
 Route::post('orders/{order}/editpart3', [App\Http\Controllers\Ejournal\EjournalController::class, 'editpart3']);
 Route::post('orders/{order}/editpart4', [App\Http\Controllers\Ejournal\EjournalController::class, 'editpart4']);
 Route::post('orders/{order}/editpart5', [App\Http\Controllers\Ejournal\EjournalController::class, 'editpart5']);
-Route::post('orders/{order}/reedit', [App\Http\Controllers\Ejournal\EjournalController::class, 'reedit']);
+Route::post('orders/{order}/reedit1', [App\Http\Controllers\Ejournal\EjournalController::class, 'reedit1']);
 Route::post('orders/{order}/reedit2', [App\Http\Controllers\Ejournal\EjournalController::class, 'reedit2']);
 Route::post('orders/{order}/reedit3', [App\Http\Controllers\Ejournal\EjournalController::class, 'reedit3']);
 Route::post('orders/{order}/reedit4', [App\Http\Controllers\Ejournal\EjournalController::class, 'reedit4']);
