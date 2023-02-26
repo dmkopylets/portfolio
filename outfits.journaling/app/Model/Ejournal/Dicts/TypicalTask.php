@@ -20,6 +20,6 @@ class TypicalTask extends Model
 
     public function works_spec()
     {
-        return $this->belongsTo('App\Models\Ejournal\Dicts\Works_Spec', 'works_specs_id', 'id');
+        return $this->belongsTo(WorksSpec::class, 'works_specs_id', 'id');
     }
 }

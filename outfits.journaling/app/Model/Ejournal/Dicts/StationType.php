@@ -15,7 +15,7 @@ class StationType extends Model
      */
     public function lines()
     {
-        return $this->hasManyThrough('Line', 'Substation',
+        return $this->hasManyThrough(Line::class, Substation::class,
         	'type_id',         // Foreign key on substations table...
         	'substation_id',   // Foreign key on lines table..
             'id',              // Local key on station_type table...

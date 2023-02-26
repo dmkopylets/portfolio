@@ -26,6 +26,7 @@ class OrderRecordDTO
     public ?string $orderLongTo;
     public ?string $orderLonger;
     public ?string $underVoltage;
+    public ?string $editMode;
 
     public function toArray(): array
     {

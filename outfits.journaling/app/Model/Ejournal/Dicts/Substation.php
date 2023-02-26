@@ -10,16 +10,20 @@ class Substation extends Model
     use HasFactory;
     protected $table = 'dict_substations';
 
+    public function lines()
+    {
+        return $this->hasMany(Line::class);
+    }
 
     public function branch()
     {
-        return $this->belongsTo('App\Model\Ejournal\Dicts\Branch','branch_id','id');
+        return $this->belongsTo(Branch::class,'branch_id','id');
     }
 
 
     public function stationType()
     {
-        return $this->belongsTo('App\Models\Ejournal\Dicts\StationType','type_id','id');
+        return $this->belongsTo(StationType::class,'type_id','id');
     }
 
      public static function getTableName()

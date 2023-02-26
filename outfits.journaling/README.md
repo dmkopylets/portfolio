@@ -11,6 +11,9 @@ Each outfit can be exported in pdf format
 
 ********
 
+![demo-113838.png](Addons%2Fdemo-113838.png)
+********
+
 for run:
 
 docker-compose build
@@ -22,8 +25,10 @@ docker-compose up -d
 
 docker-compose exec web bash
 
-composer install  (or update)
-
-npm install
+composer update
 )
 
+********
+
+for the correct display of the Cyrillic font in the pdf file, unpack the contents
+of the Addons\cyrrilicFonts.zip file into the vendor/dompdf/dompdf/lib/fonts/ folder

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
+use App\Http\Controllers\Ejournal\EjournalController;
 use App\Model\Ejournal\OrderRecordDTO;
 use Livewire\Component;
 
@@ -18,25 +19,26 @@ class EditPart1DirectionTask extends Component
     private string $workslist = '';
     public int $branchId = 0;
     public int $worksSpecsId = 2;
-    private string $mode = '';
     public int $substationTypeId = 1;
     private EditRepository $repo;
     public int $lineId = 1;
+    private EjournalController $eJournalController;
+    private string $mode = '';
 
-    public function mount(string $mode, OrderRecordDTO $orderRecord, EditRepository $editRopository)
+    public function mount(string $mode, OrderRecordDTO $orderRecord, EditRepository $editRepository)
     {
         $this->reset();
         $this->mode = $mode;
-        $this->repo = $editRopository;
+        $this->repo = $editRepository;
         $this->changedOrderRecord = $orderRecord->toArray();
-        $this->workspecs = $editRopository->getWorksSpecs();
+        $this->workspecs = $editRepository->getWorksSpecs();
         $this->worksSpecsId = $this->changedOrderRecord['worksSpecsId'];
         $this->choosedSubstation = $this->changedOrderRecord['substationId'];
-        $this->substationTypeId = $editRopository->getSubstationTypeId($this->choosedSubstation);
+        $this->substationTypeId = ($this->worksSpecsId === 3) ? 2 : 1; // тільки для "10-ток" буде зміна типу підстанцій (і тому й переліку в dict_substations), а так "завжди =0,4"
         $this->branchId = $orderRecord->branchId;
         $this->workslist = $orderRecord->objects . ' виконати ' . $orderRecord->tasks;
-        $this->taskslist = $editRopository->getTypicalTasksListArray($this->worksSpecsId);// список робіт визначених, в функціях mount або choose_direction
-        $this->substations = $editRopository->getSubstationsList($this->branchId, $this->substationTypeId);
+        $this->taskslist = $editRepository->getTypicalTasksListArray($this->worksSpecsId);// список робіт визначених, в функціях mount або choose_direction
+        $this->substations = $editRepository->getSubstationsList($this->branchId, $this->substationTypeId);
         if ($mode !== 'create') {
             $this->lineId = $orderRecord->lineId;
             $this->lines = $this->repo->getLinesList($this->branchId, $orderRecord->substationId);
@@ -45,16 +47,13 @@ class EditPart1DirectionTask extends Component
 
     public function directDialer($choice)
     {
-        $this->worksSpecsId = $choice;
+        $this->repo = new EditRepository($this->eJournalController);
+        $this->worksSpecsId = (int)$choice;
         $this->changedOrderRecord['worksSpecsId'] = (int)$choice;
         $this->reset('substationTypeId');
         $this->reset('substations');
-        // тільки при works_specs_id==3 , що означає =
-        // тільки для 10-ток
-        // буде зміна типу підстанцій (і тому й переліку в dict_substations), а так "завжди =0,4"
-        if ($this->worksSpecsId === 3) {
-            $this->substationTypeId = 2;
-        }
+        $this->substationTypeId = ($this->worksSpecsId === 3) ? 2 : 1;
+
         $this->taskslist = $this->repo->getTypicalTasksListArray($this->worksSpecsId); // список робіт визначених, в функціях mount або choose_direction
         $this->reset('substations');
         $this->substations = $this->repo->getSubstationsList($this->branchId, $this->substationTypeId);

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
+use App\Http\Controllers\Ejournal\EjournalController;
 use App\Model\Ejournal\Dicts\Adjuster;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
 use App\Model\Ejournal\Dicts\Line;
 use App\Model\Ejournal\Dicts\Substation;
 use App\Model\Ejournal\Dicts\TypicalTask;
+use App\Model\Ejournal\Dicts\Unit;
 use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\WorksSpec;
 use App\Model\Ejournal\Order;
@@ -23,6 +25,7 @@ class EditRepository
     {
         return Substation::find($substationId)->type_id;
     }
+
     public function getSubstationsList(int $branchId, int $substationTypeId): array
     {
         return Substation::
@@ -147,7 +150,7 @@ class EditRepository
         return $order;
     }
 
-    public function initOrderRecord(int $branchId, int $worksSpecsId)
+    public function initOrderRecord(int $branchId, int $worksSpecsId): OrderRecordDTO
     {
         $dto = new OrderRecordDTO();
         $dto->id = 0;
@@ -170,19 +173,18 @@ class EditRepository
         $dto->orderLongTo = '';
         $dto->orderLonger = '';
         $dto->underVoltage = '';
+        $dto->editMode = '';
         return $dto;
     }
 
     public function getOrderRecord(): OrderRecordDTO
     {
-        $this->orderRecord = session('orderRecord');
-        return $this->orderRecord;
+        return session('orderRecord');
     }
 
     public function setOrderRecord(OrderRecordDTO $orderRecord): void
     {
         session(['orderRecord' => $orderRecord]);
-        $this->orderRecord = $orderRecord;
     }
 
     public function getMode(): string
@@ -210,6 +212,15 @@ class EditRepository
         $this->measures_rs = $measures_rs;
     }
 
+    public function getUnits(int $branchId)
+    {
+        return Unit::
+        select('id', 'body')
+            ->where('branch_id', $branchId)
+            ->orderBy('id')
+            ->get();
+    }
+
     public function getWardens(int $branchId)
     {
         return Warden::
@@ -228,7 +239,7 @@ class EditRepository
             ->get();
     }
 
-    public function gePreparations($orderId)
+    public function getPreparationsFromDB($orderId): array
     {
         return Preparation::
         select('id', 'target_obj', 'body')
@@ -237,13 +248,23 @@ class EditRepository
             ->toArray();
     }
 
-    public function getPreparationMaxId($orderId)
+    public function getPreparationMaxId($orderId): int
     {
         return Preparation::
         select('id')
             ->where('order_id', $orderId)
-        ->get()
-        ->max('id');
+            ->get()
+            ->max('id');
+    }
+
+    public function getPreparationsArray()
+    {
+        return session('preparations');
+    }
+
+    public function setPreparationsArray($array): void
+    {
+        $this->eJournalController->preparations = $array;
     }
 
     public function getTypicalTasksListArray(int $worksSpecsId): array
@@ -251,11 +272,13 @@ class EditRepository
         return TypicalTask::
         select('id', 'body')
             ->where('works_specs_id', $worksSpecsId)
-            ->orderBy('body')->get()->toArray();
+            ->orderBy('body')
+            ->get()
+            ->toArray();
     }
 
     public function getWorksSpecs()
     {
-        return WorksSpec::select('id','body')->orderBy('id')->get()->toArray();
+        return WorksSpec::select('id', 'body')->orderBy('id')->get()->toArray();
     }
 }

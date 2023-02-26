@@ -19,3 +19,5 @@ yarn-error.log
 /run_psalm
 /psalm.xml
 /phpstan.neon.dist
+_ide_helper.php
+_ide_helper_models.php

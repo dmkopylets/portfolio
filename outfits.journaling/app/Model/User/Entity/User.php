@@ -6,13 +6,13 @@ namespace App\Model\User\Entity;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+//use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LdapRecord\Laravel\Auth\HasLdapUser;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 
-class User extends Authenticatable implements LdapAuthenticatable
+class User extends Authenticatable //implements LdapAuthenticatable
 {
-    use Notifiable, AuthenticatesWithLdap, HasLdapUser;
+ //   use Notifiable, AuthenticatesWithLdap, HasLdapUser;
 
     /**
      * The attributes that are mass assignable.

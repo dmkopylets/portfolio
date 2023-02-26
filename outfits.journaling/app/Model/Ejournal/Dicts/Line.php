@@ -18,6 +18,6 @@ class Line extends Model
 
     public function substation()
     {
-        return $this->belongsTo('Substation','substation_id','id');
+        return $this->belongsTo(Substation::class,'substation_id','id');
     }
 }

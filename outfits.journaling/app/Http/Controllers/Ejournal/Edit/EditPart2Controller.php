@@ -14,18 +14,14 @@ class EditPart2Controller extends BaseController
     protected BranchInfo $branch;
     private EditRepository $repo;
 
-    public function __construct(EditRepository $repo, BranchInfo $branch)
+    public function __construct(EditRepository $repo)
     {
-        $this->branch = $branch;
         $this->repo = $repo;
     }
 
-    public function editpart2(OrderRecordDTO $orderRecord, string $mode, Request $request)
+    public function editpart2(OrderRecordDTO $orderRecord, Request $request)
     {
-        //$mode = ((is_string($mode)) ? $mode : ($orderRecord->id == 0)) ? 'create' : 'clone';
         $preparations = [];
-        $allPossibleTeamMembers = $this->repo->getAllPossibleTeamMembersArray($orderRecord->branchId);
-        $allPossibleTeamEngineer = $this->repo->getAllPossibleTeamEngineerArray($orderRecord->branchId);
         $orderRecord->worksSpecsId = (int)$request->input('directions');
         $orderRecord->substationId = (int)$request->input('substationDialer');
         $orderRecord->lineId = (int)$request->input('selectLine');
@@ -41,38 +37,37 @@ class EditPart2Controller extends BaseController
         $orderRecord->workBegin = date("Y-m-d H:i", strtotime($request->input('datetime_work_begin')));
         $orderRecord->workEnd = date("Y-m-d H:i", strtotime($request->input('datetime_work_end')));
         $this->repo->setOrderRecord($orderRecord);
-        session(['orderRecord' => $orderRecord]); //  на всякий випадок
+        //session(['orderRecord' => $orderRecord]); //  на всякий випадок
 
         $countRowPreparations = 0;
         $maxIdPreparation = 0;
 
-        if ($mode == 'reedit') {  // якщо reedit, дані берем не з бази, а з session
+        if ($orderRecord->editMode == 'reedit') {  // якщо reedit, дані берем не з бази, а з session
             $preparations = session('preparations');
             if (!empty($preparations)) {
                 $maxIdPreparation = max(array_column($preparations, 'id'));
                 $countRowPreparations = count($preparations);
             }
         }
-        if ($mode == 'clone') {
+        if ($orderRecord->editMode == 'clone') {
             $maxIdPreparation = $this->repo->getPreparationMaxId($orderRecord->id);
             if ($maxIdPreparation > 0) {
-                $preparations = $this->repo->gePreparations($orderRecord->id);
-                $maxIdPreparation = max(array_column($preparations, 'id'));
+                $preparations = $this->repo->getPreparationsFromDB($orderRecord->id);
                 $countRowPreparations = count($preparations);
             }
         }
+
         session(['preparations' => $preparations]);
-        session(['mode' => $mode]);
 
         $substationTypeId = $this->repo->getSubstationTypeId($orderRecord->substationId);
         return view('orders.edit.editPart2', [
             'title' => '№ ' . $orderRecord->id . ' препарації',
-            'mode' => $mode,
+            'mode' => $orderRecord->editMode,
             'substations' => $this->repo->getSubstationsList($orderRecord->branchId, $substationTypeId),
             'maxIdPreparation' => $maxIdPreparation,
             'countRowPreparations' => $countRowPreparations,
-            'allPossibleTeamMembers' => $allPossibleTeamMembers,
-            'allPossibleTeamEngineer' => $allPossibleTeamEngineer,
+            'allPossibleTeamMembers' => $this->repo->getAllPossibleTeamMembersArray($orderRecord->branchId),
+            'allPossibleTeamEngineer' => $this->repo->getAllPossibleTeamEngineerArray($orderRecord->branchId),
             'preparations' => $preparations,
             'orderRecord' => $orderRecord,
             'editRepository' => $this->repo,

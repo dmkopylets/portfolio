@@ -124,7 +124,7 @@
             text_engr_all_id_to_write_on_db = text_engr_all_id_to_write_on_db + ',{{$engineer['id']}}';
         }
         @endforeach
-        document.getElementById("countbrigade").textContent = i1 + i2;
+        document.getElementById("countBrigade").textContent = i1 + i2;
 //                        //Видалення всіх ком на початку        Приклад : s = s.replace(/^,*/,"");
         text_br_all = text_br_all.replace(/^,*/, "");
         if (text_br_all.length > 0) {
