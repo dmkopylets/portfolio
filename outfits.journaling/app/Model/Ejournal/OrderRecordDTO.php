@@ -50,6 +50,7 @@ class OrderRecordDTO
         $array['orderLongTo'] = $this->orderLongTo;
         $array['orderLonger'] = $this->orderLonger;
         $array['underVoltage'] = $this->underVoltage;
+        $array['editMode'] = $this->editMode;
     return $array;
     }
 }

@@ -132,13 +132,10 @@
         }
         text_br_all = text_br_all + text_engr_all.replace(/^,*/, "");
 
-//                                            +' *** write to db brigade:    '+text_br_all_id_to_write_on_db.replace(/^,*/,"")
-//                                            +' *** write to db engineers:  '+text_engr_all_id_to_write_on_db.replace(/^,*/,"");
         document.getElementById("brigade_members").value = text_br_all.trim();
         document.getElementById("write_to_db_brigade").value = text_br_all_id_to_write_on_db.replace(/^,*/, "");
         document.getElementById("write_to_db_engineers").value = text_engr_all_id_to_write_on_db.replace(/^,*/, "");
     }
-
     // кінець "Заповнення текстового поля "з членами бригади" тиканням чекбоксів у правй частині форми"
 
 

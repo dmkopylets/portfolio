@@ -19,28 +19,28 @@ use Illuminate\Support\Facades\Route;
 */
 //*************************************************************************************************************
 // це буде потрібно для auth-ентифікації через AD
-// Route::get('/', [App\Http\Controllers\Ejournal\EjournalController::class,'welcome'])->middleware(['auth']);
+// Route::get('/', [App\Http\Controllers\Ejournal\OrdersController::class,'welcome'])->middleware(['auth']);
 // Auth::routes([
 //    'reset' => false,
 //    'verify' => false,
 //    'register' => false,
 //   ]);
-//Route::get('welcome', [App\Http\Controllers\Ejournal\EjournalController::class,'welcome']);
+//Route::get('welcome', [App\Http\Controllers\Ejournal\OrdersController::class,'welcome']);
 //*************************************************************************************************************
-Route::get('/', [App\Http\Controllers\Ejournal\EjournalController::class, 'welcome']);
-Route::get('login', [App\Http\Controllers\Ejournal\EjournalController::class, 'welcome']);
-Route::resource('orders', App\Http\Controllers\Ejournal\EjournalController::class)->only(['index', 'create', 'store']);
-Route::get('orders/precreate', [App\Http\Controllers\Ejournal\EjournalController::class, 'preCreate']);
-Route::get('orders/{order}/clone', [App\Http\Controllers\Ejournal\EjournalController::class, 'clone']);
-Route::post('orders/{order}/editpart1', [App\Http\Controllers\Ejournal\EjournalController::class, 'editPart1']);
-Route::post('orders/{order}/editpart2', [App\Http\Controllers\Ejournal\EjournalController::class, 'editPart2']);
-Route::post('orders/{order}/editPart3', [App\Http\Controllers\Ejournal\EjournalController::class, 'editPart3']);
-Route::post('orders/{order}/editpart4', [App\Http\Controllers\Ejournal\EjournalController::class, 'editPart4']);
-Route::post('orders/{order}/editpart5', [App\Http\Controllers\Ejournal\EjournalController::class, 'editPart5']);
-Route::post('orders/{order}/reEditPart1', [App\Http\Controllers\Ejournal\EjournalController::class, 'reEditPart1']);
-Route::post('orders/{order}/reedit2', [App\Http\Controllers\Ejournal\EjournalController::class, 'redit2']);
-Route::post('orders/{order}/reedit3', [App\Http\Controllers\Ejournal\EjournalController::class, 'reedit3']);
-Route::post('orders/{order}/reedit4', [App\Http\Controllers\Ejournal\EjournalController::class, 'reedit4']);
+Route::get('/', [App\Http\Controllers\Ejournal\OrdersController::class, 'welcome']);
+Route::get('login', [App\Http\Controllers\Ejournal\OrdersController::class, 'welcome']);
+Route::resource('orders', App\Http\Controllers\Ejournal\OrdersController::class)->only(['index', 'create', 'store']);
+Route::get('orders/precreate', [App\Http\Controllers\Ejournal\OrdersController::class, 'preCreate']);
+Route::get('orders/{order}/clone', [App\Http\Controllers\Ejournal\OrdersController::class, 'clone']);
+Route::post('orders/{order}/editPart1', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart1']);
+Route::post('orders/{order}/editPart2', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart2']);
+Route::post('orders/{order}/editPart3', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart3']);
+Route::post('orders/{order}/editPart4', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart4']);
+Route::post('orders/{order}/editPart5', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart5']);
+Route::post('orders/{order}/reEditPart1', [App\Http\Controllers\Ejournal\OrdersController::class, 'reEditPart1']);
+Route::post('orders/{order}/reEditPart2', [App\Http\Controllers\Ejournal\OrdersController::class, 'reEditPart2']);
+Route::post('orders/{order}/reEditPart3', [App\Http\Controllers\Ejournal\OrdersController::class, 'reEditPart3']);
+Route::post('orders/{order}/reEditPart4', [App\Http\Controllers\Ejournal\OrdersController::class, 'reEdit4Part']);
 Route::get('orders/{order}/pdf', [App\Http\Controllers\Ejournal\PdfGenerateController::class, 'pdf']);
 
 Route::prefix('dicts')->group(function () {

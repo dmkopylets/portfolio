@@ -7,7 +7,7 @@
     <div class="container">
         <div class="jumbotron mt-3" style="padding-top: 0; margin-top:0;">
 
-            {{ Form::model('Order', array('url' => array('orders/'.$orderRecord->id.'/editpart2'), 'method' => 'POST')) }}
+            {{ Form::model('Order', array('url' => array('orders/'.$orderRecord->id.'/editPart2'), 'method' => 'POST')) }}
 
             @include('orders.edit.hidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
             <div class="text-lg-left">

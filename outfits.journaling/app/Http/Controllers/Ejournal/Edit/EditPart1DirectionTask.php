@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\EjournalController;
+use App\Http\Controllers\Ejournal\OrdersController;
 use App\Model\Ejournal\OrderRecordDTO;
 use Livewire\Component;
 
@@ -22,7 +22,7 @@ class EditPart1DirectionTask extends Component
     public int $substationTypeId = 1;
     private EditRepository $repo;
     public int $lineId = 1;
-    private EjournalController $eJournalController;
+    private OrdersController $eJournalController;
     private string $mode = '';
 
     public function mount(string $mode, OrderRecordDTO $orderRecord, EditRepository $editRepository)

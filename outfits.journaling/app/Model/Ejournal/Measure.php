@@ -19,7 +19,7 @@ class Measure extends Model
 
     public static function getMaxId($orderId)
 	{
-        return Measure::select('id')->where('order_id',$naryadId)->get()->max('id');
+        return Measure::select('id')->where('order_id',$orderId)->get()->max('id');
 	}
 }
 

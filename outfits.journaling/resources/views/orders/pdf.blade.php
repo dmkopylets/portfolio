@@ -148,8 +148,8 @@
 
             @foreach($preparations as $preparation)
                 <tr>
-                    <td><em>{{$preparation->target_obj}}</em></td>
-                    <td><em>{{$preparation->body}}</em></td>
+                    <td><em>{{$preparation['target_obj']}}</em></td>
+                    <td><em>{{$preparation['body']}}</em></td>
                 </tr>
             @endforeach
             </tbody>

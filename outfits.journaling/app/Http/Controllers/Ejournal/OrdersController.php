@@ -15,7 +15,7 @@ use App\Model\User\Entity\BranchInfo;
 use App\Model\User\Entity\UserRepository;
 use Illuminate\Http\Request;
 
-class EjournalController extends BaseController
+class OrdersController extends BaseController
 {
     public UserRepository $userRepository;
     public EditRepository $editRepository;

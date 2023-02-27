@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\EjournalController;
+use App\Http\Controllers\Ejournal\OrdersController;
 use App\Model\Ejournal\Order;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\User\Entity\BranchInfo;
@@ -11,7 +11,7 @@ use Redirect;
 
 class StoreOrder
 {
-    public function __construct(EditRepository $repo, BranchInfo $branch, EjournalController $ejournalController)
+    public function __construct(EditRepository $repo, BranchInfo $branch, OrdersController $ejournalController)
     {
         $this->ejournalController = $ejournalController;
         $this->branch = $branch;

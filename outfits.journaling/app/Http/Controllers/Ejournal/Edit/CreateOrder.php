@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\Edit;
 use App\Model\User\Entity\BranchInfo;
 use Illuminate\Http\Request;
 

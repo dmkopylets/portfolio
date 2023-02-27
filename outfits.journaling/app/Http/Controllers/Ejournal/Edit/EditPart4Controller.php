@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\EjournalController;
+use App\Http\Controllers\Ejournal\OrdersController;
 use App\Model\Ejournal\Measure;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\User\Entity\BranchInfo;
@@ -15,7 +15,7 @@ class EditPart4Controller
 {
     private EditRepository $repo;
 
-    public function __construct(EditRepository $repo, BranchInfo $branch, EjournalController $ejournalController)
+    public function __construct(EditRepository $repo, BranchInfo $branch, OrdersController $ejournalController)
     {
         $this->ejournalController = $ejournalController;
         $this->repo = $repo;

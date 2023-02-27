@@ -9,11 +9,11 @@ class Warden extends Model
 {
     use HasFactory;
     protected $table = 'dict_wardens';
-    public function branch()
+    public function branch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo('App\Model\Ejournal\Dicts\Branch','branch_id','id');
     }
-     public static function getTableName()
+     public static function getTableName(): string
     {
         return 'dict_wardens';
     }

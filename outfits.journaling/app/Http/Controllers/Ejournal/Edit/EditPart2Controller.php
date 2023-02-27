@@ -22,6 +22,8 @@ class EditPart2Controller extends BaseController
     public function editpart2(OrderRecordDTO $orderRecord, Request $request)
     {
         $preparations = [];
+        $countRowPreparations = 0;
+        $maxIdPreparation = 0;
         $orderRecord->worksSpecsId = (int)$request->input('directions');
         $orderRecord->substationId = (int)$request->input('substationDialer');
         $orderRecord->lineId = (int)$request->input('selectLine');
@@ -37,10 +39,6 @@ class EditPart2Controller extends BaseController
         $orderRecord->workBegin = date("Y-m-d H:i", strtotime($request->input('datetime_work_begin')));
         $orderRecord->workEnd = date("Y-m-d H:i", strtotime($request->input('datetime_work_end')));
         $this->repo->setOrderRecord($orderRecord);
-        //session(['orderRecord' => $orderRecord]); //  на всякий випадок
-
-        $countRowPreparations = 0;
-        $maxIdPreparation = 0;
 
         if ($orderRecord->editMode == 'reedit') {  // якщо reedit, дані берем не з бази, а з session
             $preparations = session('preparations');

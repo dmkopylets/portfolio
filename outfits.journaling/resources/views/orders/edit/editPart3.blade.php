@@ -17,7 +17,7 @@
                 <textarea class="form-control  @error('sep_instrs') is-invalid @enderror" rows="2" id="sep_instrs_txt"
                           name="sep_instrs_txt"
                           aria-label="sep_instrs_txt"
-                          style="display: block; white-space: normal; text-align: left; text-align-last: left;">@if ($mode!=='create'){{$orderRecord->separateInstructions}}
+                          style="display: block; white-space: normal; text-align: left; text-align-last: left;">@if ($orderRecord->editMode !== 'create'){{$orderRecord->separateInstructions}}
                     @endif
          </textarea>
                 @error('sep_instrs') <span class="text-danger">{{ $message }}</span>@enderror
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <input class="form-control" type="text" name="inp_order_creator"
-                           value="@if ($mode!=='create') {{$orderRecord->orderCreator}} @endif">
+                           value="@if ($orderRecord->editMode !== 'create') {{$orderRecord->orderCreator}} @endif">
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <input type="text" class="form-control" style="margin-bottom:30pt;" name="inp_order_longer"
-                           value="@if ($mode!=='create') {{$orderRecord->orderLonger}}  @endif">
+                           value="@if ($orderRecord->editMode !== 'create') {{$orderRecord->orderLonger}}  @endif">
                 </div>
             </div>
 
@@ -79,7 +79,7 @@
                 <div style="margin-right:600pt;">
                     <button type="submit"
                             class="fa-hover btn btn-warning"
-                            formaction="{{url('orders/' . $orderRecord->id . '/reedit2')}}"
+                            formaction="{{url('orders/' . $orderRecord->id . '/reEditPart2')}}"
                             formmethod="post">
                         <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i> назад
                     </button>
@@ -88,7 +88,7 @@
                 <div style="float: right; margin-right: 10px;">
                     <button type="submit"
                             class="fa-hover btn btn-info" style="float: right;"
-                            formaction="{{url('orders/' . $orderRecord->id . '/editpart4')}}"
+                            formaction="{{url('orders/' . $orderRecord->id . '/editPart4')}}"
                             formmethod="post">
                         далі <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
                 </div>

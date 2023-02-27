@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\EjournalController;
+use App\Http\Controllers\Ejournal\OrdersController;
 use App\Model\Ejournal\Dicts\Adjuster;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
