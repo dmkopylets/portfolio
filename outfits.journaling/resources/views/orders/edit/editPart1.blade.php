@@ -5,16 +5,22 @@
     <link rel="stylesheet"
           href="{{asset('css/tempusdominus-bootstrap-4.min.css')}}"/><!-- для календариків з годинником -->
     <div class="container">
+        @if(session()->has('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session()->get('error') }}
+            </div>
+        @endif
         <div class="jumbotron mt-3" style="padding-top: 0; margin-top:0;">
 
             {{ Form::model('Order', array('url' => array('orders/'.$orderRecord->id.'/editPart2'), 'method' => 'POST')) }}
+            @csrf
+            @method('POST')
 
             @include('orders.edit.hidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
             <div class="text-lg-left">
                 <div class="row">
                     <div class="col-md-3"><p class="lead" style="font-size: 12pt;">підприємство</p></div>
-                    <div class="col-md-6"><h3 style="font-size: 14pt;">АТ
-                            "ANYОБЛЕНЕРГО" {{'mode='.$orderRecord->editMode}}</h3></div>
+                    <div class="col-md-6"><h3 style="font-size: 14pt;">АТ "ANYENERGO" {{'mode='.$orderRecord->editMode}}</h3></div>
                 </div>
                 <div class="row">
                     <div class="col-md-3"><p class="lead" style="font-size: 12pt;">підрозділ</p></div>
@@ -29,7 +35,7 @@
                                 @foreach($units as $unit)
                                     <option
                                         @if (($orderRecord->editMode !=='create') and ($unit->id === $orderRecord->unitId))
-                                            {{' selected = true '}}
+                                            {{' selected = "true" '}}
                                         @endif
                                         VALUE="{{$unit->id}}">{{$unit->body}}
                                     </option>
@@ -68,6 +74,7 @@
             <button
                 class="btn btn-primary btn-lg btn-block"
                 type="submit"
+                method = "POST"
             >Далі Заходи щодо підготовки робочих місць =>
             </button>
             {{ Form::close() }}

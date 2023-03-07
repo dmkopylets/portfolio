@@ -35,11 +35,11 @@ class Order extends Model
 
     public function preparations(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Preparation::class);
+        return $this->hasMany(Preparation::class,'order_id','id');
     }
 
     public function measures(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Measure::class);
+        return $this->hasMany(Measure::class,'order_id','id');
     }
 }

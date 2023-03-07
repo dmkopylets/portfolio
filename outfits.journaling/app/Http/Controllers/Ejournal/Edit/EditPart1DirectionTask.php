@@ -22,7 +22,6 @@ class EditPart1DirectionTask extends Component
     public int $substationTypeId = 1;
     private EditRepository $repo;
     public int $lineId = 1;
-    private OrdersController $eJournalController;
     private string $mode = '';
 
     public function mount(string $mode, OrderRecordDTO $orderRecord, EditRepository $editRepository)
@@ -47,7 +46,7 @@ class EditPart1DirectionTask extends Component
 
     public function directDialer($choice)
     {
-        $this->repo = new EditRepository($this->eJournalController);
+        $this->repo = new EditRepository();
         $this->worksSpecsId = (int)$choice;
         $this->changedOrderRecord['worksSpecsId'] = (int)$choice;
         $this->reset('substationTypeId');

@@ -3,7 +3,7 @@
 @section('content')
     @include('orders.edit.hidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
     <div class="relative flex items-top justify-center min-h-screen  sm:items-center sm:pt-0">
-        <div class="container jumbotron mt-3" style="padding-top: 10; margin-top:0;  margin-bottom:5px;">
+        <div class="container jumbotron mt-3" style="padding-top: 10px; margin-top:0;  margin-bottom:5px;">
             @livewire('edit-part2-preparation',[
             'substations'=>$substations,
             'preparations' => $preparations,
@@ -37,9 +37,9 @@
 
 @endsection
 <script type="text/javascript">
-    function SetSelectedObjPrepare(myobj)  // прописуємо вибрану станцію із списка в поле введення
+    function SetSelectedObjPrepare(myObj)  // прописуємо вибрану станцію із списка в поле введення
     {
-        document.getElementById("preparationTarget_obj").value = myobj;
+        document.getElementById("preparationTargetObj").value = myObj;
     }
 </script>
 <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"

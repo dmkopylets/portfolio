@@ -8,17 +8,17 @@ class EditPart4Measures extends Component
     public $updateMeasure = false;
     public $rowkey;     // індекс рядка (одномірного масива) у двомірному масиві $measure_rs
     public $measure_id; // номер рядка для для запису в таблицю бази даних в поле id (не номер в масиві !  )
-    public $branchId, $measures, $maxIdMeasure, $count_meas_row, $orderRecord, $licensor, $lic_date, $mode;
+    public $branchId, $measures, $maxIdMeasure, $count_meas_row, $licensor, $lic_date, $mode;
 
     public function mount($measures, $maxIdMeasure, $count_meas_row, $orderRecord)
     {
         $this->reset();
-        $this->branchId = $orderRecord['branchId'];
-        $this->mode = $orderRecord['editMode'];
+        $this->branchId = $orderRecord->branchId;
+        $this->mode = $orderRecord->editMode;
         $this->measures = $measures;
         $this->maxIdMeasure =$maxIdMeasure;
         $this->count_meas_row = $count_meas_row;
-        $this->orderRecord = $orderRecord;
+      //  $this->orderRecord = $orderRecord;
     }
 
     protected $listeners = [
@@ -42,7 +42,6 @@ class EditPart4Measures extends Component
            'count_meas_row'=>$this->count_meas_row,
            'maxIdMeasure'=>$this->maxIdMeasure,
            'updateMeasure'=>$this->updateMeasure,
-           'orderRecord'=>$this->orderRecord
             ]);
     }
 

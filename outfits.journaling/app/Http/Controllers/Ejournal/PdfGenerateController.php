@@ -13,10 +13,7 @@ use App\Model\Ejournal\Dicts\StationType;
 use App\Model\Ejournal\Dicts\Substation;
 use App\Model\Ejournal\Dicts\Unit;
 use App\Model\Ejournal\Dicts\Warden;
-use App\Model\Ejournal\Measure;
 use App\Model\Ejournal\Order;
-use App\Model\Ejournal\Preparation;
-use App\Model\User\Entity\BranchInfo;
 use PDF;
 
 class PdfGenerateController extends BaseController
@@ -44,7 +41,7 @@ class PdfGenerateController extends BaseController
             'substationType' => StationType::find($substationTypeId)->body,
             'branchName' => $this->branch->body,
             'preparations' => $this->repo->getPreparationsFromDB($order->id),
-            'measures' =>  Measure::getData($order->id)
+            'measures' => $this->repo->getMeasuresFromDB($order->id),
         ])->setPaper('a4', 'landscape')->setWarnings(false);
 
         return $pdf->stream('Order.pdf');

@@ -1,6 +1,18 @@
 @extends('layouts.app')
 @section('content')
 
+    @if(session()->has('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session()->get('error') }}
+        </div>
+    @endif
+
+
 <div class="container">
     <h2><strong>Електронний Журнал нарядів ({{$branch->body}})</strong></h2>
     <div class="flex-center position-ref full-height">

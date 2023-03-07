@@ -13,7 +13,7 @@
             <button type="submit"
                     class="fa-hover btn btn-warning input-group-text  ml-auto  align-self-center "
                     style="align-items: flex-end;"
-                    formaction="{{url('orders/' . $orderRecord->id . '/reedit4')}}"
+                    formaction="{{url('orders/' . $orderRecord->id . '/reEditPart4')}}"
                     formmethod="post">
                 <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i> назад
             </button>

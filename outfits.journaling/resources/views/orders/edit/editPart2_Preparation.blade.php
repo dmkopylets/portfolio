@@ -1,5 +1,5 @@
 <div class="edit-part2-preparation">
-    <!--'count_rows='.$count_prepr_row.' # maxId='.$maxIdpreparation.'# substation_id='.$substation_id.' # $preparations='.json_encode($preparations)-->
+    <!-- '$countRowPreparations='.$countRowPreparations.' # $maxIdPreparation='.$maxIdPreparation.'# $substationId='.$substationId.' # $preparations='.json_encode($preparations) -->
     @if(session()->has('success'))
         <div class="alert alert-success" role="alert">
             {{ session()->get('success') }}
@@ -31,7 +31,7 @@
         </tr>
         </thead>
         <tbody>
-        @if ($countRowPreparations> 0)
+        @if ($countRowPreparations > 0)
             @foreach ($preparations as $prrow)
                 <tr>
                     <td>

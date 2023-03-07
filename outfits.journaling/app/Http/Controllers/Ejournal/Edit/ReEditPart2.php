@@ -2,56 +2,49 @@
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Model\User\Entity\BranchInfo;
+use App\Http\Controllers\Ejournal\BaseController as BaseController;
 use Illuminate\Http\Request;
 
-class ReEditPart2
+class ReEditPart2 extends BaseController
 {
-
-    public function __construct(EditRepository $repo, BranchInfo $branch)
+    public function __construct()
     {
-        $this->branch = $branch;
-        $this->repo = $repo;
+        parent::__construct();
+        $this->repo = new EditRepository();
     }
 
-    public function reedit2($orderId, Request $request)
+    public function reEditPart2($orderId, Request $request)
     {
-        session(['mode' => 'reedit']);
-        session(['measures_rs' => $this->measures_rs]);
-        $this->preparations_rs = session('preparations_rs');
+        $orderRecord = session('orderRecord');
+        $orderRecord->editMode = 'reedit';
+        $preparations = session('preparations');
 
-        if (empty($this->preparations_rs)) {
-            $count_prepr_row = 0;
-            $maxIdpreparation = 0;
-        } else {
-            $maxIdpreparation = max(array_column($this->preparations_rs, 'id'));
-            $count_prepr_row = count($this->preparations_rs);
+        $maxIdPreparation = 0;
+        $countRowPreparations = 0;
+
+        if (!empty($preparations)) {
+            $maxIdPreparation = max(array_column($preparations, 'id'));
+            $countRowPreparations = count($preparations);
         }
 
-        $this->ejournalController->orderRecord = session('orderRecord');
+        $orderRecord->separateInstructions = trim($request->get('sep_instrs_txt'));
+        $orderRecord->orderDate = date("Y-m-d H:i", strtotime(trim($request->datetime_order_created)));
+        $orderRecord->orderCreator = trim($request->inp_order_creator);
+        $orderRecord->orderLongTo = date("Y-m-d H:i", strtotime(trim($request->datetime_order_longed)));
+        $orderRecord->orderLonger = trim($request->inp_order_longer);
+        $orderRecord->underVoltage = trim($request->get('under_voltage'));
+        $this->repo->setOrderRecord($orderRecord);
+        $substationTypeId = $this->repo->getSubstationTypeId($orderRecord->substationId);
 
-        $this->orderRecord['sep_instrs'] = trim($request->get('sep_instrs_txt'));
-        $this->orderRecord['order_date'] = date("Y-m-d H:i", strtotime(trim($request->datetime_order_created)));
-        $this->orderRecord['order_creator'] = trim($request->inp_order_creator);
-        $this->orderRecord['order_longto'] = date("Y-m-d H:i", strtotime(trim($request->datetime_order_longed)));
-        $this->orderRecord['order_longer'] = trim($request->inp_order_longer);
-        $this->orderRecord['under_voltage'] = trim($request->get('under_voltage'));
-
-        session()->forget('orderRecord');
-        session(['orderRecord' => $this->ejournalController->orderRecord]);
-
-        return view('orders.editPart2', [
-            'mode' => 'reedit',
-            'title' => ' клон № ' . $orderId,
-            'branch_id' => $this->ejournalController->orderRecord['branch_id'],
-            'substation_id' => $this->ejournalController->orderRecord['substation_id'],
-            'substation_txt' => Substation::find($this->ejournalController->orderRecord['substation_id'])->body,
-            'substation_type_id' => $this->ejournalController->orderRecord['substation_type_id'],
-            'substations' => Substation::select('id', 'body')->where('branch_id', $this->ejournalController->orderRecord['branch_id'])->where('type_id', $this->ejournalController->orderRecord['substation_type_id'])->orderBy('body')->get(),
-            'count_prepr_row' => $count_prepr_row,
-            'maxIdpreparation' => $maxIdpreparation,
-            'preparations_rs' => $this->preparations_rs,
-            'orderRecord' => $this->ejournalController->orderRecord
+        return view('orders.edit.editPart2', [
+            'title' => ($orderRecord->id == 0) ? 'новий наряд' : 'клонуємо наряд № ' . $orderRecord->id,
+            'mode' => $orderRecord->editMode,
+            'substations' => $this->repo->getSubstationsList($orderRecord->branchId, $substationTypeId),
+            'maxIdPreparation' => $maxIdPreparation,
+            'countRowPreparations' => $countRowPreparations,
+            'preparations' => $preparations,
+            'orderRecord' => $orderRecord,
+            'editRepository' => $this->repo,
         ]);
     }
 }

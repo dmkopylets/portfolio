@@ -63,17 +63,11 @@ class DictBrigadeMembersController extends DictBaseController
         $record->body = $request->input('body');
         $record->group = $request->input('group');
         $record->save();
-        // redirect
         Session::flash('message', 'Запис успішно додано у список можливих членів бригади ' . $record->body);
         return Redirect::to('dicts/BrigadeMembers');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\BrigadeMember $BrigadeMember
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $record = BrigadeMember::find($id);
@@ -86,38 +80,21 @@ class DictBrigadeMembersController extends DictBaseController
                 'add_td' => array('body', 'group')]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\BrigadeMember $BrigadeMember
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $record_id)
+    public function update(Request $request, $id)
     {
-        $record = BrigadeMember::find($record_id);
+        $record = BrigadeMember::find($id);
         $record->body = $request->input('body');
         $record->group = $request->input('group');
         $record->save();
-
-        // redirect
-        Session::flash('message', 'Запис № ' . $record_id . ' успішно змінено!');
+        Session::flash('message', 'Запис № ' . $id . ' успішно змінено!');
         return Redirect::to('dicts/BrigadeMembers');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\BrigadeMember $BrigadeMember
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $record = BrigadeMember::find($id);
         $msgtxt = $record->body;
         $record->delete();
-
-        // redirect
         Session::flash('message', 'Успішно видалено ' . $msgtxt);
         return Redirect::to('dicts/BrigadeMembers');
     }

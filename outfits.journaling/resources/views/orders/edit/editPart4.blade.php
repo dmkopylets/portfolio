@@ -17,7 +17,7 @@
             <div class="row" style="margin-left:2pt; margin-right:2pt;">
                 <!--  кнопки переходу "назад-вперед" з методом POST -->
 
-                <form action="{{url('orders/'.$orderRecord['id'].'/reEditPart3')}}" method="POST">
+                <form action="{{url('orders/'.$orderRecord->id . '/reEditPart3')}}" method="POST">
                     @csrf
                     @method('POST')
                     <div style="margin-right:600pt;">
@@ -26,13 +26,13 @@
                         <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i> назад</button>
                     </div>
                 </form>
-                <form action="{{url('orders/'.$orderRecord['id'].'/editPart5')}}" method="POST">
+                <form action="{{url('orders/'.$orderRecord->id . '/editPart5')}}" method="POST">
                     @csrf
                     @method('POST')
                     <div style="float: right; margin-right: 10px;">
                         <button type="submit"
                                 class="fa-hover btn btn-info" style="float: right;"
-                                formaction="{{url('orders/'.$orderRecord['id'].'/editPart5')}}"
+                                formaction="{{url('orders/'.$orderRecord->id . '/editPart5')}}"
                                 formmethod="post">
                             далі <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button>
                     </div>

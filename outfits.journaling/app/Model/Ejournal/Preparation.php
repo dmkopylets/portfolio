@@ -12,6 +12,6 @@ class Preparation extends Model
     use HasFactory;
 
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'target_obj', 'body'];
+    protected $fillable = ['id', 'order_id', 'target_obj', 'body'];
     protected $table = 'preparations';
 }

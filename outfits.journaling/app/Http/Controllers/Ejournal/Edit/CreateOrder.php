@@ -4,30 +4,29 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
+use App\Http\Controllers\Ejournal\BaseController;
+use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\User\Entity\BranchInfo;
 use Illuminate\Http\Request;
 
 class CreateOrder
 {
-    public function __construct(EditRepository $repo, BranchInfo $branch)
+    private EditRepository $repo;
+    private OrderRecordDTO $orderRecord;
+    private BranchInfo $branch;
+    public function __construct()
     {
-        $this->branch = $branch;
-        $this->repo = $repo;
+        $baseController = new BaseController();
+        $this->branch = $baseController->currentUser->userBranch;
+        $this->repo = new EditRepository();
     }
-
-    /**
-     *   !! створюєно НОВИЙ наряд
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function createOrder(Request $request): \Illuminate\View\View
     {
-        $worksSpecsId = (int)$request->input('direction');
-        $newOrder = $this->repo->initOrderRecord($this->branch->id, $worksSpecsId);
-        $newOrder->editMode = 'create';
-        $this->repo->setOrderRecord($newOrder);
+        $this->orderRecord = $this->repo->initOrderRecord($this->branch->id);
+        $this->orderRecord->worksSpecsId = (int)$request->input('direction');
+        $this->orderRecord->editMode = 'create';
+        session(['orderRecord' => $this->orderRecord]);
         $editPart1Controller = new EditPart1Controller($this->repo, $this->branch);
-
-        return $editPart1Controller->editPart1($newOrder);
-
+        return $editPart1Controller->editPart1($this->orderRecord);
     }
 }

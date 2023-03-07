@@ -5,7 +5,7 @@
             підготовку робочих місць і на допуск</b></h3>
 
     <!--  інфа для отладки
-    '$mode='.$mode.' //__ $count_meas_rows='.$count_meas_row.' //___ maxIdMeasure='.$maxIdMeasure.' //___ $measures_rs='.json_encode($measures_rs)-->
+    '$mode='.$mode.' //__ $count_meas_rows='.$count_meas_row.' //___ maxIdMeasure='.$maxIdMeasure.' //___ $measures='.json_encode($measures)-->
 
     <table class="table  table-bordered table-sm" style="margin-top:0; margin-bottom: 1px;">
         <thead class="thead-dark">
@@ -62,7 +62,7 @@
         <div class="alert alert-success" role="alert">
             {{ session()->get('success') }}
         </div>
-        {{ session(['measures_rs' => $measures_rs])}}
+        {{ session(['measures' => $measures])}}
     @endif
     @if(session()->has('error'))
         <div class="alert alert-danger" role="alert">

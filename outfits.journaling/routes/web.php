@@ -29,18 +29,19 @@ use Illuminate\Support\Facades\Route;
 //*************************************************************************************************************
 Route::get('/', [App\Http\Controllers\Ejournal\OrdersController::class, 'welcome']);
 Route::get('login', [App\Http\Controllers\Ejournal\OrdersController::class, 'welcome']);
-Route::resource('orders', App\Http\Controllers\Ejournal\OrdersController::class)->only(['index', 'create', 'store']);
+Route::resource('orders', App\Http\Controllers\Ejournal\OrdersController::class)->only(['index', 'store']);
 Route::get('orders/precreate', [App\Http\Controllers\Ejournal\OrdersController::class, 'preCreate']);
+Route::get('orders/createOrder', [App\Http\Controllers\Ejournal\Edit\CreateOrder::class, 'createOrder']);
 Route::get('orders/{order}/clone', [App\Http\Controllers\Ejournal\OrdersController::class, 'clone']);
 Route::post('orders/{order}/editPart1', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart1']);
 Route::post('orders/{order}/editPart2', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart2']);
 Route::post('orders/{order}/editPart3', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart3']);
 Route::post('orders/{order}/editPart4', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart4']);
 Route::post('orders/{order}/editPart5', [App\Http\Controllers\Ejournal\OrdersController::class, 'editPart5']);
-Route::post('orders/{order}/reEditPart1', [App\Http\Controllers\Ejournal\OrdersController::class, 'reEditPart1']);
-Route::post('orders/{order}/reEditPart2', [App\Http\Controllers\Ejournal\OrdersController::class, 'reEditPart2']);
-Route::post('orders/{order}/reEditPart3', [App\Http\Controllers\Ejournal\OrdersController::class, 'reEditPart3']);
-Route::post('orders/{order}/reEditPart4', [App\Http\Controllers\Ejournal\OrdersController::class, 'reEdit4Part']);
+Route::post('orders/{order}/reEditPart1', [App\Http\Controllers\Ejournal\Edit\ReEditPart1::class, 'reEditPart1']);
+Route::post('orders/{order}/reEditPart2', [App\Http\Controllers\Ejournal\Edit\ReEditPart2::class, 'reEditPart2']);
+Route::post('orders/{order}/reEditPart3', [App\Http\Controllers\Ejournal\Edit\ReEditPart3::class, 'reEditPart3']);
+Route::post('orders/{order}/reEditPart4', [App\Http\Controllers\Ejournal\Edit\ReEditPart4::class, 'reEditPart4']);
 Route::get('orders/{order}/pdf', [App\Http\Controllers\Ejournal\PdfGenerateController::class, 'pdf']);
 
 Route::prefix('dicts')->group(function () {

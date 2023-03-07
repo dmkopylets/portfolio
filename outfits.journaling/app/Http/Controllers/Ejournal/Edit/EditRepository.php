@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
+use App\Http\Controllers\Ejournal\OrdersController;
 use App\Model\Ejournal\Dicts\Adjuster;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
@@ -13,6 +14,7 @@ use App\Model\Ejournal\Dicts\TypicalTask;
 use App\Model\Ejournal\Dicts\Unit;
 use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\WorksSpec;
+use App\Model\Ejournal\Measure;
 use App\Model\Ejournal\Order;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\Ejournal\Preparation;
@@ -62,11 +64,15 @@ class EditRepository
 
     public function fetchBrigadeMembers($idCollection): array
     {
-        return BrigadeMember::
-        select('id', 'body', 'group')
-            ->whereIn('id', explode(",", $idCollection))
-            ->get()
-            ->toArray();
+        $result = [];
+        if ($idCollection !== "") {
+                $result = BrigadeMember::
+                select('id', 'body', 'group')
+                    ->whereIn('id', explode(",", $idCollection))
+                    ->get()
+                    ->toArray();
+        }
+        return $result;
     }
 
     public function getAllPossibleTeamMembersArray(int $branchId): array
@@ -81,11 +87,15 @@ class EditRepository
 
     public function fetchBrigadeEngineer($idCollection): array
     {
-        return BrigadeEngineer::
-        select('id', 'body', 'group', 'specialization')
-            ->whereIn('id', explode(",", $idCollection))
-            ->get()
-            ->toArray();
+        $result = [];
+        if ($idCollection !== "") {
+            $result = BrigadeEngineer::
+            select('id', 'body', 'group', 'specialization')
+                ->whereIn('id', explode(",", $idCollection))
+                ->get()
+                ->toArray();
+        }
+        return $result;
     }
 
     public function getAllPossibleTeamEngineerArray(int $branchId): array
@@ -98,8 +108,9 @@ class EditRepository
             ->toArray();
     }
 
-    public static function readOrderFromDB(Order $order): OrderRecordDTO
+    public function readOrderFromDB(int $orderId, string $editMode): OrderRecordDTO
     {
+        $order = Order::find($orderId);
         $dto = new OrderRecordDTO();
         $dto->id = $order->id;
         $dto->branchId = $order->branch_id;
@@ -121,6 +132,7 @@ class EditRepository
         $dto->orderLongTo = $order->order_longto;
         $dto->orderLonger = $order->order_longer;
         $dto->underVoltage = $order->under_voltage;
+        $dto->editMode = $editMode;
         return $dto;
     }
 
@@ -149,7 +161,7 @@ class EditRepository
         return $order;
     }
 
-    public function initOrderRecord(int $branchId, int $worksSpecsId): OrderRecordDTO
+    public function initOrderRecord(int $branchId): OrderRecordDTO
     {
         $dto = new OrderRecordDTO();
         $dto->id = 0;
@@ -159,7 +171,7 @@ class EditRepository
         $dto->adjusterId = 0;
         $dto->brigadeMembersIds = '';
         $dto->brigadeEngineerIds = '';
-        $dto->worksSpecsId = $worksSpecsId;
+        $dto->worksSpecsId = 1;
         $dto->substationId = 1;
         $dto->lineId = 0;
         $dto->objects = '';
@@ -183,7 +195,9 @@ class EditRepository
 
     public function setOrderRecord(OrderRecordDTO $orderRecord): void
     {
+        session()->forget('orderRecord');
         session(['orderRecord' => $orderRecord]);
+        $this->orderRecord = $orderRecord;
     }
 
     public function getMode(): string
@@ -209,6 +223,19 @@ class EditRepository
     public function setMeasuresRs(array $measures_rs): void
     {
         $this->measures_rs = $measures_rs;
+    }
+
+    public function getMeasuresFromDB(int $orderId)
+    {
+        return Measure::
+        select('id', 'licensor', 'lic_date')
+            ->where('order_id', $orderId)
+            ->get();
+    }
+
+    public function getMeasuresMaxId($orderId)
+    {
+        return Measure::select('id')->where('order_id', $orderId)->get()->max('id');
     }
 
     public function getUnits(int $branchId)
@@ -247,7 +274,7 @@ class EditRepository
             ->toArray();
     }
 
-    public function getPreparationMaxId($orderId): int
+    public function getPreparationMaxId($orderId): int|null
     {
         return Preparation::
         select('id')
@@ -263,7 +290,7 @@ class EditRepository
 
     public function setPreparationsArray($array): void
     {
-        $this->eJournalController->preparations = $array;
+        session(['preparations' => $array]);
     }
 
     public function getTypicalTasksListArray(int $worksSpecsId): array
@@ -279,5 +306,23 @@ class EditRepository
     public function getWorksSpecs()
     {
         return WorksSpec::select('id', 'body')->orderBy('id')->get()->toArray();
+    }
+
+    public function getBrigadeText(OrderRecordDTO $orderRecord): string
+    {
+        $teamList = '';
+        $brigadeText = $this->fetchBrigadeMembers($orderRecord->brigadeMembersIds);
+        if ($orderRecord->brigadeEngineerIds !== '') $engineersText = $this->fetchBrigadeEngineer($orderRecord->brigadeEngineerIds);
+        if ($brigadeText != '') {
+            foreach ($brigadeText as $txtPart1) {
+                $teamList = $teamList . $txtPart1['body'] . ' ' . $txtPart1['group'] . ', ';
+            }
+        }
+        if (isset($engineersText)) {
+            foreach ($engineersText as $txtPart2) {
+                $teamList = $teamList . $txtPart2['specialization'] . ' ' . $txtPart2['body'] . ' ' . $txtPart2['group'] . ', ';
+            }
+        }
+        return $teamList;
     }
 }

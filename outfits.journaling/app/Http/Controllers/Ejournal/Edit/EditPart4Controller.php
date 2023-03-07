@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
+use App\Http\Controllers\Ejournal\BaseController;
 use App\Http\Controllers\Ejournal\OrdersController;
-use App\Model\Ejournal\Measure;
 use App\Model\Ejournal\OrderRecordDTO;
-use App\Model\User\Entity\BranchInfo;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isNull;
 
-class EditPart4Controller
+class EditPart4Controller extends BaseController
 {
     private EditRepository $repo;
 
-    public function __construct(EditRepository $repo, BranchInfo $branch, OrdersController $ejournalController)
+    public function __construct(EditRepository $repo)
     {
-        $this->ejournalController = $ejournalController;
+        parent::__construct();
         $this->repo = $repo;
     }
 
@@ -27,6 +26,8 @@ class EditPart4Controller
         $orderRecord->separateInstructions = trim($request->get('sep_instrs_txt'));
         $orderRecord->orderDate = date("Y-m-d H:i", strtotime(trim($request->datetime_order_created)));
         $orderRecord->orderCreator = trim($request->inp_order_creator);
+
+        $orderRecord->orderLonger = '';
         if (!isNull($request->datetime_order_longed)) {
             $orderRecord->orderLongTo = date("Y-m-d H:i", strtotime(trim($request->datetime_order_longed)));
             $orderRecord->orderLonger = trim($request->inp_order_longer);
@@ -47,10 +48,9 @@ class EditPart4Controller
             }
         }
         if ($mode === 'clone') {
-            $maxIdMeasureTmp = Measure::getMaxId($orderRecord->id);
+            $maxIdMeasureTmp = $this->repo->getMeasuresMaxId($orderRecord->id);
             if ($maxIdMeasureTmp > 0) {
-                $meas_data = Measure::getData($orderRecord->id);
-                $this->measures = json_decode($meas_data, true);
+                $this->measures = $this->repo->getMeasuresFromDB($orderRecord->id)->toArray();
                 $maxIdMeasure = max(array_column($this->measures, 'id'));
                 $countMeasureRows = count($this->measures);
             }
