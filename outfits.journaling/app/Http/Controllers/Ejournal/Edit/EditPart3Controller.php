@@ -6,7 +6,7 @@ use App\Http\Controllers\Ejournal\BaseController;
 use App\Model\Ejournal\OrderRecordDTO;
 use Illuminate\Http\Request;
 
-class EditPart3Controller extends BaseController
+class EditPart3Controller
 {
     public function editpart3(OrderRecordDTO $orderRecord, Request $request)
     {

@@ -1,24 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\BaseController as BaseController;
 use Illuminate\Http\Request;
 
-class ReEditPart2 extends BaseController
+class ReEditPart2
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->repo = new EditRepository();
-    }
-
     public function reEditPart2($orderId, Request $request)
     {
-        $orderRecord = session('orderRecord');
-        $orderRecord->editMode = 'reedit';
-        $preparations = session('preparations');
-
+        $repo = new EditRepository();
+        $orderRecord = $repo->getOrderRecord();
+        //$orderRecord->editMode = 'reedit';
+        $preparations = $repo->getPreparationsArray();
         $maxIdPreparation = 0;
         $countRowPreparations = 0;
 
@@ -33,18 +28,17 @@ class ReEditPart2 extends BaseController
         $orderRecord->orderLongTo = date("Y-m-d H:i", strtotime(trim($request->datetime_order_longed)));
         $orderRecord->orderLonger = trim($request->inp_order_longer);
         $orderRecord->underVoltage = trim($request->get('under_voltage'));
-        $this->repo->setOrderRecord($orderRecord);
-        $substationTypeId = $this->repo->getSubstationTypeId($orderRecord->substationId);
+        $repo->setOrderRecord($orderRecord);
 
         return view('orders.edit.editPart2', [
             'title' => ($orderRecord->id == 0) ? 'новий наряд' : 'клонуємо наряд № ' . $orderRecord->id,
             'mode' => $orderRecord->editMode,
-            'substations' => $this->repo->getSubstationsList($orderRecord->branchId, $substationTypeId),
+            'substations' => $repo->getSubstationsList($orderRecord->branchId, $repo->getSubstationTypeId($orderRecord->substationId)),
             'maxIdPreparation' => $maxIdPreparation,
             'countRowPreparations' => $countRowPreparations,
             'preparations' => $preparations,
             'orderRecord' => $orderRecord,
-            'editRepository' => $this->repo,
+            'editRepository' => $repo,
         ]);
     }
 }

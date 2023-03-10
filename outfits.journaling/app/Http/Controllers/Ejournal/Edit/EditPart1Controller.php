@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\BaseController;
-use App\Http\Controllers\Ejournal\OrdersController;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\User\Entity\BranchInfo;
+use Illuminate\View\View;
 
 class EditPart1Controller
 {
@@ -20,13 +19,8 @@ class EditPart1Controller
         $this->branch = $branch;
     }
 
-    public function editPart1(OrderRecordDTO $orderRecord)
+    public function editPart1(OrderRecordDTO $orderRecord): View
     {
-        $this->orderRecord = $orderRecord;
-        if ($orderRecord->editMode === 'reedit') {
-            $orderRecord = $this->repo->getOrderRecord();
-        }
-
         $this->repo->setOrderRecord($orderRecord);
         return view('orders.edit.editPart1', [
             'title' => ($orderRecord->id == 0) ? 'новий наряд' : 'клонуємо наряд № ' . $orderRecord->id,
@@ -40,7 +34,6 @@ class EditPart1Controller
             'worksSpecsId' => $orderRecord->worksSpecsId,
             'teamList' => $this->repo->getBrigadeText($orderRecord),
             'orderRecord' => $orderRecord,
-            'editRepository' => $this->repo,
         ]);
     }
 }

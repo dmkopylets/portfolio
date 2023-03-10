@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\BaseController as BaseController;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isNull;
 
-class ReEditPart3 extends BaseController
+class ReEditPart3
 {
     public function reEditPart3(Request $request)
     {

@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="col-md-6 col-lg-9">
-            <textarea id="workslist" name="workslist" class="form-control" rows="5" style="text-align:left;">@if ($mode!=='create'){{$workslist}}@endif</textarea>
+            <textarea id="workslist" name="workslist" class="form-control @error('workslist') is-invalid @enderror" rows="5" style="text-align:left;">@if ($changedOrderRecord['editMode'] !== 'create'){{$workslist}}@endif</textarea>
         </div>
     </div>
 </div>

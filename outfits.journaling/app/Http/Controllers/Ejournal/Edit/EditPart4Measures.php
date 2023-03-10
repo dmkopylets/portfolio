@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers\Ejournal\Edit;
+use App\Http\Requests\EditOrderPart4Request;
 use Livewire\Component;
 use Redirect;
 
@@ -27,13 +28,6 @@ class EditPart4Measures extends Component
       //  'updateMeasure'=>'update'
     ];
 
-
-// Validation Rules
-    protected $rules = [
-        'licensor'=>'required',
-        'lic_date'=>'required'
-    ];
-
     public function render()
     {
         return view('orders.edit.editPart4_Measures',[
@@ -50,16 +44,19 @@ class EditPart4Measures extends Component
         $this->lic_date = '';
     }
 
-    public function measureStore(){
+    public function measureStore()
+    {
         // додаяється лише один рядочок
         // Validate Form Request
-        $this->validate();
+        $request = new EditOrderPart4Request();
+        $validated = $this->validate($request->rules(), $request->messages());
         try{
             $this->maxIdMeasure++;
             $this->measures[]=[
                 'id'      =>$this->maxIdMeasure,
-                'licensor'=>$this->licensor,
-                'lic_date'=>$this->lic_date];
+                'licensor'=>$validated['licensor'],
+                'lic_date'=>$validated['lic_date']
+            ];
             $this->count_meas_row = count($this->measures);
             // заганяємо оновлені дані по підготовкам в session
             session(['measures'  => $this->measures]);

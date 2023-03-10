@@ -34,7 +34,7 @@ class OrdersController extends BaseController
         parent::__construct();
         $this->branch = $this->currentUser->userBranch;
         $this->editRepository = new EditRepository();
-        $this->editPart2 = new Edit\EditPart2Controller($this->editRepository);
+        $this->editPart2 = new Edit\EditPart2Controller($this->editRepository, $this->branch);
         $this->editPart3 = new Edit\EditPart3Controller();
         $this->editPart4 = new Edit\EditPart4Controller($this->editRepository, $this->branch, $this);
         $this->editPart5 = new Edit\EditPart5Controller();
@@ -95,7 +95,8 @@ class OrdersController extends BaseController
 
     public function clone(int $orderId): \Illuminate\View\View
     {
-        return $this->editPart1->editpart1($this->editRepository->readOrderFromDB($orderId, 'clone'));
+        $editPart1Controller = new Edit\EditPart1Controller($this->editRepository, $this->branch);
+        return $editPart1Controller->editpart1($this->editRepository->readOrderFromDB($orderId, 'clone'));
     }
 
 //    public function editPart1(OrderRecordDTO $orderRecord): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application

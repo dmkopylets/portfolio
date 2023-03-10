@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ejournal\Edit;
 
 use App\Http\Requests\EditOrderPart2Request;
+use App\Model\Ejournal\OrderRecordDTO;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 
@@ -11,15 +12,31 @@ class EditPart2Preparation extends Component
     public bool $updatePreparation = false;
     public array $orderRecord = [];
     public array $preparations = [];
+    public int $maxIdPreparation = 0;
     public int $rowKey = 0; // індекс рядка (одномірного масива) у бегатомірному масиві $preparation
-    public $substationId, $substations, $maxIdPreparation, $preparationId, $preparationTargetObj, $preparationBody, $countRowPreparations;
+    public int $substationId = 0;
+    public array $substations = [];
+    public int $preparationId = 0;
+    public string $preparationTargetObj = '';
+    public string $preparationBody = '';
+    public int $countRowPreparations = 0;
+    protected $listeners = [
+        'destroyPreparation' => 'destroy',
+        //  'editPreparation'=>'edit',
+        //  'updatePreparation'=>'update'
+    ];
+    private EditOrderPart2Request $request;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->request = new EditOrderPart2Request();
+    }
 
-    public function mount($substations, $preparations, $maxIdPreparation, $countRowPreparations, $orderRecordDTO)
+    public function mount(array $substations, array $preparations, int $maxIdPreparation, int $countRowPreparations, OrderRecordDTO $orderRecordDTO)
     {
         $this->reset();
-//        $this->orderRecord = $orderRecordDTO->toArray();
-//        $this->branchId = $orderRecordDTO->branchId;
+        $this->orderRecord = $orderRecordDTO->toArray();
         $this->substationId = $orderRecordDTO->substationId;
         $this->substations = $substations;
         $this->preparations = $preparations;
@@ -27,16 +44,8 @@ class EditPart2Preparation extends Component
         $this->countRowPreparations = $countRowPreparations;
     }
 
-    protected $listeners = [
-        'destroyPreparation' => 'destroy',
-        //  'editPreparation'=>'edit',
-        //  'updatePreparation'=>'update'
-    ];
-
-
     public function render()
     {
-        var_dump($this->preparations);
         return view('orders.edit.editPart2_Preparation', [
             'substations' => $this->substations,
             'substationId' => $this->substationId,
@@ -56,36 +65,33 @@ class EditPart2Preparation extends Component
 
     public function preparationStore()
     {
-        // додаяється лише один рядочок
-        // Validate Form Request
-        $request = new EditOrderPart2Request();
-        $validatedData = $this->validate();
-
-        $v = Validator::make($request->all(), $request->rules(), $request->messages());
-        if (!$v->fails()){
-            $this->maxIdPreparation = $this->maxIdPreparation + 1;
+        $v = Validator::make($this->request->all(), $this->request->rules(), $this->request->messages());
+        if ($v->fails()) {
+            $errorMessage = '';
+            foreach ($v->messages()->all() as $messageBag) {
+                $errorMessage .= $messageBag . '! ';
+            }
+            session()->flash('error', 'Під час створення Препарації сталася помилка! ' . $errorMessage);
+            // Reset Form Fields After Creating Preparation
+            $this->resetFields();
+        } else {
+            $validatedData = $this->request->validated();
             $this->preparations[] = [
-                'id' => $this->maxIdPreparation,
+                'id' => $this->maxIdPreparation++,
                 'preparationTargetObj' => $validatedData['preparationTargetObj'],
                 'preparationBody' => $validatedData['preparationBody']
-                ];
+            ];
+
             $this->countRowPreparations = count($this->preparations);
+            $this->maxIdPreparation = max(array_column($this->preparations, 'id'));
             // заганяємо оновлені дані по підготовкам в session
             session(['preparations' => $this->preparations]);
             // Set Flash Message
             session()->flash('success', 'Препарація створена успішно!!');
 
             // Reset Form Fields After Creating Preparation
-        } else {
-            // Set Flash Message
-            session()->flash('error', 'Під час створення Препарації сталася помилка!!');
+            $this->resetFields();
 
-            // Reset Form Fields After Creating Preparation
-        }
-        $this->resetFields();
-
-        $this->countRowPreparations = count($this->preparations);
-            $this->maxIdPreparation = max(array_column($this->preparations, 'id'));
             return view('orders.edit.editPart2_Preparation', [
                 'substations' => $this->substations,
                 'substationId' => $this->substationId,
@@ -93,16 +99,16 @@ class EditPart2Preparation extends Component
                 'countRowPreparations' => $this->countRowPreparations,
                 'maxIdPreparation' => $this->maxIdPreparation,
             ]);
-
+        }
         //$this->cancel();
     }
 
     public function editPreparation($id)
     {
         $this->preparationId = $id;
-        $this->rowKey = array_search($id, array_column($this->preparations, 'id')); // індекс рядка (одномірного масива) у бегатомірному масиві $preparation
-        $this->preparationTargetObj = $this->preparations[$this->rowKey]['targetObj'];
-        $this->preparationBody = $this->preparations[$this->rowKey]['body'];
+        $this->rowKey = array_search($id, array_column($this->preparations, 'id'));
+        $this->preparationTargetObj = $this->preparations[$this->rowKey]['preparationTargetObj'];
+        $this->preparationBody = $this->preparations[$this->rowKey]['preparationBody'];
         //-----------------------
         $this->updatePreparation = true;
     }
@@ -115,15 +121,14 @@ class EditPart2Preparation extends Component
 
     public function preparationUpdate()
     {
-        // Validate requestd
-        $this->validate();
+        $this->validate($this->request->rules(), $this->request->messages());
         try {
             // Update Preparation
             $this->preparations[$this->rowKey] = [
                 'id' => $this->preparationId,
                 'preparationTargetObj' => $this->preparationTargetObj,
                 'preparationBody' => $this->preparationBody,
-                ];
+            ];
             session(['preparations' => $this->preparations]);
             session()->flash('success', 'Препарація змінена успішно!!');
             $this->cancel();
@@ -141,7 +146,7 @@ class EditPart2Preparation extends Component
             $this->preparations = array_values($this->preparations); // переіндексація масива
             session(['preparations' => $this->preparations]);
             session()->flash('success', "Препарація видалена успішно!!!!");
-            $this->cancel(); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $this->cancel();
         } catch (\Exception $e) {
             session()->flash('error', "Під час видалення Препарації сталася помилка!!");
         } finally {

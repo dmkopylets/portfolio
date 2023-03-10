@@ -10,7 +10,6 @@
             'maxIdPreparation' => $maxIdPreparation,
             'countRowPreparations' => $countRowPreparations,
             'orderRecordDTO' => $orderRecord,
-            'editRepository' => $editRepository,
             ])
             <hr class="mb-4">
 
@@ -35,7 +34,6 @@
         </div>
     </div>
 
-@endsection
 <script type="text/javascript">
     function SetSelectedObjPrepare(myObj)  // прописуємо вибрану станцію із списка в поле введення
     {
@@ -51,3 +49,4 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
 @livewireScripts
+@endsection

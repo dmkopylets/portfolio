@@ -23,7 +23,7 @@ class BaseController extends Controller
         $this->branch = $this->currentUser->userBranch;
     }
 
-    public function getBranch(): BranchInfo
+    public function getBranchInfo(): BranchInfo
     {
         return $this->branch;
     }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Ejournal\Edit;
 
-use App\Http\Controllers\Ejournal\OrdersController;
 use App\Model\Ejournal\Dicts\Adjuster;
+use App\Model\Ejournal\Dicts\Branch;
 use App\Model\Ejournal\Dicts\BrigadeEngineer;
 use App\Model\Ejournal\Dicts\BrigadeMember;
 use App\Model\Ejournal\Dicts\Line;
@@ -18,6 +18,7 @@ use App\Model\Ejournal\Measure;
 use App\Model\Ejournal\Order;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\Ejournal\Preparation;
+use App\Model\User\Entity\BranchInfo;
 use Illuminate\Support\Facades\DB;
 
 class EditRepository
@@ -66,11 +67,11 @@ class EditRepository
     {
         $result = [];
         if ($idCollection !== "") {
-                $result = BrigadeMember::
-                select('id', 'body', 'group')
-                    ->whereIn('id', explode(",", $idCollection))
-                    ->get()
-                    ->toArray();
+            $result = BrigadeMember::
+            select('id', 'body', 'group')
+                ->whereIn('id', explode(",", $idCollection))
+                ->get()
+                ->toArray();
         }
         return $result;
     }
@@ -195,9 +196,7 @@ class EditRepository
 
     public function setOrderRecord(OrderRecordDTO $orderRecord): void
     {
-        session()->forget('orderRecord');
         session(['orderRecord' => $orderRecord]);
-        $this->orderRecord = $orderRecord;
     }
 
     public function getMode(): string
@@ -268,22 +267,23 @@ class EditRepository
     public function getPreparationsFromDB($orderId): array
     {
         return Preparation::
-        select('id', 'target_obj', 'body')
+        select('id', 'target_obj as preparationTargetObj', 'body as preparationBody')
             ->where('order_id', $orderId)
             ->get()
             ->toArray();
     }
 
-    public function getPreparationMaxId($orderId): int|null
+    public function getPreparationMaxId($orderId): int
     {
-        return Preparation::
+        $found = Preparation::
         select('id')
             ->where('order_id', $orderId)
             ->get()
             ->max('id');
+        return is_null($found) ? 0 : $found;
     }
 
-    public function getPreparationsArray()
+    public function getPreparationsArray(): array
     {
         return session('preparations');
     }
@@ -324,5 +324,14 @@ class EditRepository
             }
         }
         return $teamList;
+    }
+
+    public function findBranch($id)
+    {
+        $result = new BranchInfo();
+        $tmp = Branch::find($id);
+        $result->id = $tmp->id;
+        $result->body = $tmp->body;
+        return $result;
     }
 }

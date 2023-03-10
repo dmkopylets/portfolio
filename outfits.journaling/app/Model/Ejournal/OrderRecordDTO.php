@@ -53,4 +53,29 @@ class OrderRecordDTO
         $array['editMode'] = $this->editMode;
     return $array;
     }
+    public function fromArray($array): OrderRecordDTO
+    {
+        $this->id = $array['id'];
+        $this->branchId = $array['branchId'];
+        $this->unitId = $array['unitId'];
+        $this->wardenId = $array['wardenId'];
+        $this->adjusterId = $array['adjusterId'];
+        $this->brigadeMembersIds = $array['brigadeMembersIds'];
+        $this->brigadeEngineerIds = $array['brigadeEngineerIds'];
+        $this->worksSpecsId = $array['worksSpecsId'];
+        $this->substationId = $array['substationId'];
+        $this->lineId = $array['lineId'];
+        $this->objects = $array['objects'];
+        $this->tasks = $array['tasks'];
+        $this->workBegin = $array['workBegin'];
+        $this->workEnd = $array['workEnd'];
+        $this->separateInstructions = $array['separateInstructions'];
+        $this->orderDate = $array['$orderDate'];
+        $this->orderCreator = $array['orderCreator'];
+        $this->orderLongTo = $array['orderLongTo'];
+        $this->orderLonger = $array['orderLonger'];
+        $this->underVoltage = $array['underVoltage'];
+        $this->editMode = $array['editMode'];
+        return $this;
+    }
 }

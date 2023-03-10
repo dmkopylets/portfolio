@@ -5,18 +5,16 @@
     <link rel="stylesheet"
           href="{{asset('css/tempusdominus-bootstrap-4.min.css')}}"/><!-- для календариків з годинником -->
     <div class="container">
-        @if(session()->has('error'))
-            <div class="alert alert-danger" role="alert">
-                {{ session()->get('error') }}
-            </div>
-        @endif
         <div class="jumbotron mt-3" style="padding-top: 0; margin-top:0;">
-
             {{ Form::model('Order', array('url' => array('orders/'.$orderRecord->id.'/editPart2'), 'method' => 'POST')) }}
             @csrf
             @method('POST')
-
             @include('orders.edit.hidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
+            @if(session()->has('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session()->get('error') }}
+                </div>
+            @endif
             <div class="text-lg-left">
                 <div class="row">
                     <div class="col-md-3"><p class="lead" style="font-size: 12pt;">підприємство</p></div>
@@ -60,9 +58,7 @@
                     <!-- "що і де робити"  // вибір select-ами ктп...
                     визов "фрейма" edit.f4_direction-task виконується через livewire-контролер direction-task = DirectionTask -->
                     @livewire('edit-part1-direction-task', [
-                    'mode' => $orderRecord->editMode,
                     'orderRecord' => $orderRecord,
-                    'editRepository' => $editRepository,
                     ])
                 </div>
             </div>
