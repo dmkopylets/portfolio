@@ -10,6 +10,16 @@ class EditPart4Measures extends Component
     public $rowkey;     // індекс рядка (одномірного масива) у двомірному масиві $measure_rs
     public $measure_id; // номер рядка для для запису в таблицю бази даних в поле id (не номер в масиві !  )
     public $branchId, $measures, $maxIdMeasure, $count_meas_row, $licensor, $lic_date, $mode;
+    protected $listeners = [
+        'destroyMeasure'=>'destroy',
+        ];
+    private  EditOrderPart4Request $request;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->request = new EditOrderPart4Request();
+    }
 
     public function mount($measures, $maxIdMeasure, $count_meas_row, $orderRecord)
     {
@@ -19,14 +29,7 @@ class EditPart4Measures extends Component
         $this->measures = $measures;
         $this->maxIdMeasure =$maxIdMeasure;
         $this->count_meas_row = $count_meas_row;
-      //  $this->orderRecord = $orderRecord;
     }
-
-    protected $listeners = [
-        'destroyMeasure'=>'destroy',
-      //  'editMeasure'=>'edit',
-      //  'updateMeasure'=>'update'
-    ];
 
     public function render()
     {
@@ -48,8 +51,7 @@ class EditPart4Measures extends Component
     {
         // додаяється лише один рядочок
         // Validate Form Request
-        $request = new EditOrderPart4Request();
-        $validated = $this->validate($request->rules(), $request->messages());
+        $validated = $this->validate($this->request->rules(), $this->request->messages());
         try{
             $this->maxIdMeasure++;
             $this->measures[]=[
@@ -71,11 +73,10 @@ class EditPart4Measures extends Component
 
             // Reset Form Fields After Creating EditPart4Measures
             $this->resetFields();
-        }
-        finally{
+        }finally{
             $this->count_meas_row = count($this->measures);
             $this->maxIdMeasure = max(array_column($this->measures,'id'));
-            return view('orders.edit.f7Measures',[
+            return view('orders.edit.editPart4_Measures',[
                 'count_meas_row'=>$this->count_meas_row,
                 'maxIdMeasure'=>$this->maxIdMeasure,
                 'measures'=>$this->measures,

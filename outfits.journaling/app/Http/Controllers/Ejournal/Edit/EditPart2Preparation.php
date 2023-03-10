@@ -65,33 +65,29 @@ class EditPart2Preparation extends Component
 
     public function preparationStore()
     {
-        $v = Validator::make($this->request->all(), $this->request->rules(), $this->request->messages());
-        if ($v->fails()) {
-            $errorMessage = '';
-            foreach ($v->messages()->all() as $messageBag) {
-                $errorMessage .= $messageBag . '! ';
-            }
-            session()->flash('error', 'Під час створення Препарації сталася помилка! ' . $errorMessage);
-            // Reset Form Fields After Creating Preparation
-            $this->resetFields();
-        } else {
-            $validatedData = $this->request->validated();
+        $validatedData = $this->validate($this->request->rules(), $this->request->messages());
+        try {
+            $this->maxIdPreparation++;
             $this->preparations[] = [
-                'id' => $this->maxIdPreparation++,
+                'id' => $this->maxIdPreparation,
                 'preparationTargetObj' => $validatedData['preparationTargetObj'],
                 'preparationBody' => $validatedData['preparationBody']
             ];
-
-            $this->countRowPreparations = count($this->preparations);
-            $this->maxIdPreparation = max(array_column($this->preparations, 'id'));
-            // заганяємо оновлені дані по підготовкам в session
             session(['preparations' => $this->preparations]);
-            // Set Flash Message
             session()->flash('success', 'Препарація створена успішно!!');
-
-            // Reset Form Fields After Creating Preparation
             $this->resetFields();
-
+        } catch (\Exception $e) {
+//            $errorMessage = '';
+//            foreach ($v->messages()->all() as $messageBag) {
+//                $errorMessage .= $messageBag . '! ';
+//            }
+//            session()->flash('error', 'Під час створення Препарації сталася помилка! ' . $errorMessage);
+//            // Reset Form Fields After Creating Preparation
+            $this->resetFields();
+        } finally {
+            $this->countRowPreparations = count($this->preparations);
+            //var_dump($this->preparations);
+            $this->maxIdPreparation = max(array_column($this->preparations, 'id'));
             return view('orders.edit.editPart2_Preparation', [
                 'substations' => $this->substations,
                 'substationId' => $this->substationId,
@@ -100,7 +96,7 @@ class EditPart2Preparation extends Component
                 'maxIdPreparation' => $this->maxIdPreparation,
             ]);
         }
-        //$this->cancel();
+        $this->cancel();
     }
 
     public function editPreparation($id)

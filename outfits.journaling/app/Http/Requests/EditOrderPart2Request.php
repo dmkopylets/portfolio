@@ -13,13 +13,7 @@ class EditOrderPart2Request  extends OrderEditRequest
             'preparationBody' => ['required', 'string'],
         ];
     }
-
-    /**
-     * Custom message for validation
-     *
-     * @return array
-     */
-    public function messages()
+    public function messages(): array
     {
         return [
             'preparationTargetObj' => 'Не вибрано станції',
