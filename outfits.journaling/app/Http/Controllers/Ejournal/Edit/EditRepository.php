@@ -14,7 +14,7 @@ use App\Model\Ejournal\Dicts\TypicalTask;
 use App\Model\Ejournal\Dicts\Unit;
 use App\Model\Ejournal\Dicts\Warden;
 use App\Model\Ejournal\Dicts\WorksSpec;
-use App\Model\Ejournal\Measure;
+use App\Model\Ejournal\Meashure;
 use App\Model\Ejournal\Order;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\Ejournal\Preparation;
@@ -211,30 +211,27 @@ class EditRepository
         $this->mode = $mode;
     }
 
-    public function getMeasuresRs(): array
+    public function getMeashuresArray(): array
     {
-        return $this->measures_rs;
+        return $this->meashures;
     }
 
-    /**
-     * @param array $measures_rs
-     */
-    public function setMeasuresRs(array $measures_rs): void
+    public function setMeashures(array $meashures): void
     {
-        $this->measures_rs = $measures_rs;
+        $this->meashures = $meashures;
     }
 
-    public function getMeasuresFromDB(int $orderId)
+    public function getMeashuresFromDB(int $orderId)
     {
-        return Measure::
+        return Meashure::
         select('id', 'licensor', 'lic_date')
             ->where('order_id', $orderId)
             ->get();
     }
 
-    public function getMeasuresMaxId($orderId)
+    public function getMeashuresMaxId($orderId)
     {
-        return Measure::select('id')->where('order_id', $orderId)->get()->max('id');
+        return Meashure::select('id')->where('order_id', $orderId)->get()->max('id');
     }
 
     public function getUnits(int $branchId)

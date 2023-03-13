@@ -21,11 +21,12 @@ class EditPart4Controller extends BaseController
 
     public function editpart4(OrderRecordDTO $orderRecord, Request $request)
     {
-        $orderRecord->separateInstructions = trim($request->get('sep_instrs_txt'));
+        $orderRecord->separateInstructions = trim((string)$request->get('separateInstructionsText'));
         $orderRecord->orderDate = date("Y-m-d H:i", strtotime(trim($request->datetime_order_created)));
-        $orderRecord->orderCreator = trim($request->inp_order_creator);
+        $orderRecord->orderCreator = trim((string)$request->inp_order_creator);
 
         $orderRecord->orderLonger = '';
+        $orderRecord->orderLongTo = null;
         if (!is_null($request->datetime_order_longed)) {
             $orderRecord->orderLongTo = date("Y-m-d H:i", strtotime(trim($request->datetime_order_longed)));
             $orderRecord->orderLonger = trim($request->inp_order_longer);
@@ -34,34 +35,34 @@ class EditPart4Controller extends BaseController
         session(['orderRecord' => $orderRecord]);
 
 
-        /* займемося ровсетом measures - набором рядочків таблиці measures (підготовчих заходів), що мають прив`язку до номеру клонованого наряду  */
-        $countMeasureRows = 0;
-        $maxIdMeasure = 0;
-        $this->measures = array();
+        /* займемося ровсетом meashures - набором рядочків таблиці meashures (підготовчих заходів), що мають прив`язку до номеру клонованого наряду  */
+        $countRowsMeashures = 0;
+        $maxIdMeashure = 0;
+        $this->meashures = array();
         if ($orderRecord->editMode === 'reedit') {  // якщо reedit, дані берем не з бази, а з session
-            $this->measures = session('measures');
-            if (!empty($this->measures)) {
-                $maxIdMeasure = max(array_column($this->measures, 'id'));
-                $countMeasureRows = count($this->measures);
+            $this->meashures = session('meashures');
+            if (!empty($this->meashures)) {
+                $maxIdMeashure = max(array_column($this->meashures, 'id'));
+                $countRowsMeashures = count($this->meashures);
             }
         }
         if ($orderRecord->editMode === 'clone') {
-            $maxIdMeasureTmp = $this->repo->getMeasuresMaxId($orderRecord->id);
-            if ($maxIdMeasureTmp > 0) {
-                $this->measures = $this->repo->getMeasuresFromDB($orderRecord->id)->toArray();
-                $maxIdMeasure = max(array_column($this->measures, 'id'));
-                $countMeasureRows = count($this->measures);
+            $maxIdMeashureTmp = $this->repo->getMeashuresMaxId($orderRecord->id);
+            if ($maxIdMeashureTmp > 0) {
+                $this->meashures = $this->repo->getMeashuresFromDB($orderRecord->id)->toArray();
+                $maxIdMeashure = max(array_column($this->meashures, 'id'));
+                $countRowsMeashures = count($this->meashures);
             }
         }
 
-        session(['measures' => $this->measures]);
+        session(['meashures' => $this->meashures]);
 
         return view('orders.edit.editPart4', [
             'title' => '№ ' . $orderRecord->id . ' підготовка2',
-            'maxIdMeasure' => $maxIdMeasure,
-            'count_meas_row' => $countMeasureRows,
-            'orderRecord' => $orderRecord, //->toArray(),
-            'measures' => $this->measures
+            'maxIdMeashure' => $maxIdMeashure,
+            'countRowsMeashures' => $countRowsMeashures,
+            'orderRecord' => $orderRecord,
+            'meashures' => $this->meashures
         ]);
     }
 }

@@ -7,10 +7,10 @@
     <div class="relative flex items-top justify-center min-h-screen  sm:items-center sm:pt-0">
         <div class="container jumbotron mt-3" style="padding-top: 10; margin-top:0;  margin-bottom:5px;">
 
-            @livewire('edit-part4-measures',[
-            'measures' => $measures,
-            'maxIdMeasure' => $maxIdMeasure,
-            'count_meas_row' => $count_meas_row,
+            @livewire('edit-part4-meashures',[
+            'meashures' => $meashures,
+            'maxIdMeashure' => $maxIdMeashure,
+            'countRowsMeashures' => $countRowsMeashures,
             'orderRecord' => $orderRecord
             ])
 
@@ -42,6 +42,6 @@
 
         </div> <!-- end conteiner  -->
     </div>
-
+    @include('orders.edit.editPart4_js')
 @endsection
 @livewireScripts

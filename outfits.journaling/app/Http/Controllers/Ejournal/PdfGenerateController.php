@@ -41,7 +41,7 @@ class PdfGenerateController extends BaseController
             'substationType' => StationType::find($substationTypeId)->body,
             'branchName' => $this->branch->body,
             'preparations' => $this->repo->getPreparationsFromDB($order->id),
-            'measures' => $this->repo->getMeasuresFromDB($order->id),
+            'meashures' => $this->repo->getMeashuresFromDB($order->id),
         ])->setPaper('a4', 'landscape')->setWarnings(false);
 
         return $pdf->stream('Order.pdf');

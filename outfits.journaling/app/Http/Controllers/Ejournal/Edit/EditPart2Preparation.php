@@ -77,16 +77,9 @@ class EditPart2Preparation extends Component
             session()->flash('success', 'Препарація створена успішно!!');
             $this->resetFields();
         } catch (\Exception $e) {
-//            $errorMessage = '';
-//            foreach ($v->messages()->all() as $messageBag) {
-//                $errorMessage .= $messageBag . '! ';
-//            }
-//            session()->flash('error', 'Під час створення Препарації сталася помилка! ' . $errorMessage);
-//            // Reset Form Fields After Creating Preparation
             $this->resetFields();
         } finally {
             $this->countRowPreparations = count($this->preparations);
-            //var_dump($this->preparations);
             $this->maxIdPreparation = max(array_column($this->preparations, 'id'));
             return view('orders.edit.editPart2_Preparation', [
                 'substations' => $this->substations,
@@ -105,7 +98,6 @@ class EditPart2Preparation extends Component
         $this->rowKey = array_search($id, array_column($this->preparations, 'id'));
         $this->preparationTargetObj = $this->preparations[$this->rowKey]['preparationTargetObj'];
         $this->preparationBody = $this->preparations[$this->rowKey]['preparationBody'];
-        //-----------------------
         $this->updatePreparation = true;
     }
 
@@ -119,7 +111,6 @@ class EditPart2Preparation extends Component
     {
         $this->validate($this->request->rules(), $this->request->messages());
         try {
-            // Update Preparation
             $this->preparations[$this->rowKey] = [
                 'id' => $this->preparationId,
                 'preparationTargetObj' => $this->preparationTargetObj,

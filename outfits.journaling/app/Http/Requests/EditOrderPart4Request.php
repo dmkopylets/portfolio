@@ -10,14 +10,14 @@ class EditOrderPart4Request  extends OrderEditRequest
     {
         return [
             'licensor'=>'required',
-            'lic_date'=>'required'
+            'datetimeLicense'=>'required'
         ];
     }
     public function messages(): array
     {
         return [
             'licensor.required'=>'Не вказано хто дав дозвіл на підготовку',
-            'lic_date.required'=>'Не вказано дати дозвілу'
+            'datetimeLicense.required'=>'Не вказано дати дозвілу'
         ];
     }
 }

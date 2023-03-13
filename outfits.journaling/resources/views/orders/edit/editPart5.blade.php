@@ -28,7 +28,7 @@
                     <span class="input-group-text">Під напругою залишились:</span>
                     <textarea class="form-control" rows="2" name="under_voltage_txt" aria-label="under_voltage_txt"
                               style="display: block; white-space: normal; text-align: left; text-align-last: left;">
-                     @if ($mode!=='create')
+                     @if ($orderRecord->editMode !== 'create')
                             {{$orderRecord->underVoltage}}
                         @endif
                   </textarea>

@@ -22,24 +22,23 @@ class StoreOrder
         $newOrder->save();
 
         $preparations = $this->repo->getPreparationsArray();
-        $countPreprationsRows = count($preparations);
-        if ($countPreprationsRows > 0) {
-            foreach ($preparations as $key=>$prRow) {
+        if (count($preparations) > 0) {
+            foreach ($preparations as $prRow) {
                 $newOrder->preparations()->create([
                     'order_id' => $newOrder->id,
-                    'target_obj' => $prRow['target_obj'],
-                    'body' => $prRow['body']
+                    'target_obj' => $prRow['preparationTargetObj'],
+                    'body' => $prRow['preparationBody']
                 ]);
             }
         }
 
         $meashures = session('meashures');
-        if (is_array($meashures)) {
+        if (count($meashures) > 0) {
             foreach ($meashures as $msRow) {
-                $newOrder->$meashures()->create([
+                $newOrder->meashures()->create([
                     'order_id' => $newOrder->id,
                     'licensor' => $msRow['licensor'],
-                    'lic_date' => $msRow['lic_date']
+                    'lic_date' => $msRow['datetimeLicense']
                 ]);
             }
         }

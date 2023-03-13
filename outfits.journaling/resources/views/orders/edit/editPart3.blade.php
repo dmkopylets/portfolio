@@ -14,9 +14,9 @@
             <div class="input-group"
                  style="padding-top: 0; margin-top:0; margin-bottom: 10px; display: flex; text-align:left; ">
                 <span class="input-group-text">Окремі вказівки</span>
-                <textarea class="form-control  @error('sep_instrs') is-invalid @enderror" rows="2" id="sep_instrs_txt"
-                          name="sep_instrs_txt"
-                          aria-label="sep_instrs_txt"
+                <textarea class="form-control  @error('separateInstructionsText') is-invalid @enderror" rows="2" id="separateInstructionsText"
+                          name="separateInstructionsText"
+                          aria-label="separateInstructionsText"
                           style="display: block; white-space: normal; text-align: left; text-align-last: left;">@if ($orderRecord->editMode !== 'create'){{$orderRecord->separateInstructions}}
                     @endif
          </textarea>

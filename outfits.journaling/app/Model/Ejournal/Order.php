@@ -2,6 +2,8 @@
 
 namespace App\Model\Ejournal;
 
+use DateTimeInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,8 +40,8 @@ class Order extends Model
         return $this->hasMany(Preparation::class,'order_id','id');
     }
 
-    public function measures(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function meashures(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Measure::class,'order_id','id');
+        return $this->hasMany(Meashure::class,'order_id','id');
     }
 }

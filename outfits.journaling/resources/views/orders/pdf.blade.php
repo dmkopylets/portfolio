@@ -127,7 +127,7 @@
     <h5 style="margin-bottom: 0; line-height: 70%;">Таблиця 1</h5>
     <h5 style="margin-bottom: 0; margin-top: 0; text-align:center; line-height: 70%;">Заходи щодо підготовки робочих
         місць</h4>
-        <table class="table_measures" style="margin-bottom:0;">
+        <table class="table_meashures" style="margin-bottom:0;">
             <thead>
             <tr valign="middle" style="line-height: 70%;">
                 <th scope="col" width="280px">Назва електроустановок, у яких треба <br/> провести вимкнення і встановити
@@ -192,7 +192,7 @@
         <h5 style="margin-bottom: 0; margin-top: 0; text-align:center; line-height: 60%;">Дозвіл на підготовку робочих
             місць і на допуск</h4>
 
-            <table class="table_measures">
+            <table class="table_meashures">
                 <thead class="thead-dark">
                 <tr valign="middle" style="line-height: 70%;">
                     <th scope="col" width="300px">Дозвіл на підготовку робочих місць і на допуск видав <br/> (посада,

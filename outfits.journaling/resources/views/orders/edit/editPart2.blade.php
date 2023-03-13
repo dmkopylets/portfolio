@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @livewireStyles
 @section('content')
-    @include('orders.edit.hidenFields')  <!-- підключаємо приховані поля вводу для обміну з js  -->
+    {{session(['preparations' => $preparations]);}}
     <div class="relative flex items-top justify-center min-h-screen  sm:items-center sm:pt-0">
         <div class="container jumbotron mt-3" style="padding-top: 10px; margin-top:0;  margin-bottom:5px;">
             @livewire('edit-part2-preparation',[

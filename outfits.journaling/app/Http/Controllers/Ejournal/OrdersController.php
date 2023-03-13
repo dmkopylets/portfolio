@@ -20,7 +20,7 @@ class OrdersController extends BaseController
     public EditRepository $editRepository;
     public OrderRecordDTO $orderRecord;
     public array $preparations = [];
-    public array $measures = [];
+    public array $meashures = [];
     protected BranchInfo $branch;
     private Edit\EditPart1Controller $editPart1;
     private Edit\EditPart2Controller $editPart2;
@@ -36,7 +36,7 @@ class OrdersController extends BaseController
         $this->editRepository = new EditRepository();
         $this->editPart2 = new Edit\EditPart2Controller($this->editRepository, $this->branch);
         $this->editPart3 = new Edit\EditPart3Controller();
-        $this->editPart4 = new Edit\EditPart4Controller($this->editRepository, $this->branch, $this);
+        $this->editPart4 = new Edit\EditPart4Controller($this->editRepository);
         $this->editPart5 = new Edit\EditPart5Controller();
         $this->storeOrder = new Edit\StoreOrder($this->editRepository, $this->branch);
         $this->orderRecord = $this->editRepository->initOrderRecord($this->branch->id);
@@ -78,7 +78,7 @@ class OrdersController extends BaseController
         // чистимо Session
         session()->forget('orderRecord');
         session()->forget('preparations');
-        session()->forget('measures');
+        session()->forget('meashures');
 
         return view('orders.index', ['records' => $records, 'branch' => $this->currentUser->userBranch]);
     }
@@ -99,11 +99,6 @@ class OrdersController extends BaseController
         return $editPart1Controller->editpart1($this->editRepository->readOrderFromDB($orderId, 'clone'));
     }
 
-//    public function editPart1(OrderRecordDTO $orderRecord): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
-//    {
-//       return $this->editPart1->editPart1($orderRecord);
-//    }
-
     public function editPart2(EditOrderPart1Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return $this->editPart2->editpart2($this->editRepository->getOrderRecord(), $request);
@@ -119,9 +114,9 @@ class OrdersController extends BaseController
         return $this->editPart4->editpart4($this->editRepository->getOrderRecord(), $request);
     }
 
-    public function editPart5(Request $request)
+    public function editPart5()
     {
-        return $this->editPart5->editpart5($this->editRepository->getOrderRecord(), $request);
+        return $this->editPart5->editpart5($this->editRepository->getOrderRecord());
     }
 
     public function store(Request $request)

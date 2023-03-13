@@ -12,12 +12,12 @@ class ReEditPart4 extends BaseController
     {
         $orderRecord = session('orderRecord');
         $orderRecord->editMode = 'reedit';
-        $count_meas_row = 0;
-        $maxIdMeasure = 0;
-        $measures = session('measures');
-        if (!empty($measures_rs)) {
-            $maxIdMeasure = max(array_column($measures, 'id'));
-            $count_meas_row = count($measures);
+        $countRowsMeashures = 0;
+        $maxIdMeashure = 0;
+        $meashures = session('meashures');
+        if (!empty($meashures)) {
+            $maxIdMeashure = max(array_column($meashures, 'id'));
+            $countRowsMeashures = count($meashures);
         }
 
         $orderRecord->underVoltage = trim($request->get('under_voltage'));
@@ -26,9 +26,9 @@ class ReEditPart4 extends BaseController
         return view('orders.edit.editPart4', [
             'mode' => 'reedit',
             'title' => ($orderRecord->id == 0) ? 'новий наряд' : 'клонуємо наряд № ' . $orderRecord->id,
-            'measures' => $measures,
-            'maxIdMeasure' => $maxIdMeasure,
-            'count_meas_row' => $count_meas_row,
+            'meashures' => $meashures,
+            'maxIdMeashure' => $maxIdMeashure,
+            'countRowsMeashures' => $countRowsMeashures,
             'orderRecord' => session('orderRecord')
         ]);
     }
