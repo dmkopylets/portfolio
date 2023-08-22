@@ -26,7 +26,9 @@ ARG DEPS="\
         libmcrypt-dev \
         libpng-dev \
         postgresql-client \
-        libzip-dev"
+        libzip-dev \
+        nodejs \
+        npm"
 
 RUN set -x \
     && apk add --update --no-cache $DEPS

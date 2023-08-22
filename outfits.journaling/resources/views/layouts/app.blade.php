@@ -19,7 +19,7 @@
     <meta name="referrer" content="origin-when-cross-origin">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="{{ asset('css/placeholder.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/placeholder.css')}}" />
     <link rel="stylesheet" href="{{asset('css/jquery-ui.css')}}" />
     <link rel="stylesheet" href="{{asset('css/bootstrap-select.min.css')}}" />
 

@@ -148,8 +148,8 @@
 
             @foreach($preparations as $preparation)
                 <tr>
-                    <td><em>{{$preparation['target_obj']}}</em></td>
-                    <td><em>{{$preparation['body']}}</em></td>
+                    <td><em>{{$preparation['preparationTargetObj']}}</em></td>
+                    <td><em>{{$preparation['preparationBody']}}</em></td>
                 </tr>
             @endforeach
             </tbody>
@@ -178,11 +178,10 @@
         <div id="orderLonged" class="wrap_dates" style="position: absolute; left: 56px; margin-top: 16px;">
             <div class="bblock">Наряд продовжив до: <em>дата</em></div>
             <div class="bblock"
-                 style="border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->order_longto), 'd.m.Y')}}
-            </div>
+                 style="border-bottom: 0.5px solid #000;">{{$orderLongedDateHtml['date']}}</div>
             <div class="bblock"><em>час</em></div>
             <div class="bblock"
-                 style="margin-right: 10px; border-bottom: 0.5px solid #000;">{{date_format(DateTime::createFromFormat('Y-m-d H:i:s',$order->order_longto), 'H год. i хв.')}}</div>
+                 style="margin-right: 56px; border-bottom: 0.5px solid #000;">{{$orderLongedDateHtml['time']}}</div>
             <div class="bblock">Підпис _______________ Прізвище, ініціали</div>
             <div class="bblock" style="border-bottom: 0.5px solid #000;"><em>{{$order->order_longer}}</em></div>
             <br>

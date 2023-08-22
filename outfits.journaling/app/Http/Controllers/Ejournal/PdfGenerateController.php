@@ -18,6 +18,8 @@ use PDF;
 
 class PdfGenerateController extends BaseController
 {
+    private EditRepository $repo;
+
     public function __construct()
     {
         parent::__construct();
@@ -42,6 +44,7 @@ class PdfGenerateController extends BaseController
             'branchName' => $this->branch->body,
             'preparations' => $this->repo->getPreparationsFromDB($order->id),
             'meashures' => $this->repo->getMeashuresFromDB($order->id),
+            'orderLongedDateHtml' => $this->repo->getOrderLongedDateFormated($order->order_longto)
         ])->setPaper('a4', 'landscape')->setWarnings(false);
 
         return $pdf->stream('Order.pdf');

@@ -19,7 +19,9 @@ use App\Model\Ejournal\Order;
 use App\Model\Ejournal\OrderRecordDTO;
 use App\Model\Ejournal\Preparation;
 use App\Model\User\Entity\BranchInfo;
+use DateTime;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class EditRepository
 {
@@ -323,12 +325,23 @@ class EditRepository
         return $teamList;
     }
 
-    public function findBranch($id)
+    public function findBranch($id): BranchInfo
     {
         $result = new BranchInfo();
         $tmp = Branch::find($id);
         $result->id = $tmp->id;
         $result->body = $tmp->body;
         return $result;
+    }
+
+    public function getOrderLongedDateFormated(?string $orderLonged): array
+    {
+        $text['date'] = '________';
+        $text['time'] = '_____';
+        if (!is_bool($orderLonged === true)) {
+            $text['date'] =  date_format(DateTime::createFromFormat('Y-m-d H:i:s', $orderLonged), 'd.m.Y');
+            $text['time'] = date_format(DateTime::createFromFormat('Y-m-d H:i:s', $orderLonged), 'H год. i хв.');
+        }
+        return $text;
     }
 }
