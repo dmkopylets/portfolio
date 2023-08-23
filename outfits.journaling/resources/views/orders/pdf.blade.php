@@ -17,7 +17,7 @@
                 <p style="font-size: 10pt; margin-bottom: 0;">Підприємство</p>
             </td>
             <td width="15.5cm" style="border-bottom: 0.5px solid #000;">
-                <p style="font-size: 10pt; text-align: left; margin-bottom:0; padding:2px"><i>АТ &quot;ANYОБЛЕНЕРГО&quot;</i>
+                <p style="font-size: 10pt; text-align: left; margin-bottom:0; padding:2px"><i>&quot;ANYОБЛЕНЕРГО&quot;</i>
                 </p>
             </td>
         </tr>
@@ -26,14 +26,12 @@
                 <p style="font-size: 10pt; margin-bottom: 0;">Підрозділ</p>
             </td>
             <td width="15.5cm" style="border: none;  line-height: 1pt; border-bottom: 0.5px solid #000">
-                <p style="font-size: 10pt; text-align: left; margin-bottom:0; padding:2px"><i>{{$branchName}} (
-                        дільниця {{$unitName}})</i></p>
+                <p style="font-size: 10pt; text-align: left; margin-bottom:0; padding:2px"><i>{{$branchName}} (дільниця {{$unitName}})</i></p>
             </td>
         </tr>
     </table>
     <h4 style="text-align:center; margin-top: 0; margin-bottom: 0; padding:0;">НАРЯД - ДОПУСК № {{$order->id}}</h4>
-    <h5 style="text-align:center; margin-top: 0; margin-bottom: 0; padding:0;">(для виконання робіт в
-        електроустановках)</h5>
+    <h5 style="text-align:center; margin-top: 0; margin-bottom: 0; padding:0;">(для виконання робіт в електроустановках)</h5>
 
     <table width="19cm">
         <col width="4.5cm"/>
@@ -51,8 +49,7 @@
             <td height="8" style="border: none; line-height: 1pt; padding: 0;"><p
                     style="font-size: 8pt; margin-top: 0; margin-bottom: 0;"></p></td>
             <td height="8" style="border: none; line-height: 6pt; padding: 0; vertical-align: top;">
-                <p style="font-size:8pt; text-align:center; margin-top:0; margin-bottom:0">(прізвище, ініціали, група з
-                    електробезпеки)</p></td>
+                <p style="font-size:8pt; text-align:center; margin-top:0; margin-bottom:0">(прізвище, ініціали, група з електробезпеки)</p></td>
         </tr>
     </table>
 
@@ -125,8 +122,7 @@
     </div>
     <br>
     <h5 style="margin-bottom: 0; line-height: 70%;">Таблиця 1</h5>
-    <h5 style="margin-bottom: 0; margin-top: 0; text-align:center; line-height: 70%;">Заходи щодо підготовки робочих
-        місць</h4>
+    <h5 style="margin-bottom: 0; margin-top: 0; text-align:center; line-height: 70%;">Заходи щодо підготовки робочих місць</h4>
         <table class="table_meashures" style="margin-bottom:0;">
             <thead>
             <tr valign="middle" style="line-height: 70%;">
