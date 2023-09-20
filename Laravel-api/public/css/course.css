@@ -1,0 +1,5 @@
+.scrollable-menu_prepobj {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}

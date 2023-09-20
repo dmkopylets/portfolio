@@ -1,0 +1,326 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel Swagger API documentation for test task",
+        "contact": {
+            "name": "testtask",
+            "email": "dm.kopylets@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/collections": {
+            "get": {
+                "tags": [
+                    "Collections"
+                ],
+                "summary": "Collections listing",
+                "operationId": "getCollectionsList",
+                "parameters": [
+                    {
+                        "name": "wanted_Completed",
+                        "in": "query",
+                        "description": "collection completed (0 or 1)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "wanted_Title",
+                        "in": "query",
+                        "description": "part of the title of collection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "wanted_Description",
+                        "in": "query",
+                        "description": "part of the description of collection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "wanted_TargetAmount",
+                        "in": "query",
+                        "description": "part of the target amount of collection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "wanted_Link",
+                        "in": "query",
+                        "description": "part of the link of collection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Collections not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/collections/create": {
+            "post": {
+                "tags": [
+                    "Collections"
+                ],
+                "summary": "Collection creating",
+                "operationId": "createCollection",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "collection title",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "collection description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "target_amount",
+                        "in": "query",
+                        "description": "collection target amountn",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "currency"
+                        }
+                    },
+                    {
+                        "name": "link",
+                        "in": "query",
+                        "description": "collection link",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "collection created"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    }
+                }
+            }
+        },
+        "/api/v1/collections/{id}": {
+            "get": {
+                "tags": [
+                    "Collections"
+                ],
+                "summary": "View collection info",
+                "operationId": "getCollectionById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Collections id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ }"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Collections"
+                ],
+                "summary": "Delete a collection",
+                "operationId": "deleteCollection",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Collections id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Collection not found"
+                    },
+                    "204": {
+                        "description": "Delete collection"
+                    }
+                }
+            }
+        },
+        "/api/v1/contributors": {
+            "get": {
+                "tags": [
+                    "Contributors"
+                ],
+                "summary": "Contributors listing",
+                "operationId": "getContributorsList",
+                "parameters": [
+                    {
+                        "name": "wanted_CollectionId",
+                        "in": "query",
+                        "description": "part of the title of collection id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "wanted_UserName",
+                        "in": "query",
+                        "description": "part of the description of user name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "wanted_Amount",
+                        "in": "query",
+                        "description": "part of the description of user amount",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Contributors not found"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/contributors/create": {
+            "post": {
+                "tags": [
+                    "Contributors"
+                ],
+                "summary": "Contributor creating",
+                "operationId": "createContributor",
+                "parameters": [
+                    {
+                        "name": "collection_id",
+                        "in": "query",
+                        "description": "contributor collection id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_name",
+                        "in": "query",
+                        "description": "contributor user name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "contributor amountn",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "currency"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "contributor created"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    }
+                }
+            }
+        },
+        "/api/v1/contributors/{id}": {
+            "get": {
+                "tags": [
+                    "Contributors"
+                ],
+                "summary": "View contributor info",
+                "operationId": "getContributorById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Contributors id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{ }"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contributors"
+                ],
+                "summary": "Delete a contributor",
+                "operationId": "deleteContributor",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Contributors id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Contributor not found"
+                    },
+                    "204": {
+                        "description": "Delete contributor"
+                    }
+                }
+            }
+        }
+    }
+}
