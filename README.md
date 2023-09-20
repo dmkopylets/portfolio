@@ -27,4 +27,21 @@ _what is here:_
     reference data and create a journal of typical outfits for performing some work 
     (for example, a team of electricians)
 
-    5. 
+    5. "Laravel-api" https://github.com/dmkopylets/portfolio/tree/main/Laravel-api  Task: "Develop an API to create, manage, and retrieve
+    fee information with additional functionality" 
+       ○ Creating a meeting:
+       ○ Implement the ability to create new assemblies using
+          POST request with title, description, final amount and
+        link.
+       Obtaining a list of fees:
+       ○ Implement the possibility of obtaining a list of all fees using
+       GET request.
+       ○ Each collection must contain an identifier, title, description, end
+         amount and reference.
+        Adding contributions:
+        ○ Implement the possibility of joining the collection of contributions with the help of POST request with username and amount.
+        Getting collection details:
+        ○ Implement the possibility of obtaining details of a specific fee for by its identifier using a GET request. /etc 
+
+
+
