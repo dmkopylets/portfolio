@@ -13,9 +13,9 @@ examples of my code
 
 _what is here:_
 
-    1. "console.app" https://github.com/dmkopylets/portfolio/tree/main/console.app - a console program that can be used for service tasks such as data import
+    1. * [console.app](https://github.com/dmkopylets/portfolio/tree/main/console.app) - a console program that can be used for service tasks such as data import
     
-    2. On Laravel project https://github.com/dmkopylets/portfolio/tree/main/Laravel-sql-seeding maked writing migrations, seeds that generate test data.
+    2. On [Laravel-sql](https://github.com/dmkopylets/portfolio/tree/main/Laravel-sql-seeding) - maked writing migrations, seeds that generate test data.
 
     3. "Racing Report" https://github.com/dmkopylets/portfolio/tree/main/Racing%20Report - a simple application using Laravel and AdminLTE, which demonstrates manipulation
     data, CLI-command that parses and saves data from txt-files to a database. Added REST API (Swagger). 
