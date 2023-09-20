@@ -1,6 +1,6 @@
 # My example Laravel Development. Bootcamp Technical Task – Back-End PHP
 
- [actual task in Ukrainian](hhttps://github.com/dmkopylets/portfolio/blob/main/Laravel-api/Addons/Task.pdf) 
+ ![actual task in Ukrainian](Addons%2FTask.pdf) 
 
 **to build the test task program, use commands:**
 
