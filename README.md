@@ -24,7 +24,7 @@ _what is here:_
             The program processes parameters (json, xml).
             E.g. http://localhost:5000/api/v1/report/?format=xml
 
-* 4. ["orders.journaling](https://github.com/dmkopylets/orders.journaling) - a terribly written but working program from a very long time ago...
+* 4. [orders.journaling](https://github.com/dmkopylets/orders.journaling) - a terribly written but working program from a very long time ago...
 
             using Laravel and Liveware that makes it possible to enter certain 
             reference data and create a journal of typical outfits for performing some work 
@@ -45,5 +45,10 @@ _what is here:_
               ○ Getting collection details:
                  ○ Implement the possibility of obtaining details of a specific fee for by its identifier using a GET request. /etc 
 
+* 6. [Laravel-comments](https://github.com/dmkopylets/dZenTest)  SPA-application: Comments
 
+           Full text of the task here:
+       [full task text](https://github.com/dmkopylets/dZenTest/blob/main/task/PHP_Laravel_SPA_Application_comments.pdf)
+
+***
 
