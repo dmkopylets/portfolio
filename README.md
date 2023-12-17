@@ -40,15 +40,18 @@ _what is here:_
              Obtaining a list of fees:
              ○ Implement the possibility of obtaining a list of all fees using GET request.
              ○ Each collection must contain an identifier, title, description, end amount and reference.
-             * Adding contributions:
+        * Adding contributions:
+        
                ○ Implement the possibility of joining the collection of contributions with the help of POST request with username and amount.
               ○ Getting collection details:
-                 ○ Implement the possibility of obtaining details of a specific fee for by its identifier using a GET request. /etc 
+                Implement the possibility of obtaining details of a specific fee for by its identifier using a GET request. /etc 
 
 * 6. [Laravel-comments](https://github.com/dmkopylets/dZenTest)  SPA-application: Comments
 
-           Full text of the task here:
-       [full task text](https://github.com/dmkopylets/dZenTest/blob/main/task/PHP_Laravel_SPA_Application_comments.pdf)
+           All comments entered by the user are saved in the relational database data (DB), including user data (data that will help identify the client).
+           You can write as many records as you like for each record (cascading display).
+
+      Full text of the task [here:](https://github.com/dmkopylets/dZenTest/blob/main/task/PHP_Laravel_SPA_Application_comments.pdf)
 
 ***
 
