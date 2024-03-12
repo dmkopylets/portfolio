@@ -20,38 +20,13 @@ _what is here:_
 * 3. [Racing Report](https://github.com/dmkopylets/portfolio/tree/main/Racing%20Report) - a simple application using Laravel and AdminLTE
 
          which demonstrates manipulation
-            data, CLI-command that parses and saves data from txt-files to a database. Added REST API (Swagger). 
+         data, CLI-command that parses and saves data from txt-files to a database. Added REST API (Swagger). 
             The program processes parameters (json, xml).
             E.g. http://localhost:5000/api/v1/report/?format=xml
 
-* 4. [orders.journaling](https://github.com/dmkopylets/orders.journaling) - a terribly written but working program from a very long time ago...
+* 4. [orders.journaling](https://github.com/dmkopylets/orders.journaling) - a terribly written but working program from a very long time ago... (this is practically my first experience in self-study Laravel)
 
-            using Laravel and Liveware that makes it possible to enter certain 
-            reference data and create a journal of typical outfits for performing some work 
-            (for example, a team of electricians)
+         Laravel and Liveware are involved, that makes it possible to enter certain reference data and create a journal of typical orders for performing some work (for example, a team of electricians)
 
-* 5. [Laravel-api](https://github.com/dmkopylets/portfolio/tree/main/Laravel-api)  Task: "Develop an API to create, manage, and retrieve
-    fee information with additional functionality" 
-
-            ○ Creating a meeting:
-            ○ Implement the ability to create new assemblies using
-            POST request with title, description, final amount and link.
-
-             Obtaining a list of fees:
-             ○ Implement the possibility of obtaining a list of all fees using GET request.
-             ○ Each collection must contain an identifier, title, description, end amount and reference.
-        * Adding contributions:
-        
-               ○ Implement the possibility of joining the collection of contributions with the help of POST request with username and amount.
-              ○ Getting collection details:
-                Implement the possibility of obtaining details of a specific fee for by its identifier using a GET request. /etc 
-
-* 6. [Laravel-comments](https://github.com/dmkopylets/dZenTest)  SPA-application: Comments
-
-           All comments entered by the user are saved in the relational database data (DB), including user data (data that will help identify the client).
-           You can write as many records as you like for each record (cascading display).
-
-      Full text of the task [here:](https://github.com/dmkopylets/dZenTest/blob/main/task/PHP_Laravel_SPA_Application_comments.pdf)
-
-***
+         Attention: The interface and data are in Ukrainian
 
