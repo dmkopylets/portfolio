@@ -13,7 +13,7 @@ examples of my code
 
 _what is here:_
 
-* 1. [console.app](https://github.com/dmkopylets/portfolio/tree/main/console.app) - a console program that can be used for service tasks such as data import
+* 1. [console.app](https://github.com/dmkopylets/portfolio/tree/main/console.app) - a console PHP-program that can be used for service tasks such as data import
     
 * 2. On [Laravel-sql](https://github.com/dmkopylets/portfolio/tree/main/Laravel-sql-seeding) - maked writing migrations, seeds that generate test data.
 
@@ -29,4 +29,12 @@ _what is here:_
          Laravel and Liveware are involved, that makes it possible to enter certain reference data and create a journal of typical orders for performing some work (for example, a team of electricians)
 
          Attention: The interface and data are in Ukrainian
+
+## Frontend skils demo:
+
+* 5. Clear HTML+CSS [Landing preview](https://dmkopylets.github.io/landing/)
+
+
+         example of a single page navigation menu
+      [Landing source](https://github.com/dmkopylets/landing)         
 
