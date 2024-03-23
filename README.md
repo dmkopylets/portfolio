@@ -4,7 +4,8 @@
 
 **my contacts:**
 * dm.kopylets@gmail.com
-* [linkedin](https://www.linkedin.com/in/dmitro-kopylets-6a3ba21a1/)
+* [linkedin](www.linkedin.com/in/dmitro-kopylets-6a3ba21a1)
+
 
 # portfolio
 examples of my code
