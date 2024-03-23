@@ -4,7 +4,7 @@
 
 **my contacts:**
 * dm.kopylets@gmail.com
-* [www.linkedin.com/in/dmytro-kopylets-6a3ba21a1](www.linkedin.com/in/dmytro-kopylets-6a3ba21a1)
+* <a href="https://www.linkedin.com/in/dmytro-kopylets-6a3ba21a1">Linkedin</a>
 
 
 # portfolio
