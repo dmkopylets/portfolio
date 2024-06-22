@@ -25,11 +25,6 @@ _what is here:_
             The program processes parameters (json, xml).
             E.g. http://localhost:5000/api/v1/report/?format=xml
 
-* 4. [orders.journaling](https://github.com/dmkopylets/orders.journaling) - a terribly written but working program from a very long time ago... (this is practically my first experience in self-study Laravel)
-
-         Laravel and Liveware are involved, that makes it possible to enter certain reference data and create a journal of typical orders for performing some work (for example, a team of electricians)
-
-         Attention: The interface and data are in Ukrainian
 
 ## Frontend skils demo:
 
